@@ -1,0 +1,46 @@
+<ion-header class="redefinicao-senha-header">
+    <ion-navbar>
+        <ion-grid>
+            <ion-row>
+                <ion-col col-12>
+                    <div class="title-header">
+                        <div class="title-text">
+                            <span>Redefinição de Senha</span>
+                        </div>
+                    </div>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="redefinicao-senha-content">
+    <div padding>
+        <ion-grid>
+            <ion-row>
+                <ion-col col-12>
+                    <h4 class="title">Por favor, informe seu email para enviarmos sua nova senha.</h4>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col col-12>
+                    <ion-item>
+                        <ion-label floating>E-mail</ion-label>
+                        <ion-input type="email" name="email" ngModel required email #email="ngModel" [class.invalid]="email.errors && email.dirty"></ion-input>
+                    </ion-item>
+                    <div class="error-message" *ngIf="email.errors?.email && email.dirty">
+                        <span>E-mail inválido</span>
+                    </div>
+                </ion-col>
+            </ion-row>
+            <hr/>
+            <ion-row>
+                <ion-col col-12>
+                    <button class="enviar" ion-button round full color="pink">
+                        <ion-icon ios="ios-send" md="md-send"></ion-icon>Enviar
+                    </button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
+</ion-content>

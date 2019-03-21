@@ -1,0 +1,14 @@
+// Granite Brush
+
+$granite-font-path: $font-path !default;
+
+@font-face {
+    font-family: "Granite";
+    font-weight: normal;
+    font-style: normal;
+    src: local("Granite"), local("Granite-Regular"),
+		url("#{$granite-font-path}/Granite-regular.ttf") format("truetype"),
+		url("#{$granite-font-path}/Granite-regular.woff2") format("woff2"),
+        url("#{$granite-font-path}/Granite-regular.woff") format("woff");
+}
+

@@ -1,0 +1,56 @@
+page-redefinicao-senha {
+    font-family: Dessau-Light;
+
+    ion-header.redefinicao-senha-header {
+        color:  white;
+        font-weight: bold;
+
+        .title-header {
+            display: table;
+            font-size: 1.5em;
+            font-weight: bold;
+            width: 100%;
+
+            button {
+                float: left;
+            }
+
+            .title-text {
+                align-items: center; 
+                height: 32px;
+            }
+        }
+
+        .toolbar-md {
+            height: 56px;
+        }
+    }
+
+    ion-content.redefinicao-senha-content {        
+        h4 {
+            font-weight: bold;	
+            padding-top: 5em;	
+            text-align: justify;
+        }
+
+        ion-label {
+            margin: 0 8px 11px 0;
+        }
+    }
+
+    .error-message {
+        align-items: stretch;
+        color: red;
+        font-size: 85%;
+        margin-top: 0.3rem;
+        padding-left: 16px;
+    }
+
+    button.enviar {
+        font-weight: bold;
+        
+        ion-icon {
+            margin-right: 10px;
+        }
+    }
+}

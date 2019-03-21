@@ -1,0 +1,144 @@
+<ion-header class="detalhes-header">
+    <ion-navbar>
+        <ion-grid>
+            <ion-row>
+                <ion-col col-12>
+                    <div class="title-header">
+                        <div class="title-text">
+                            <span>Detalhes do Serviço</span>
+                        </div>
+                    </div>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="detalhes-content">
+    <ion-avatar item-start>
+        <ion-card-content>
+            <ion-thumbnail item-start>
+                <ion-row>
+                    <ion-col col-12>
+                        <ion-icon ios="ios-construct" md="md-construct"></ion-icon>
+                    </ion-col>
+                </ion-row>
+            </ion-thumbnail>
+        </ion-card-content>
+    </ion-avatar>
+    <div padding>
+        <ion-grid>
+            <ion-row>
+                <ion-col col-12>
+                    <ion-item>
+                        <ion-label stacked>Status</ion-label>
+                        <ion-label>{{ servico.tipoStatus }}</ion-label>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row *ngIf="servico.tipoStatus != 'EM_ABERTO' && (user && user.tipo == 'CLIENTE')">
+                <ion-col col-12>
+                    <ion-item>
+                        <ion-label stacked>Nome do Fornecedor</ion-label>
+                        <ion-label>{{ servico.fornecedor?.nomeCompleto || "Nenhum fornecedor havia aceitado o serviço" }}</ion-label>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row *ngIf="servico.tipoStatus != 'EM_ABERTO' && (user && user.tipo == 'FORNECEDOR')">
+                <ion-col col-12>
+                    <ion-item>
+                        <ion-label stacked>Nome do Cliente</ion-label>
+                        <ion-label>{{ servico.cliente.nomeCompleto }}</ion-label>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col col-12>
+                    <ion-item>
+                        <ion-label stacked>Descrição</ion-label>
+                        <ion-label>{{ servico.descricao }}</ion-label>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col col-12>
+                    <ion-item>
+                        <ion-label stacked>Tipo do Serviço</ion-label>
+                        <ion-label>{{ servico.tipo }}</ion-label>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col col-12>
+                    <ion-item>
+                        <ion-label stacked>Data do Serviço</ion-label>
+                        <ion-label>{{ servico.data }}</ion-label>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col col-12>
+                    <ion-item>
+                        <ion-label stacked>Horário do Serviço</ion-label>
+                        <ion-label>{{ servico.horario }}</ion-label>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col col-12>
+                    <ion-item>
+                        <ion-label stacked>Valor do Serviço:</ion-label>
+                        <ion-label>{{ servico.valor | currency:"BRL":true:"1.2-2" }}</ion-label>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col col-12>
+                    <ion-item>
+                        <ion-label stacked>Bairro</ion-label>
+                        <ion-label>{{ servico.endereco.bairro }}</ion-label>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col col-12>
+                    <ion-item>
+                        <ion-label stacked>Rua</ion-label>
+                        <ion-label>{{ servico.endereco.rua }}</ion-label>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col col-12>
+                    <ion-item>
+                        <ion-label stacked>Número</ion-label>
+                        <ion-label>{{ servico.endereco.numero }}</ion-label>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row *ngIf="servico.tipoStatus == 'EM_ABERTO' && (user && user.tipo == 'CLIENTE')">
+                <ion-col col-12>
+                    <button class="cancelar" ion-button round full color="dark" (click)="cancelaServicoCliente(servico)">
+                        <ion-icon ios="ios-close-circle" md="md-close-circle"></ion-icon>Cancelar
+                        Serviço
+                    </button>
+                </ion-col>
+            </ion-row>
+            <ion-row *ngIf="servico.tipoStatus == 'EM_ABERTO' && (user && user.tipo == 'FORNECEDOR')">
+                <ion-col col-12>
+                    <button class="aceitar" ion-button round full color="pink" (click)="cadastrarServico(servico)">
+                        <ion-icon ios="ios-checkmark-circle-outline" md="md-checkmark-circle-outline"></ion-icon>Aceitar
+                        Serviço
+                    </button>
+                </ion-col>
+            </ion-row>
+            <ion-row *ngIf="servico.tipoStatus == 'ACEITO' && (user && user.tipo == 'FORNECEDOR')">
+                <ion-col col-12>
+                    <button class="finalizar" ion-button round full color="dark" (click)="concluirServico(servico)">
+                        <ion-icon ios="ios-checkmark-circle-outline" md="md-checkmark-circle-outline"></ion-icon>Concluir
+                    </button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
+</ion-content>

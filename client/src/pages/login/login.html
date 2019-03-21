@@ -1,0 +1,54 @@
+
+<ion-content class="login-content">
+  <p>
+    <a (click)="cadastroFornecedor()"><u>Deseja trabalhar conosco?</u></a>
+  </p>
+
+  <div padding>
+    <ion-list>
+  
+      <form name="loginForm">     
+        <ion-avatar item-start>
+          <img class="logo" src="assets/imgs/trampo-logo.png">
+        </ion-avatar>
+        
+        <ion-item>
+          <ion-label floating>Usuário</ion-label>
+          <ion-input type="text" name="username" pattern=".{4,}" [(ngModel)]="creds.login" required #username="ngModel"
+                  [class.invalid]="username.errors && username.dirty"></ion-input>
+        </ion-item>
+        <ion-item class="error-message" *ngIf="username.errors?.required && username.dirty">
+        Informe o seu usuário
+        </ion-item>
+        <ion-item>
+          <ion-label floating>Senha</ion-label>
+          <ion-input type="password" name="password" pattern=".{4,}" [(ngModel)]="creds.senha" required #password="ngModel"
+                  [class.invalid]="password.errors && password.dirty"></ion-input>
+        </ion-item>
+        <ion-item class="error-message" *ngIf="password.errors?.required && password.dirty">
+        Informe a senha
+        </ion-item>
+        <p>
+          <a (click)="redefinicaoSenha()"><u>Esqueceu a Senha?</u></a>
+        </p>
+      </form>
+
+      <ion-item>
+        <button class="login" ion-button full color="pink" round block (click)="login()" >
+          <ion-icon ios="ios-log-in" md="md-log-in"></ion-icon> Login
+        </button>
+      </ion-item>
+      <ion-item>
+        <button class="cadastrar" full ion-button color="dark" round (click)="cadastroCliente()">
+          <ion-icon ios="ios-contacts" md="md-contacts"></ion-icon> Cadastre-se
+        </button>
+      </ion-item>
+
+    </ion-list>
+  </div>
+
+  <div class="botton">
+    <p class="foot-note">&copy; 2018 Trampo - Todos os direitos reservados</p>  
+  </div>
+
+</ion-content>

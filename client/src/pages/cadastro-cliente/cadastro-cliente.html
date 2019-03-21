@@ -1,0 +1,99 @@
+<ion-header class="cadastro-cliente-header">
+    <ion-navbar>
+        <ion-grid>
+            <ion-row>
+                <ion-col col-12>
+                    <div class="title-header">
+                        <div class="title-text">
+                            <span>Cadastro de Cliente</span>
+                        </div>
+                    </div>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="cadastro-cliente-content">
+    <div padding>
+        <form [formGroup]="clienteForm" (ngSubmit)="cadastrar()">
+            <ion-avatar item-start>
+                <ion-row>
+                    <ion-col col-12>
+                        <img src="assets/imgs/default-avatar.png">
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col col-12>
+                        <p color="dark">Escolha seu avatar</p>
+                        <button class="inserir" ion-button color="pink" round small>
+                            <ion-icon ios="ios-add" md="md-add"></ion-icon>Inserir
+                        </button>
+                    </ion-col>
+                </ion-row>
+            </ion-avatar>
+            <ion-grid>
+                <ion-row>
+                    <ion-col col-12>
+                        <ion-item>
+                            <ion-label floating>Nome Completo</ion-label>
+                            <ion-input type="text" formControlName="nomeCompleto"></ion-input>
+                        </ion-item>
+                        <div class="error-message" *ngIf="clienteForm.controls.nomeCompleto.dirty && clienteForm.controls.nomeCompleto.errors">
+                            <span>Informe o seu nome completo</span>
+                        </div>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col col-12>
+                        <ion-item>
+                            <ion-label floating>Nome de Usuário</ion-label>
+                            <ion-input type="text" formControlName="login"></ion-input>
+                        </ion-item>
+                        <div class="error-message" *ngIf="clienteForm.controls.login.dirty && clienteForm.controls.login.errors">
+                            <span>Informe o nome do usuário</span>
+                        </div>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col col-12>
+                        <ion-item>
+                            <ion-label floating> E-mail</ion-label>
+                            <ion-input type="email" formControlName="email"></ion-input>
+                        </ion-item>
+                        <div class="error-message" *ngIf="clienteForm.controls.email.dirty && clienteForm.controls.email.errors">
+                            <span>E-mail inválido</span>
+                        </div>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col col-12>
+                        <ion-item>
+                            <ion-label floating>Senha</ion-label>
+                            <ion-input type="password" formControlName="senha"></ion-input>
+                        </ion-item>
+                        <div class="error-message" *ngIf="clienteForm.controls.senha.dirty && clienteForm.controls.senha.errors">
+                            <span>Informe a senha</span>
+                        </div>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col col-12>
+                        <ion-item>
+                            <ion-label floating>Confirme sua Senha</ion-label>
+                            <ion-input type="password" formControlName="conf_senha"></ion-input>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+                <hr/>
+                <ion-row>
+                    <ion-col col-12>
+                        <button type="submit" class="cadastrar" ion-button round full color="pink">
+                            <ion-icon ios="ios-person" md="md-person"></ion-icon> Cadastrar
+                        </button>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </form>
+    </div>
+</ion-content>

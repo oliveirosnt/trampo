@@ -1,0 +1,37 @@
+<ion-header class="listagem-header">
+    <ion-navbar>
+        <ion-grid>
+            <ion-row>
+                <ion-col col-12>
+                    <div class="title-header">
+                        <button ion-button menuToggle>
+                            <ion-icon name="menu"></ion-icon>
+                        </button>
+                        <div class="title-text">
+                            <span>Meus Serviços Ativos</span>
+                        </div>
+                    </div>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="listagem-content">
+    <div padding>
+        <ion-grid>
+            <ion-row *ngIf="servicos?.length > 0; else noServices">
+                <ion-col col-12>
+                    <ion-list>
+                        <item-list-servico *ngFor="let servico of servicos" [servico]="servico" (click)="openDetalhes(servico)"></item-list-servico>
+                    </ion-list>
+                </ion-col>
+            </ion-row>
+            <ng-template #noServices>
+                <ion-col col-12>
+                    <span>Você não está atrelado a nenhum serviço ativo no momento.</span>
+                </ion-col>
+            </ng-template>
+        </ion-grid>
+    </div>
+</ion-content>

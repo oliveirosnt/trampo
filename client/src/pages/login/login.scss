@@ -1,0 +1,50 @@
+page-login {
+    font-family: Dessau-Light;
+    
+    a {
+        margin:1em;
+    }
+    
+    p {
+        display: flex;
+        align-items: flex-end ;
+        flex-direction: column;
+
+        margin: 0.2em;
+    }
+    
+    ion-avatar {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    div {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    button.cadastrar, .login {
+        font-size: 25px;
+        font-weight: bold;
+    }
+
+    ion-icon {
+        padding-right: 10px;
+    }
+
+    .item.error-message {
+        color: red;
+    }
+
+    .foot-note {
+        opacity: 0.5;
+        color: black;
+        font-size: 11px;
+    }
+
+    .item-ios, .item-md {
+      background: transparent;
+    }
+}

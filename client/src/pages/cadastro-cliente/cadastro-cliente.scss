@@ -1,0 +1,75 @@
+page-cadastro-cliente {
+     font-family: Dessau-Light;
+
+     ion-header.cadastro-cliente-header {
+        color:  white;
+        font-weight: bold;
+
+        .title-header {
+            display: table;
+            font-size: 1.5em;
+            font-weight: bold;
+            width: 100%;
+
+            button {
+                float: left;
+            }
+
+            .title-text {
+                align-items: center; 
+                height: 32px;
+            }
+        }
+
+        .toolbar-md {
+            height: 56px;
+        }
+    }
+
+    ion-content.cadastro-cliente-content {        
+        ion-avatar {
+            text-align: center;
+
+            ion-icon {
+                margin-right: 10px;
+            }
+        }
+
+        ion-card-content {
+            width: 100%;
+        }
+
+        img {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        ion-item {
+            padding: 0 16px;
+        }
+
+        ion-label {
+            margin: 0 8px 11px 0;
+        }
+    }
+
+    .error-message {
+        align-items: stretch;
+        color: red;
+        font-size: 85%;
+        margin-top: 0.3rem;
+        padding-left: 16px;
+    }
+    
+    button.inserir {
+        font-weight: bold;
+    }
+    
+    button.cadastrar {
+        font-weight: bold;
+        
+        ion-icon {
+            margin-right: 10px;
+        }
+    }
+}

@@ -1,0 +1,113 @@
+<ion-header class="cadastro-fornecedor-header">
+    <ion-navbar>
+        <ion-grid>
+            <ion-row>
+                <ion-col col-12>
+                    <div class="title-header">
+                        <div class="title-text">
+                            <span>Cadastro de Fornecedor</span>
+                        </div>
+                    </div>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="cadastro-fornecedor-content">
+    <div padding>
+        <form name="dadosFornecedorForm">
+            <ion-avatar item-start>
+                <ion-row>
+                    <ion-col col-12>
+                        <img src="assets/imgs/default-avatar2.png">
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col col-12>
+                        <p color="dark">Escolha seu avatar</p>
+                        <button class="inserir" ion-button color="pink" round small>
+                            <ion-icon ios="ios-add" md="md-add"></ion-icon>Inserir
+                        </button>
+                    </ion-col>
+                </ion-row>
+            </ion-avatar>
+            <ion-grid>
+                <ion-row>
+                    <ion-col col-12>
+                        <ion-item class="item">
+                            <ion-label floating>Nome Completo</ion-label>
+                            <ion-input type="text" name="nome" pattern=".{6,}" [(ngModel)]="dados_fornecedor.nomeCompleto"
+                                required #name="ngModel" [class.invalid]="name.errors && name.dirty"></ion-input>
+                        </ion-item>
+                        <div class="error-message" *ngIf="name.errors?.required && name.dirty">
+                            <span>Informe o seu nome completo</span>
+                        </div>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col col-12>
+                        <ion-item>
+                            <ion-label floating>Nome de Usuário</ion-label>
+                            <ion-input type="text" name="nomeusuario" pattern=".{4,}" [(ngModel)]="dados_fornecedor.login"
+                                required #username="ngModel" [class.invalid]="username.errors && username.dirty"></ion-input>
+                        </ion-item>
+                        <div class="error-message" *ngIf="username.errors?.required && username.dirty">
+                            <span>Informe o nome do usuário</span>
+                        </div>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col col-12>
+                        <ion-item>
+                            <ion-label floating> Email</ion-label>
+                            <ion-input type="email" name="email" [(ngModel)]="dados_fornecedor.email" required email
+                                #email="ngModel" [class.invalid]="email.errors && email.dirty"></ion-input>
+                        </ion-item>
+                        <div class="error-message" *ngIf="email.errors?.email && email.dirty">
+                            <span>Email inválido</span>
+                        </div>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col col-12>
+                        <ion-item>
+                            <ion-label floating>Especialidades</ion-label>
+                            <ion-select name="specs" [(ngModel)]="dados_fornecedor.listaEspecialidades" multiple="true">
+                                <ion-option *ngFor="let especialidade of especialidades">{{especialidade}}</ion-option>
+                            </ion-select>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col col-12>
+                        <ion-item>
+                            <ion-label floating>Senha</ion-label>
+                            <ion-input type="password" name="password" pattern=".{4,}" [(ngModel)]="dados_fornecedor.senha"
+                                required #password="ngModel" [class.invalid]="password.errors && password.dirty"></ion-input>
+                        </ion-item>
+                        <div class="error-message" *ngIf="password.errors?.required && password.dirty">
+                            <span>Informe a senha</span>
+                        </div>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col col-12>
+                        <ion-item>
+                            <ion-label floating>Confirme sua Senha</ion-label>
+                            <ion-input type="password" value="" pattern=".{6,}" name="repassword" [(ngModel)]="dados_fornecedor.conf_senha"></ion-input>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+                <hr/>
+                <ion-row>
+                    <ion-col col-12>
+                        <button class="cadastrar" ion-button round full color="pink" (click)="cadastrar()">
+                            <ion-icon ios="ios-person" md="md-person"></ion-icon> Cadastrar
+                        </button>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </form>
+    </div>
+</ion-content>

@@ -1,0 +1,14 @@
+// Dessau Light
+
+$dessau-font-path: $font-path !default;
+
+@font-face {
+    font-family: "Dessau-Light";
+    font-weight: normal;
+    font-style: normal;
+    src: local("Dessau Light"), local("Dessau-Light"),
+		url("#{$dessau-font-path}/DessauLight.ttf") format("truetype"),
+		url("#{$dessau-font-path}/DessauLight.woff2") format("woff2"),
+        url("#{$dessau-font-path}/DessauLight.woff") format("woff");
+}
+

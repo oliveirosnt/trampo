@@ -1,0 +1,47 @@
+<ion-header class="home-header">
+    <ion-navbar>
+        <ion-grid>
+            <ion-row>
+                <ion-col col-12>
+                    <div class="title-header">
+                        <button ion-button menuToggle>
+                            <ion-icon name="menu"></ion-icon>
+                        </button>
+                        <div class="title-text">
+                            <span>Home</span>
+                        </div>
+                    </div>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="home-content">
+    <div padding>
+        <ion-grid>
+            <ion-row>
+                <ion-col col-12>
+                    <h2>Este é seu Histórico</h2>
+                </ion-col>
+            </ion-row>
+            <ion-row *ngIf="servicos?.length > 0; else noServices">
+                <ion-col col-12>
+                    <ion-list class="form-logout">
+                        <item-list-servico *ngFor="let servico of servicos" [servico]="servico" (click)="openDetalhes(servico)"></item-list-servico>
+                    </ion-list>
+                </ion-col>
+            </ion-row>
+            <ng-template #noServices>
+                <ion-col col-12>
+                    <span>Você ainda não participou de nenhum serviço.</span>
+                </ion-col>
+            </ng-template>
+        </ion-grid>
+    </div>
+    <ion-fab right bottom *ngIf="tipoUsuario == 'CLIENTE'">
+        <button ion-fab color="pink" (click)="openAddService()">
+            <ion-icon name="add"></ion-icon>
+        </button>
+    </ion-fab>
+</ion-content>

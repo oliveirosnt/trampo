@@ -1,0 +1,22 @@
+<ion-item>
+    <ion-thumbnail item-start>
+        <ion-icon ios="ios-construct" md="md-construct"></ion-icon>
+    </ion-thumbnail>
+    <ion-grid>
+        <ion-row>
+            <ion-col col-12>
+                <span>{{ servico.descricao}} do tipo {{ servico.tipo }}</span>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col col-12>
+                <span>Status: {{ servico.tipoStatus }}</span>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col col-12>
+                <span>Data: {{ servico.data }}</span>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-item>
