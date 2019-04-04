@@ -1,0 +1,83 @@
+<ion-header class="editar-header">
+    <ion-navbar>
+        <ion-grid>
+            <ion-row>
+                <ion-col col-12>
+                    <div class="title-header">
+                        <div class="title-text">
+                            <span>Editar Dados</span>
+                        </div>
+                    </div>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="editar-content">
+    <div padding>
+        <form name="dadosClienteForm">
+            <ion-avatar item-start>
+                <ion-card-content>
+                    <ion-thumbnail item-start>
+                        <ion-row>
+                            <ion-col col-12>
+                                <img src="assets/imgs/default-avatar.png">
+                            </ion-col>
+                        </ion-row>
+                    </ion-thumbnail>
+                </ion-card-content>
+            </ion-avatar>
+            <ion-grid>
+                <ion-row>
+                    <ion-col col-12>
+                        <ion-item>
+                            <ion-label floating>Nome de Usuário</ion-label>
+                            <ion-input name="login" value="{{dadosAtualizados.novoLogin}}" [(ngModel)]="dadosAtualizados.novoLogin"></ion-input>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col col-12>
+                        <ion-item>
+                            <ion-label floating>Nome Completo</ion-label>
+                            <ion-input name="nomeCompleto" value="{{dadosAtualizados.novoNomeCompleto}}" [(ngModel)]="dadosAtualizados.novoNomeCompleto"></ion-input>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col col-12>
+                        <ion-item>
+                            <ion-label floating>E-mail</ion-label>
+                            <ion-input name="email" value="{{dadosAtualizados.novoEmail}}" [(ngModel)]="dadosAtualizados.novoEmail"></ion-input>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col col-12>
+                        <ion-item *ngIf="dadosUsuario.tipo == 'FORNECEDOR'">
+                            <ion-label floating>Especialidades</ion-label>
+                            <ion-select name="specs" [(ngModel)]="dadosAtualizados.novaEspecialidades" multiple="true">
+                                <ion-option *ngFor="let especialidade of especialidades">{{especialidade}}</ion-option>
+                            </ion-select>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col col-12>
+                        <button class="atualizarSenha" ion-button round full color="dark" (click)="atualizarSenha()">
+                            <ion-icon ios="ios-create" md="md-create"></ion-icon>Redefinir Senha
+                        </button>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col col-12>
+                        <button class="salvar" ion-button round full color="pink" (click)="salvar(dadosAtualizados)">
+                            <ion-icon ios="ios-heart" md="md-heart"></ion-icon>Salvar
+                        </button>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </form>
+    </div>
+</ion-content>

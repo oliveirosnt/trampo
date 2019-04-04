@@ -1,0 +1,91 @@
+<ion-header class="perfil-header">
+    <ion-navbar>
+        <ion-grid>
+            <ion-row>
+                <ion-col col-12>
+                    <div class="title-header">
+                        <button ion-button menuToggle>
+                            <ion-icon name="menu"></ion-icon>
+                        </button>
+                        <div class="title-text">
+                            <span>Perfil</span>
+                        </div>
+                    </div>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="perfil-content">
+    <ion-avatar item-start>
+        <ion-card-content>
+            <ion-thumbnail item-start>
+                <ion-row>
+                    <ion-col col-12>
+                        <img src="assets/imgs/default-avatar.png">
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col col-12 *ngIf="dadosUsuario.avaliacao > 0; else noRating">
+                        <span>Média Avaliações: </span>
+                        <span>{{ dadosUsuario.avaliacao | number: '1.2-2'}}</span>
+                        <span class="stars align" >
+                            <span   [ngStyle]="{ 'width': getMediaAvaliacao(dadosUsuario.avaliacao) }"></span>
+                        </span>                      
+                    </ion-col>
+                    <ng-template #noRating>
+                        <ion-col col-12>
+                            <span>Usuário ainda não foi avaliado</span>
+                        </ion-col>
+                    </ng-template>
+                </ion-row>
+            </ion-thumbnail>
+        </ion-card-content>
+    </ion-avatar>
+    <div padding>
+        <ion-grid>
+            <ion-row>
+                <ion-col col-12>
+                    <ion-item>
+                        <ion-label stacked>Nome Completo</ion-label>
+                        <ion-label>{{ dadosUsuario.nomeCompleto }}</ion-label>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col col-12>
+                    <ion-item>
+                        <ion-label stacked>Nome de Usuário</ion-label>
+                        <ion-label>{{ dadosUsuario.login }}</ion-label>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col col-12>
+                    <ion-item>
+                        <ion-label stacked>E-mail</ion-label>
+                        <ion-label>{{ dadosUsuario.email }}</ion-label>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row *ngIf="dadosUsuario.tipo == 'FORNECEDOR'">
+                <ion-col col-12>
+                    <ion-item>
+                        <ion-label stacked>Especialidades</ion-label>
+                        <ion-label *ngFor="let especialidade of dadosUsuario.listaEspecialidades"> * {{
+                            especialidade.nome }} </ion-label>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <hr />
+            <ion-row>
+                <ion-col col-12>
+                    <button class="editar" ion-button round full color="pink" (click)="editar()">
+                        <ion-icon ios="ios-create" md="md-create"></ion-icon>Editar
+                    </button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
+</ion-content>

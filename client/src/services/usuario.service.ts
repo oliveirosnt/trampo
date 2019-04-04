@@ -18,4 +18,14 @@ export class UsuarioService {
     getMyUser() {
         return this.http.get(`${API_CONFIG.baseUrl}/api/usuarios/me`);
     }
+
+    atualizaDados(dadosAtualizados : DadosAtualizadosDTO){
+        return this.http.post(
+            `${API_CONFIG.baseUrl}/api/usuarios/ajustes`,
+            dadosAtualizados,
+            {
+                observe: 'response',
+                responseType: 'json'
+            });
+    }
 }
