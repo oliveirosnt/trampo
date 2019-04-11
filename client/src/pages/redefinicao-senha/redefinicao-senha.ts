@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage, NavController, AlertController } from 'ionic-angular';
+import { RedefinicaoSenhaService } from '../../services/redefinicao-senha.service';
 
 @IonicPage()
 @Component({
@@ -8,7 +9,27 @@ import { IonicPage, NavController } from 'ionic-angular';
 })
 export class RedefinicaoSenhaPage {
 
-  constructor(public navCtrl: NavController) {
+  mail = "";
+
+  constructor(public navCtrl: NavController,
+    private alertCtrl: AlertController,
+    public redefinicaoCtrl: RedefinicaoSenhaService) {
+  }
+
+  redefinicao(){
+    let alert = this.alertCtrl.create({
+      buttons: [{
+          text: 'Ok'
+      }]
+    });
+    this.redefinicaoCtrl.redefinirSenha(this.mail).subscribe(response => {
+      alert.setTitle("Senha Redefinida!")
+      alert.setMessage("Uma nova senha foi enviada para o email")
+    }, error => {
+      alert.setTitle("Atenção!")
+      alert.setMessage(error.error.message)
+    })
+    alert.present();
   }
 
 }

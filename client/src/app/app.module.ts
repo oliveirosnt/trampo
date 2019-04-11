@@ -15,6 +15,7 @@ import { AuthInterceptorProvider } from '../interceptors/auth-interceptor';
 import { UsuarioService } from '../services/usuario.service'
 import { ServicoClienteService } from '../services/servico-cliente.service';
 import { ServicoFornecedorService } from '../services/servico-fornecedor.service';
+import { RedefinicaoSenhaService } from '../services/redefinicao-senha.service';
 
 @NgModule({
     declarations: [
@@ -42,7 +43,8 @@ import { ServicoFornecedorService } from '../services/servico-fornecedor.service
         ServicoClienteService,
         ServicoFornecedorService,
         UsuarioService,
-        ServicoFornecedorService
+        ServicoFornecedorService,
+        RedefinicaoSenhaService
     ]
 })
 export class AppModule { }
