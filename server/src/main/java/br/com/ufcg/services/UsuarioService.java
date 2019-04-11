@@ -2,6 +2,7 @@ package br.com.ufcg.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,9 @@ public class UsuarioService {
 
 	@Autowired
 	UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	EmailService emailService;
 
 	@Autowired
 	EspecialidadeService especialidadeService;
@@ -42,6 +46,16 @@ public class UsuarioService {
 
 	public Usuario getByLogin(String login) throws Exception {
 		Usuario usuario = usuarioRepository.findByLogin(login);
+
+		if (usuario == null) {
+			throw new Exception(USUARIO_NAO_ENCONTRADO_EXCEPTION);
+		}
+
+		return usuario;
+	}
+	
+	public Usuario getByEmail(String email) throws Exception {
+		Usuario usuario = usuarioRepository.findByEmail(email);
 
 		if (usuario == null) {
 			throw new Exception(USUARIO_NAO_ENCONTRADO_EXCEPTION);
@@ -255,4 +269,31 @@ public class UsuarioService {
 
 		return usuarioRepository.saveAndFlush(usuario);
 	}
+
+	public void solicitaRecuperacaoSenha(String email) throws Exception {
+		Usuario usuario = getByEmail(email.toLowerCase());
+		String novaSenha = gerarSenha();
+		usuario.setSenha(novaSenha);
+		
+		usuarioRepository.saveAndFlush(usuario);	
+		
+		emailService.recuperarSenha(usuario, novaSenha);
+		
+	}
+	
+	private String gerarSenha() {
+		String senha = "";
+		String[] caracteres = {"0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+		Random random = new Random();
+		
+		for (int i = 0; i < 10; i++){
+			int a = random.nextInt(caracteres.length);
+			senha += caracteres[a];
+		}
+		
+		return senha;
+	}
+	
 }
+
+	

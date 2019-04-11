@@ -186,6 +186,21 @@ public class UsuarioController {
 		}	
 	}
 	
+	@RequestMapping(value = "/recuperarSenha", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
+	public ResponseEntity<Response> solicitaRecuperacaoSenha(@RequestBody String email) {
+		Response response;
+		
+		try {
+			usuarioService.solicitaRecuperacaoSenha(email);
+			response = new Response("Um email foi enviado com as instruções!", HttpStatus.OK.value());
+			return new ResponseEntity<>(response, HttpStatus.OK);
+			
+		} catch(Exception e) {
+			response = new Response(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}	
+	}
+	
 	private class LoginResponse {
         String token;
 
