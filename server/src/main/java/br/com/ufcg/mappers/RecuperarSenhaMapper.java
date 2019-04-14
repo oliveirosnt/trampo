@@ -1,5 +1,6 @@
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+package br.com.ufcg.mappers;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class RecuperarSenhaMapper {

@@ -271,6 +271,7 @@ public class UsuarioService {
 	}
 
 	public void solicitaRecuperacaoSenha(String email) throws Exception {
+		UsuarioValidador.validaEmail(email);
 		Usuario usuario = getByEmail(email.toLowerCase());
 		String novaSenha = gerarSenha();
 		usuario.setSenha(novaSenha);
