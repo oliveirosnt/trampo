@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, AlertController } from 'ionic-angular';
 import { RedefinicaoSenhaService } from '../../services/redefinicao-senha.service';
+import { RedefinirSenhaWrapper } from "../../models/redefinir-senha-wrapper";
 
 @IonicPage()
 @Component({
@@ -9,7 +10,10 @@ import { RedefinicaoSenhaService } from '../../services/redefinicao-senha.servic
 })
 export class RedefinicaoSenhaPage {
 
-  mail = "";
+
+  redefinirSenha: RedefinirSenhaWrapper = {
+    email: ""
+  };
 
   constructor(public navCtrl: NavController,
     private alertCtrl: AlertController,
@@ -22,7 +26,7 @@ export class RedefinicaoSenhaPage {
           text: 'Ok'
       }]
     });
-    this.redefinicaoCtrl.redefinirSenha(this.mail).subscribe(response => {
+    this.redefinicaoCtrl.redefinirSenha(this.redefinirSenha).subscribe(response => {
       alert.setTitle("Senha Redefinida!")
       alert.setMessage("Uma nova senha foi enviada para o email")
     }, error => {

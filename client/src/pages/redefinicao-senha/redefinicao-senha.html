@@ -26,7 +26,7 @@
                 <ion-col col-12>
                     <ion-item>
                         <ion-label floating>E-mail</ion-label>
-                        <ion-input type="email" name="email" ngModel required email #email="ngModel" [(ngModel)]="mail" [class.invalid]="email.errors && email.dirty"></ion-input>
+                        <ion-input type="email" name="email" ngModel required email #email="ngModel" [(ngModel)]="redefinirSenha.email" [class.invalid]="email.errors && email.dirty"></ion-input>
                     </ion-item>
                     <div class="error-message" *ngIf="email.errors?.email && email.dirty">
                         <span>E-mail inválido</span>
