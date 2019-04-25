@@ -23,7 +23,7 @@
             <ion-thumbnail item-start>
                 <ion-row>
                     <ion-col col-12>
-                        <img src="assets/imgs/default-avatar.png">
+                        <img src="{{imgPerfil}}">
                     </ion-col>
                 </ion-row>
                 <ion-row>
@@ -32,7 +32,7 @@
                         <span>{{ dadosUsuario.avaliacao | number: '1.2-2'}}</span>
                         <span class="stars align" >
                             <span   [ngStyle]="{ 'width': getMediaAvaliacao(dadosUsuario.avaliacao) }"></span>
-                        </span>                      
+                        </span>
                     </ion-col>
                     <ng-template #noRating>
                         <ion-col col-12>
