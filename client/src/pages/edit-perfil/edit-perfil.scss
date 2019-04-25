@@ -49,6 +49,19 @@ page-editar {
         }
     }
 
+    .profile-avatar img {
+      margin: auto;
+      width: 50vw;
+      height: 50vw;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    button.inserir {
+      font-weight: bold;
+    }
+
     button.salvar, .atualizarSenha {
         font-weight: bold;
         

@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, AlertController } from 'ionic-angular';
 import { FormBuilder, Validators, FormControl, FormGroup } from '@angular/forms';
 import { ImagePicker } from '@ionic-native/image-picker/ngx';
-import { Base64 } from '@ionic-native/base64/ngx';
 import { CadastroUsuarioService } from '../../services/cadastro-usuario.service';
 import { DadosUsuarioDTO } from '../../models/dados-usuario.dto';
 import { Cliente } from '../../models/cliente.model';

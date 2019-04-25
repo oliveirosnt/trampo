@@ -73,6 +73,15 @@ page-cadastro-fornecedor {
         padding-left: 16px;
     }
 
+    .profile-avatar img {
+      margin: auto;
+      width: 50vw;
+      height: 50vw;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center;
+    }
+
     button.especialidades {
         margin-left: 2em;
     }

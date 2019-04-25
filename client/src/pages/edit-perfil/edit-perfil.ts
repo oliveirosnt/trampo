@@ -5,7 +5,7 @@ import { UsuarioService } from '../../services/usuario.service';
 import { StorageService } from '../../services/storage.service';
 import { EspecialidadesService } from '../../services/especialidades.service';
 import { DadosAtualizadosDTO } from '../../models/dados-atualizados.dto';
-
+import { ImagePicker } from '@ionic-native/image-picker/ngx';
 
 
 @IonicPage()
@@ -16,6 +16,8 @@ import { DadosAtualizadosDTO } from '../../models/dados-atualizados.dto';
 export class EditPerfilPage {
 
   especialidades : string[] = [];
+
+  imgPreview = 'assets/imgs/default-avatar.png';
 
   dadosUsuario : DadosUsuarioDTO = {
     id: null,
@@ -42,7 +44,8 @@ export class EditPerfilPage {
     public usuarioService: UsuarioService,
     public storageService: StorageService,
     public especialidadesService: EspecialidadesService,
-    public alertCtrl: AlertController) {
+    public alertCtrl: AlertController,
+    private imagePicker: ImagePicker) {
   }
 
   ionViewDidLoad() {
@@ -58,6 +61,8 @@ export class EditPerfilPage {
         this.dadosAtualizados.novoNomeCompleto = this.dadosUsuario.nomeCompleto;
         this.dadosAtualizados.novoLogin = this.dadosUsuario.login;
         this.dadosAtualizados.novoEmail = this.dadosUsuario.email;
+        this.imgPreview = this.dadosUsuario.fotoPerfil.trim() === '' ? 'assets/imgs/default-avatar.png': 'data:image/jpeg;base64,' + this.dadosUsuario.fotoPerfil
+
       }, error => {
         console.log(error);
       });
@@ -97,5 +102,24 @@ export class EditPerfilPage {
     let senhaModal = this.modalCtrl.create('AtualizaSenhaPage');
     senhaModal.present();
   }
+
+  getPhoto() {
+    let options = {
+      maximumImagesCount: 1,
+      outputType: 1
+    };
+
+    this.imagePicker.getPictures(options).then((results) => {
+        for (let i = 0; i < results.length; i++) {
+          if(results[i].trim() !== '') {
+            this.imgPreview = 'data:image/jpeg;base64,' + results[i];
+            this.dadosAtualizados.novaFotoPerfil = results[i];
+          }
+
+        }
+      }, (err) => { }
+    );
+  }
+
 
 }

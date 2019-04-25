@@ -65,6 +65,15 @@ page-perfil {
         background-position: 0 0;
     }
 
+    .profile-avatar img {
+      margin: auto;
+      width: 50vw;
+      height: 50vw;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center;
+    }
+
     .align {
         display:table;
         margin-left: auto;
