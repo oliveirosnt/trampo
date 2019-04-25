@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { API_CONFIG } from "../config/api.config";
 import { StorageService } from "./storage.service";
 import { DadosAtualizadosDTO } from "../models/dados-atualizados.dto";
+import { SenhaAtualizadaDTO } from "../models/senha-atualizada.dto";
 
 
 @Injectable()
@@ -28,4 +29,15 @@ export class UsuarioService {
                 responseType: 'json'
             });
     }
+
+    atualizaSenha(senhaAtualizada : SenhaAtualizadaDTO){
+      return this.http.post(
+        `${API_CONFIG.baseUrl}/api/usuarios/senha`,
+        senhaAtualizada,
+        {
+          observe: 'response',
+          responseType: 'json'
+        });
+    }
+
 }
