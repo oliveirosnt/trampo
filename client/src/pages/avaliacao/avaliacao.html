@@ -1,0 +1,48 @@
+<ion-header class="avaliacao-header">
+    <ion-navbar>
+        <ion-grid>
+            <ion-row>
+                <ion-col col-12>
+                    <div class="title-header">
+                        <div class="title-text">
+                            <span>Avaliação</span>
+                        </div>
+                    </div>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="avaliacao-content">
+    <ion-avatar item-start>
+        <ion-card-content>
+            <ion-thumbnail item-start>
+                <ion-row>
+                    <ion-col col-12>
+                        <ion-icon name="person"></ion-icon>
+                    </ion-col>
+                </ion-row>
+            </ion-thumbnail>
+        </ion-card-content>
+    </ion-avatar>
+    <div padding>
+        <ion-grid>
+            <ion-row>
+                <ion-col col-12>
+                    <ion-item>
+                        <rating [(ngModel)]="avaliar.avaliacao.nota"></rating>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <hr />
+            <ion-row>
+                <ion-col col-12>
+                    <button class="confirmar" ion-button round full color="pink" (click)="confirmarAvaliacao(avaliar)">
+                        <ion-icon ios="ios-heart" md="md-heart"></ion-icon>Confirmar
+                    </button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
+</ion-content>

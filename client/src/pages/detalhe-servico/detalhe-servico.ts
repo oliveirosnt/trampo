@@ -123,6 +123,7 @@ export class DetalheServicoPage {
                         text: 'Ok'
                     }]
                 });
+                servico.tipoStatus = 'CONCLUIDO';
                 alertMessage.present();
                 this.avaliarServico();
             }, error => {
