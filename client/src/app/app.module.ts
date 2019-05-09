@@ -18,7 +18,7 @@ import { UsuarioService } from '../services/usuario.service'
 import { ServicoClienteService } from '../services/servico-cliente.service';
 import { ServicoFornecedorService } from '../services/servico-fornecedor.service';
 import { RedefinicaoSenhaService } from '../services/redefinicao-senha.service';
-
+import { AvaliacaoService } from '../services/avaliacao.service';
 
 @NgModule({
     declarations: [
@@ -50,6 +50,7 @@ import { RedefinicaoSenhaService } from '../services/redefinicao-senha.service';
         UsuarioService,
         ServicoFornecedorService,
         RedefinicaoSenhaService,
+        AvaliacaoService
     ]
 })
 export class AppModule { }

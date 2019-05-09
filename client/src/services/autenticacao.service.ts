@@ -25,11 +25,12 @@ export class AutenticacaoService {
             });
     }
 
-    successfulLogin(value : string){
-        let aux = (this.jwtHelper.decodeToken(value).sub).split(" ")[0];
+    successfulLogin(data : any){
+        const token = data["token"];
         let user : LocalUser = {
-            token: value,
-            username: aux
+            token: token,
+            username: data["usuario"]["login"],
+            user: data["usuario"]
         }
         this.storage.setLocalUser(user);
     }
@@ -38,5 +39,5 @@ export class AutenticacaoService {
         this.storage.setLocalUser(null);
     }
 
-    
+
 }
