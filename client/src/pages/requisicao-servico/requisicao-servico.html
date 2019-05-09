@@ -103,6 +103,15 @@
                         </ion-item>
                     </ion-col>
                 </ion-row>
+              <ion-row>
+                <ion-col col-12>
+                  <ion-item>
+                    <ion-label stacked>Complemento</ion-label>
+                    <ion-input type="text" name="rua" placeholder="Informe o complemento da rua"
+                               pattern=".{5,}" [(ngModel)]="dados_servico.endereco.complemento"></ion-input>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
                 <hr />
                 <ion-row>
                     <ion-col col-12>

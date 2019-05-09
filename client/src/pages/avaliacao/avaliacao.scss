@@ -1,7 +1,7 @@
-page-editar {
-     font-family: Dessau-Light;
+page-avaliacao {
+    font-family: Dessau-Light;
 
-     ion-header.editar-header {
+    ion-header.avaliacao-header {
         color:  white;
         font-weight: bold;
 
@@ -16,7 +16,7 @@ page-editar {
             }
 
             .title-text {
-                align-items: center; 
+                align-items: center;
                 height: 32px;
             }
         }
@@ -26,26 +26,22 @@ page-editar {
         }
     }
 
-    ion-content.editar-content {        
+    ion-content.avaliacao-content {
         ion-avatar {
+            background-color: #e0e0e0;
+            display: table;
             text-align: center;
+            width: 100%;
 
-            ion-card-content {
-                width: 100%;
-            }
-
-            img {
-                margin-left: auto;
-                margin-right: auto;
+            ion-icon {
+                font-size: 25vh;
             }
         }
 
-        ion-item {
-            padding: 0 16px;
-        }
-
-        ion-label {
-            margin: 0 8px 11px 0;
+        rating {
+            ion-buttons {
+                margin-left: calc((100% - 237.40px) / 2);
+            }
         }
     }
 
@@ -58,15 +54,12 @@ page-editar {
       object-position: center;
     }
 
-    button.inserir {
-      font-weight: bold;
-    }
-
-    button.salvar, .atualizarSenha {
+    button.confirmar {
         font-weight: bold;
-        
+
         ion-icon {
-            margin-right: 10px;
+            padding-right: 10px;
         }
     }
+
 }

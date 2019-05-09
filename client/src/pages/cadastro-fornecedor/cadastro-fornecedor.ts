@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angu
 import { CadastroUsuarioService } from '../../services/cadastro-usuario.service';
 import { EspecialidadesService } from '../../services/especialidades.service';
 import { DadosUsuarioDTO } from '../../models/dados-usuario.dto';
+import { ImagePicker } from '@ionic-native/image-picker/ngx';
 
 @IonicPage()
 @Component({
@@ -12,6 +13,8 @@ import { DadosUsuarioDTO } from '../../models/dados-usuario.dto';
 export class CadastroFornecedorPage {
 
   especialidades : string[] = [];
+
+  imgPreview: string = 'assets/imgs/default-avatar2.png';
   
   dados_fornecedor : DadosUsuarioDTO = {
     id: null,
@@ -30,7 +33,8 @@ export class CadastroFornecedorPage {
     public navParams: NavParams,
     public alertCtrl: AlertController,
     public cadastro: CadastroUsuarioService,
-    public especialidadesService: EspecialidadesService) {
+    public especialidadesService: EspecialidadesService,
+    private imagePicker: ImagePicker) {
       this.getEspecialidades();
 
   }
@@ -98,5 +102,22 @@ export class CadastroFornecedorPage {
     });      
   }
 
+  getPhoto() {
+    let options = {
+      maximumImagesCount: 1,
+      outputType: 1
+    };
+
+    this.imagePicker.getPictures(options).then((results) => {
+        for (let i = 0; i < results.length; i++) {
+          if(results[i].trim() !== '') {
+            this.imgPreview = 'data:image/jpeg;base64,' + results[i];
+            this.dados_fornecedor.fotoPerfil = results[i];
+          }
+
+        }
+      }, (err) => { }
+    );
+  }
 
 }

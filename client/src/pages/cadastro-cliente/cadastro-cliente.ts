@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, AlertController } from 'ionic-angular';
 import { FormBuilder, Validators, FormControl, FormGroup } from '@angular/forms';
+import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { CadastroUsuarioService } from '../../services/cadastro-usuario.service';
 import { DadosUsuarioDTO } from '../../models/dados-usuario.dto';
 import { Cliente } from '../../models/cliente.model';
@@ -11,6 +12,8 @@ import { Cliente } from '../../models/cliente.model';
   templateUrl: 'cadastro-cliente.html',
 })
 export class CadastroClientePage {
+
+  imgPreview = 'assets/imgs/default-avatar.png';
 
   clienteForm: FormGroup;
 
@@ -30,7 +33,8 @@ export class CadastroClientePage {
     public navCtrl: NavController,
     public alertCtrl: AlertController,
     public cadastro: CadastroUsuarioService,
-    private formBuilder: FormBuilder) {
+    private formBuilder: FormBuilder,
+    private imagePicker: ImagePicker) {
 
       this.clienteForm = this.formBuilder.group({
         nomeCompleto: new FormControl('', Validators.compose([
@@ -52,7 +56,9 @@ export class CadastroClientePage {
   cadastrar() {
     console.log(this.clienteForm.value);
 
-    this.cadastro.cadastrar_cliente(Cliente.parseFromCliente(this.clienteForm.value)).subscribe(response => {
+    const clienteToAdd = Cliente.parseFromCliente(this.clienteForm.value);
+
+    this.cadastro.cadastrar_cliente(clienteToAdd).subscribe(response => {
       console.log(response.headers.get('Authorization'));
       let alertMessage = this.alertCtrl.create({
         title: "Cadastro efetuado com sucesso",
@@ -75,4 +81,23 @@ export class CadastroClientePage {
       alertMessage.present();
     });
   }
+
+  getPhoto() {
+    let options = {
+      maximumImagesCount: 1,
+      outputType: 1
+    };
+
+    this.imagePicker.getPictures(options).then((results) => {
+       for (let i = 0; i < results.length; i++) {
+         if(results[i].trim() !== '') {
+           this.imgPreview = 'data:image/jpeg;base64,' + results[i];
+           this.dados_cliente.fotoPerfil = results[i];
+         }
+
+       }
+     }, (err) => { }
+    );
+  }
+
 }

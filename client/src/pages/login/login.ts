@@ -55,7 +55,7 @@ export class LoginPage {
 
             return;
         }
-        
+
         if (this.creds.senha.length < 4) {
             let alert = this.alertCtrl.create({
                 title: "Senha Inválida",
@@ -68,9 +68,9 @@ export class LoginPage {
 
             return;
         }
-        
+
         this.autenticacao.login(this.creds).subscribe(response => {
-            this.autenticacao.successfulLogin(response.body["data"]["token"]);
+            this.autenticacao.successfulLogin(response.body["data"]);
             let loading = this.loadingCrtl.create({
                 spinner: 'circles',
                 content: 'Entrando',

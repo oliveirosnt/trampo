@@ -14,7 +14,7 @@ import { UsuarioService } from '../../services/usuario.service';
     templateUrl: 'requisicao-servico.html',
 })
 export class RequisicaoServicoPage {
-    
+
     minData = null;
     maxData = null;
     user: string;
@@ -30,7 +30,8 @@ export class RequisicaoServicoPage {
         endereco: {
             rua: "",
             bairro: "",
-            numero: ""
+            numero: "",
+            complemento: "",
         },
         isAvaliadoCliente: null,
         isAvaliadoFornecedor: null

@@ -60,6 +60,15 @@ page-cadastro-cliente {
         margin-top: 0.3rem;
         padding-left: 16px;
     }
+
+    .profile-avatar img {
+        margin: auto;
+        width: 50vw;
+        height: 50vw;
+        border-radius: 50%;
+        object-fit: cover;
+        object-position: center;
+    }
     
     button.inserir {
         font-weight: bold;

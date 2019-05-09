@@ -19,15 +19,15 @@
         <form name="dadosFornecedorForm">
             <ion-avatar item-start>
                 <ion-row>
-                    <ion-col col-12>
-                        <img src="assets/imgs/default-avatar2.png">
+                    <ion-col col-12 class="profile-avatar">
+                      <img src="{{imgPreview}}">
                     </ion-col>
                 </ion-row>
                 <ion-row>
                     <ion-col col-12>
                         <p color="dark">Escolha seu avatar</p>
-                        <button class="inserir" ion-button color="pink" round small>
-                            <ion-icon ios="ios-add" md="md-add"></ion-icon>Inserir
+                        <button type="button" class="inserir" ion-button color="pink" round small (click)="getPhoto()">
+                          <ion-icon ios="ios-add" md="md-add"></ion-icon>Inserir
                         </button>
                     </ion-col>
                 </ion-row>

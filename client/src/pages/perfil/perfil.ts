@@ -24,6 +24,8 @@ export class PerfilPage {
         avaliacao: null,
     };
 
+    imgPerfil: string = 'assets/imgs/default-avatar.png';
+
     constructor(public navCtrl: NavController,
         public modalCtrl: ModalController,
         public navParams: NavParams,
@@ -35,6 +37,7 @@ export class PerfilPage {
         this.usuarioService.getMyUser().subscribe(
             response => {
                 this.dadosUsuario = response['data'];
+                this.imgPerfil = this.dadosUsuario.fotoPerfil.trim() === '' ? 'assets/imgs/default-avatar.png': 'data:image/jpeg;base64,' + this.dadosUsuario.fotoPerfil
             }, error => {
                 console.log(error);
             });

@@ -32,7 +32,8 @@ export class DetalheServicoPage {
         endereco: {
             rua: "",
             bairro: "",
-            numero: ""
+            numero: "",
+            complemento:""
         },
         tipoStatus: "",
         fornecedor: {
@@ -123,6 +124,7 @@ export class DetalheServicoPage {
                         text: 'Ok'
                     }]
                 });
+                servico.tipoStatus = 'CONCLUIDO';
                 alertMessage.present();
                 this.avaliarServico();
             }, error => {
@@ -162,7 +164,7 @@ export class DetalheServicoPage {
         )
     }
 
-    avaliarServico() {         
+    avaliarServico() {
         this.navCtrl.push('AvaliacaoPage', this.servico);
     }
 }

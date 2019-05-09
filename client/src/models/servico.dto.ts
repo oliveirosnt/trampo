@@ -10,7 +10,8 @@ export interface ServicoDTO {
     endereco: {
         rua: string,
         bairro: string,
-        numero: string
+        numero: string,
+        complemento: string
     },
     fornecedor?: DadosUsuarioDTO,
     tipoStatus?: string,
