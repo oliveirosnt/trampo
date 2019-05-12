@@ -59,8 +59,8 @@ public class TokenFilter extends GenericFilterBean {
         try {
             tokenBody = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody().getSubject();
 
-            
-            
+
+
 
         } catch(SignatureException e) {
             ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token inválido.");
@@ -89,5 +89,5 @@ public class TokenFilter extends GenericFilterBean {
         chain.doFilter(request, response);
     }
 
-    
+
 }

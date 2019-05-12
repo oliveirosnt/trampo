@@ -1,22 +1,32 @@
 package br.com.ufcg.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import br.com.ufcg.dao.UsuarioDAO;
 import br.com.ufcg.domain.enums.TipoUsuario;
+import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "TAB_USUARIO", uniqueConstraints = @UniqueConstraint(columnNames = "TX_LOGIN", name = "login"))
@@ -38,6 +48,8 @@ public abstract class Usuario implements Serializable {
 	private String login;
 
 	@Column(name = "CD_FOTO_PERFIL", nullable = false)
+	@Lob
+	@Type(type = "org.hibernate.type.TextType")
 	private String fotoPerfil;
 
 	@Column(name = "TX_EMAIL", nullable = false)
@@ -50,6 +62,11 @@ public abstract class Usuario implements Serializable {
 	@Enumerated
 	private TipoUsuario tipo;
 
+	@JsonIgnore
+	@OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER)
+	@Fetch(FetchMode.JOIN)
+	private Set<Avaliacao> avaliacoes;
+
 	public Usuario(String nomeCompleto, String login, String fotoPerfil, String email, String senha, TipoUsuario tipo) {
 		super();
 		this.nomeCompleto = nomeCompleto;
@@ -58,6 +75,7 @@ public abstract class Usuario implements Serializable {
 		this.email = email;
 		this.senha = senha;
 		this.tipo = tipo;
+		this.avaliacoes = new HashSet<>();
 	}
 
 	public Usuario() {
@@ -70,6 +88,18 @@ public abstract class Usuario implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Set<Avaliacao> getAvaliacoes() {
+		return this.avaliacoes;
+	}
+
+	public void addAvaliacao(Avaliacao avaliacao) {
+		this.avaliacoes.add(avaliacao);
+	}
+
+	public void setAvaliacoes(Set<Avaliacao> avaliacoes) {
+		this.avaliacoes = avaliacoes;
 	}
 
 	public String getNomeCompleto() {
@@ -116,6 +146,23 @@ public abstract class Usuario implements Serializable {
 		return tipo;
 	}
 	
+	protected double getAvaliacaoMedia() {
+		double soma  = 0.0;
+
+		if (this.avaliacoes != null) {
+			int qtdAvaliacoes = this.avaliacoes.size();
+
+			if(qtdAvaliacoes > 0) {
+				for(Avaliacao avl : this.avaliacoes) {
+					soma += avl.getNota();
+				}
+
+				return (soma/qtdAvaliacoes);
+			}
+		}
+
+		return Double.valueOf(0);
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
