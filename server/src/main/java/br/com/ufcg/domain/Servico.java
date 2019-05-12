@@ -189,7 +189,16 @@ public class Servico {
 		this.fornecedorAvaliou = fornecedorAvaliou;
 	}
 
-	@Override
+    public Oferta getOfertaFinal() {
+	    if(this.status.equals(TipoStatus.AGUARDANDO_OFERTAS) || this.status.equals(TipoStatus.CANCELADO)){
+            return null;
+        }
+
+        int OFERTA_FINAL = 0;
+        return this.ofertasRecebidas.get(OFERTA_FINAL);
+    }
+
+    @Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
