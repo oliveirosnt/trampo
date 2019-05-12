@@ -7,24 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import br.com.ufcg.dao.ServicoDAO;
 import br.com.ufcg.domain.enums.TipoStatus;
 import br.com.ufcg.domain.enums.TipoUsuario;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "TAB_SERVICO")
@@ -75,8 +68,15 @@ public class Servico {
 	@Column(name = "fornecedor_avaliou")
 	private boolean fornecedorAvaliou;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "servico", fetch = FetchType.EAGER)
+    @Fetch(FetchMode.JOIN)
+	private List<Oferta> ofertasRecebidas;
+
 	public Servico() {
-		super();
+	    super();
+        this.clienteAvaliou = false;
+        this.fornecedorAvaliou = false;
+        this.ofertasRecebidas = new ArrayList<>();
 	}
 
 	public Servico(String tipo, String descricao, LocalDate data, LocalTime horario, BigDecimal valor,
@@ -90,6 +90,7 @@ public class Servico {
 		this.endereco = endereco;
 		this.clienteAvaliou = false;
 		this.fornecedorAvaliou = false;
+		this.ofertasRecebidas = new ArrayList<>();
 	}
 
 	public String getTipo() {
@@ -223,4 +224,16 @@ public class Servico {
 
 		return usuariosQueAvaliaram;
 	}
+
+	public boolean adicionaOferta(Oferta oferta) {
+	    return this.ofertasRecebidas.add(oferta);
+    }
+
+    public List<Oferta> getOfertasRecebidas() {
+        return ofertasRecebidas;
+    }
+
+    public void setOfertasRecebidas(List<Oferta> ofertasRecebidas) {
+        this.ofertasRecebidas = ofertasRecebidas;
+    }
 }
