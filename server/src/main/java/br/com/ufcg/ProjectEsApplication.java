@@ -2,6 +2,7 @@ package br.com.ufcg;
 
 import br.com.ufcg.middlewares.ClienteFilter;
 import br.com.ufcg.middlewares.FornecedorFilter;
+import br.com.ufcg.middlewares.VisitanteFilter;
 import br.com.ufcg.middlewares.jwt.TokenFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -26,6 +27,7 @@ public class ProjectEsApplication {
 		ArrayList<String> urlPatterns = new ArrayList<>();
 		urlPatterns.add("/api/servicos/*");
 		urlPatterns.add("/api/usuarios/*");
+		urlPatterns.add("/recuperarSenha/token/*");
 		FilterRegistrationBean frb = new FilterRegistrationBean();
 		frb.setFilter(new TokenFilter());
 		frb.setUrlPatterns(urlPatterns);
@@ -49,6 +51,16 @@ public class ProjectEsApplication {
 		urlPatterns.add("/api/servicos/fornecedor/*");
 		FilterRegistrationBean frb = new FilterRegistrationBean();
 		frb.setFilter(new FornecedorFilter());
+		frb.setUrlPatterns(urlPatterns);
+		return frb;
+	}
+	
+	@Bean
+	public FilterRegistrationBean filtroVisitante() {
+		ArrayList<String> urlPatterns = new ArrayList<>();
+		urlPatterns.add("/recuperarSenha/token/*");
+		FilterRegistrationBean frb = new FilterRegistrationBean();
+		frb.setFilter(new VisitanteFilter());
 		frb.setUrlPatterns(urlPatterns);
 		return frb;
 	}

@@ -1,8 +1,8 @@
 package br.com.ufcg.services;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,15 +14,12 @@ import br.com.ufcg.domain.Usuario;
 import br.com.ufcg.domain.enums.TipoUsuario;
 import br.com.ufcg.domain.vo.AlterarDadosForm;
 import br.com.ufcg.domain.vo.NovaSenhaForm;
+import br.com.ufcg.mappers.NovaSenhaMapper;
 import br.com.ufcg.repositories.UsuarioRepository;
 import br.com.ufcg.util.validadores.SenhaFormValidador;
 import br.com.ufcg.util.validadores.UsuarioValidador;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 @Service
 public class UsuarioService {
@@ -35,6 +32,10 @@ public class UsuarioService {
 	private static final String SENHA_ATUAL_IGUAL_NOVA = "A nova senha tem que ser diferente do antigo!";
 	private static final String EMAIL_ATUAL_IGUAL_NOVO = "O novo email tem que ser diferente do antigo!";
 	private static final String LOGIN_ATUAL_IGUAL_NOVO = "O novo login tem que ser diferente do antigo!";
+	private static final Object STRING_ESPACAMENTO = " ";
+	private static final String SECRET = "ProjetoES";
+	private static final long HORA_MILISEGUNDOS = 3600000;
+	private static final long LIMITE_DOZE_HORAS = (HORA_MILISEGUNDOS * 12);
 
 	@Autowired
 	UsuarioRepository usuarioRepository;
@@ -280,26 +281,30 @@ public class UsuarioService {
 	public void solicitaRecuperacaoSenha(String email) throws Exception {
 		UsuarioValidador.validaEmail(email);
 		Usuario usuario = getByEmail(email.toLowerCase());
-		String novaSenha = gerarSenha();
-		usuario.setSenha(novaSenha);
+		String token = Jwts.builder()
+	            .setSubject(new StringBuilder(usuario.getLogin().toLowerCase()).append(STRING_ESPACAMENTO).toString())
+	            .signWith(SignatureAlgorithm.HS512, SECRET)
+	            .setExpiration(new Date(System.currentTimeMillis() + LIMITE_DOZE_HORAS))
+	            .compact();
 		
-		usuarioRepository.saveAndFlush(usuario);	
 		
-		emailService.recuperarSenha(usuario, novaSenha);
+		emailService.recuperarSenha(usuario, token);
 		
 	}
-	
-	private String gerarSenha() {
-		String senha = "";
-		String[] caracteres = {"0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
-		Random random = new Random();
-		
-		for (int i = 0; i < 10; i++){
-			int a = random.nextInt(caracteres.length);
-			senha += caracteres[a];
+
+	public void atualizarSenha(Usuario user, NovaSenhaMapper novaSenha) throws Exception {
+		if(novaSenha.getNovaSenha() == null || novaSenha.getConfirmacao() == null) {
+			throw new Exception("Problemas no formulario! Preencha corretamente.");
 		}
 		
-		return senha;
+		if(!novaSenha.getNovaSenha().equals(novaSenha.getConfirmacao())) {
+			throw new Exception("A senha e a confimação devem ser a mesma!");
+		}
+		String senha = novaSenha.getNovaSenha();
+		UsuarioValidador.validaSenha(senha);
+		user.setSenha(senha);
+		usuarioRepository.saveAndFlush(user);
+		
 	}
 	
 }

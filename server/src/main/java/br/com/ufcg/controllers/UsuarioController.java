@@ -26,6 +26,7 @@ import br.com.ufcg.domain.Usuario;
 import br.com.ufcg.domain.vo.AlterarDadosForm;
 import br.com.ufcg.domain.vo.LoginForm;
 import br.com.ufcg.domain.vo.NovaSenhaForm;
+import br.com.ufcg.mappers.NovaSenhaMapper;
 import br.com.ufcg.mappers.RecuperarSenhaMapper;
 import br.com.ufcg.services.UsuarioService;
 import io.jsonwebtoken.Jwts;
@@ -201,6 +202,21 @@ public class UsuarioController {
 			response = new Response(e.getMessage(), HttpStatus.BAD_REQUEST.value());
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}	
+	}
+	
+	@RequestMapping(value = "/recuperarSenha/token/*", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
+	public ResponseEntity<Response> recuperacaoDeSenha(HttpServletRequest request, @RequestBody NovaSenhaMapper novaSenha) {
+		Response response;
+		
+		try {
+			Usuario user = (Usuario) request.getAttribute("user");
+			usuarioService.atualizarSenha(user, novaSenha);
+			response = new Response("Senha atualizada com sucesso!", HttpStatus.OK.value());
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch(Exception e) {
+			response = new Response(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	private class LoginResponse {
