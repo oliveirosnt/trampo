@@ -10,6 +10,7 @@ import br.com.ufcg.domain.enums.TipoStatus;
 import br.com.ufcg.repositories.ServicoRepository;
 import br.com.ufcg.util.validadores.ServicoValidador;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -30,7 +31,8 @@ public class ServicoService {
     	if(!(cliente instanceof Cliente)) {
     		throw new Exception("Apenas clientes podem criar serviços!");
     	}
-    	
+
+		servico.setValor(new BigDecimal(0));
     	servico.setCliente((Cliente) cliente);
     	servico.setStatus(TipoStatus.EM_ABERTO);
         ServicoValidador.valida(servico);

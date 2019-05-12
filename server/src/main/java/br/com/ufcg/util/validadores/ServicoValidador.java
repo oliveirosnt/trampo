@@ -23,11 +23,12 @@ public class ServicoValidador {
     private static final String HORA_OBRIGATORIA = "A hora do serviço deve ser informada.";
     private static final String DATA_OBRIGATORIA = "A data do serviço deve ser informada.";
 	private static final String DESCRICAO_OBRIGATORIA = "Uma descrição do serviço é obrigatória";
+	private static final String VALOR_NAO_PODE_SER_DEFINIDO = "Valor do serviço não pode ser definido no momento de criação do mesmo.";
 
 	
 
     public static void valida(Servico servico) throws Exception {
-        validaValor(servico.getValor());
+        validaValorPreDefinido(servico.getValor());
         validaData(servico.getData());
         validaHorario(servico.getHorario());
         validaDescricao(servico.getDescricao());
@@ -37,6 +38,12 @@ public class ServicoValidador {
         UtilCampos.validaTamanhoCampo(servico.getEndereco().getRua(), 2, 255, "Rua");
         UtilCampos.validaTamanhoCampo(servico.getEndereco().getNumero(), 0, 6, "Número da Residência");
         UtilCampos.validaTamanhoCampo(servico.getDescricao(), 8, 255, "Descrição do serviço");
+    }
+
+    private static void validaValorPreDefinido(BigDecimal valor) throws Exception{
+        if(valor.intValue() > 0 || valor.intValue() < 0) {
+            throw new Exception(VALOR_NAO_PODE_SER_DEFINIDO);
+        }
     }
 
     private static void validaDescricao(String descricao) throws Exception {
