@@ -26,7 +26,6 @@ import br.com.ufcg.domain.Usuario;
 import br.com.ufcg.domain.vo.AlterarDadosForm;
 import br.com.ufcg.domain.vo.LoginForm;
 import br.com.ufcg.domain.vo.NovaSenhaForm;
-import br.com.ufcg.mappers.NovaSenhaMapper;
 import br.com.ufcg.mappers.RecuperarSenhaMapper;
 import br.com.ufcg.services.UsuarioService;
 import io.jsonwebtoken.Jwts;
@@ -48,6 +47,8 @@ public class UsuarioController {
     public static final String LOGIN_SUCESSO = "Login efetuado com sucesso !";
     public static final Integer HORAS = (3600 * 1000);
     public static final Integer HORAS_NO_DIA = 24;
+    public static final boolean SEM_CONFIRMAR_SENHA = false;
+    public static final boolean CONFIRMAR_SENHA = true;
 
     @RequestMapping(value = "/api/login", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     public ResponseEntity<Response> login(@RequestBody LoginForm usuario) {
@@ -129,7 +130,7 @@ public class UsuarioController {
     	try {
     		Usuario userLogado = (Usuario) request.getAttribute("user");
     		Usuario usuario = usuarioService.getByLogin(userLogado.getLogin());
-    		usuarioService.atualizarSenha(usuario, form);
+    		usuarioService.atualizarSenha(usuario, form, CONFIRMAR_SENHA);
     		response = new Response("Usuario atualizado com sucesso!", HttpStatus.OK.value(), usuario.toDAO());
     		return new ResponseEntity<>(response, HttpStatus.OK);
     		
@@ -205,12 +206,12 @@ public class UsuarioController {
 	}
 	
 	@RequestMapping(value = "/recuperarSenha/token/*", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-	public ResponseEntity<Response> recuperacaoDeSenha(HttpServletRequest request, @RequestBody NovaSenhaMapper novaSenha) {
+	public ResponseEntity<Response> recuperacaoDeSenha(HttpServletRequest request, @RequestBody NovaSenhaForm novaSenha) {
 		Response response;
 		
 		try {
 			Usuario user = (Usuario) request.getAttribute("user");
-			usuarioService.atualizarSenha(user, novaSenha);
+			usuarioService.atualizarSenha(user, novaSenha, SEM_CONFIRMAR_SENHA);
 			response = new Response("Senha atualizada com sucesso!", HttpStatus.OK.value());
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch(Exception e) {

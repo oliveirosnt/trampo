@@ -14,7 +14,6 @@ import br.com.ufcg.domain.Usuario;
 import br.com.ufcg.domain.enums.TipoUsuario;
 import br.com.ufcg.domain.vo.AlterarDadosForm;
 import br.com.ufcg.domain.vo.NovaSenhaForm;
-import br.com.ufcg.mappers.NovaSenhaMapper;
 import br.com.ufcg.repositories.UsuarioRepository;
 import br.com.ufcg.util.validadores.SenhaFormValidador;
 import br.com.ufcg.util.validadores.UsuarioValidador;
@@ -182,12 +181,28 @@ public class UsuarioService {
 		usuarioRepository.saveAndFlush(usuario);
 	}
 
-	public void atualizarSenha(Usuario usuario, NovaSenhaForm form) throws Exception {
-		if (form.getSenhaNova() == null || form.getConfirmacao() == null || form.getSenhaAntiga() == null) {
-			throw new Exception("Preencha todos os campos!");
+	public void atualizarSenha(Usuario usuario, NovaSenhaForm form, boolean validaSenhaAntiga) throws Exception {
+		if(validaSenhaAntiga) {
+			if (form.getSenhaNova() == null || form.getConfirmacao() == null || form.getSenhaAntiga() == null) {
+				throw new Exception("Preencha todos os campos!");
+			}
+		
+			SenhaFormValidador.valida(usuario, form);
+			
+		} else {
+			if(form.getSenhaNova() == null || form.getConfirmacao() == null) {
+				throw new Exception("Problemas no formulario! Preencha corretamente.");
+			}
+			
+			if(!form.getSenhaNova().equals(form.getConfirmacao())) {
+				throw new Exception("A senha e a confimação devem ser a mesma!");
+			}
+			
+			String senha = form.getSenhaNova();
+			UsuarioValidador.validaSenha(senha);
+			
 		}
 		
-		SenhaFormValidador.valida(usuario, form);
 		Usuario usuarioAtualizado = usuario;
 		usuarioAtualizado.setSenha(form.getSenhaNova());
 		usuarioRepository.saveAndFlush(usuarioAtualizado);
@@ -292,20 +307,7 @@ public class UsuarioService {
 		
 	}
 
-	public void atualizarSenha(Usuario user, NovaSenhaMapper novaSenha) throws Exception {
-		if(novaSenha.getNovaSenha() == null || novaSenha.getConfirmacao() == null) {
-			throw new Exception("Problemas no formulario! Preencha corretamente.");
-		}
-		
-		if(!novaSenha.getNovaSenha().equals(novaSenha.getConfirmacao())) {
-			throw new Exception("A senha e a confimação devem ser a mesma!");
-		}
-		String senha = novaSenha.getNovaSenha();
-		UsuarioValidador.validaSenha(senha);
-		user.setSenha(senha);
-		usuarioRepository.saveAndFlush(user);
-		
-	}
+
 	
 }
 

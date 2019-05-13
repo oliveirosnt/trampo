@@ -302,7 +302,7 @@ public class UsuarioControllerTest {
 		NovaSenhaForm form = new NovaSenhaForm(usuario.getSenha(), senhaNova, senhaNova );
 		
 		try {
-			usuarioService.atualizarSenha(usuario, form);
+			usuarioService.atualizarSenha(usuario, form, true);
 			assertNotEquals(senhaAntiga, usuario.getSenha());
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -318,7 +318,7 @@ public class UsuarioControllerTest {
 		NovaSenhaForm form1 = new NovaSenhaForm("uma senha ai", "123456789", "123456789");
 		
 		try {
-			usuarioService.atualizarSenha(usuario, form1);
+			usuarioService.atualizarSenha(usuario, form1, true);
 		} catch(Exception e) {
 			assertEquals("A senha informada esta incorreta!", e.getMessage());
 		}
@@ -327,7 +327,7 @@ public class UsuarioControllerTest {
 		NovaSenhaForm form2 = new NovaSenhaForm(senhaAntiga, "1234567411", "abcdefghhi");
 		
 		try {
-			usuarioService.atualizarSenha(usuario, form2);
+			usuarioService.atualizarSenha(usuario, form2, true);
 		} catch(Exception e) {
 			assertEquals("A nova senha e a confimacao devem ser identicas!", e.getMessage());
 		}
@@ -336,7 +336,7 @@ public class UsuarioControllerTest {
 		NovaSenhaForm form3 = new NovaSenhaForm(senhaAntiga, senhaAntiga, senhaAntiga);
 		
 		try {
-			usuarioService.atualizarSenha(usuario, form3);
+			usuarioService.atualizarSenha(usuario, form3, true);
 		} catch(Exception e) {
 			assertEquals("A nova senha tem que ser diferente da antiga!", e.getMessage());
 		}
@@ -345,7 +345,7 @@ public class UsuarioControllerTest {
 		NovaSenhaForm form4 = new NovaSenhaForm(senhaAntiga, "123", "123");
 		
 		try {
-			usuarioService.atualizarSenha(usuario, form4);
+			usuarioService.atualizarSenha(usuario, form4, true);
 		} catch(Exception e) {
 			assertEquals("A senha deve ter no minimo 8 digitos", e.getMessage());
 		}
@@ -354,7 +354,7 @@ public class UsuarioControllerTest {
 		NovaSenhaForm form5 = new NovaSenhaForm(senhaAntiga, "uma senha muuuuuitoooo grandeeeeee", "uma senha muuuuuitoooo grandeeeeee");
 		
 		try {
-			usuarioService.atualizarSenha(usuario, form5);
+			usuarioService.atualizarSenha(usuario, form5, true);
 		} catch(Exception e) {
 			assertEquals("A senha deve ter no maximo 20 digitos", e.getMessage());
 		}
@@ -363,7 +363,7 @@ public class UsuarioControllerTest {
 		NovaSenhaForm form6 = new NovaSenhaForm(senhaAntiga, null, null);
 		
 		try {
-			usuarioService.atualizarSenha(usuario, form6);
+			usuarioService.atualizarSenha(usuario, form6, true);
 		} catch(Exception e) {
 			assertEquals("Preencha todos os campos!", e.getMessage());
 		}
