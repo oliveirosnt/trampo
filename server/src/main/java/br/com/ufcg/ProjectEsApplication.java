@@ -47,6 +47,7 @@ public class ProjectEsApplication {
 	public FilterRegistrationBean filtroFornecedor() {
 		ArrayList<String> urlPatterns = new ArrayList<>();
 		urlPatterns.add("/api/servicos/fornecedor/*");
+		urlPatterns.add("/api/fornecedor/servicos/*");
 		FilterRegistrationBean frb = new FilterRegistrationBean();
 		frb.setFilter(new FornecedorFilter());
 		frb.setUrlPatterns(urlPatterns);

@@ -1,11 +1,7 @@
 package br.com.ufcg.services;
 
-import br.com.ufcg.domain.Especialidade;
-import br.com.ufcg.domain.Fornecedor;
+import br.com.ufcg.domain.*;
 import br.com.ufcg.dao.ServicoDAO;
-import br.com.ufcg.domain.Cliente;
-import br.com.ufcg.domain.Servico;
-import br.com.ufcg.domain.Usuario;
 import br.com.ufcg.domain.enums.TipoStatus;
 import br.com.ufcg.repositories.ServicoRepository;
 import br.com.ufcg.util.validadores.ServicoValidador;
@@ -27,6 +23,7 @@ public class ServicoService {
 	@Autowired
     ServicoRepository servicoRepository;
 
+
     public Servico criarServico(Usuario cliente, Servico servico) throws Exception {
     	if(!(cliente instanceof Cliente)) {
     		throw new Exception("Apenas clientes podem criar serviços!");
@@ -34,7 +31,7 @@ public class ServicoService {
 
 		servico.setValor(new BigDecimal(0));
     	servico.setCliente((Cliente) cliente);
-    	servico.setStatus(TipoStatus.EM_ABERTO);
+    	servico.setStatus(TipoStatus.AGUARDANDO_OFERTAS);
         ServicoValidador.valida(servico);
         servico.setFornecedor(null);
         servico.setTipo(servico.getTipo().toLowerCase());
@@ -47,6 +44,15 @@ public class ServicoService {
 		Servico servicoCriado = servicoRepository.save(servico);
 		return servicoCriado;
     }
+
+    public Servico adicionarOfertaNoServico(Long servicoId, Oferta oferta) throws Exception {
+        Servico servico = this.getServicoByID(servicoId);
+        oferta.setServico(servico);
+        servico.adicionaOferta(oferta);
+
+        Servico servicoAtualizado = servicoRepository.save(servico);
+        return servicoAtualizado;
+    }
    
 	public List<Servico> getServicosDisponiveisFornecedor(Fornecedor fornecedor){
     	
@@ -56,7 +62,7 @@ public class ServicoService {
     	
     	for(Servico servico : servicos ) {
     		for(Especialidade especialidade : especialidadeFornecedor) {
-    			if(servico.getTipo().equalsIgnoreCase(especialidade.getNome()) && servico.getStatus().equals(TipoStatus.EM_ABERTO)) {
+    			if(servico.getTipo().equalsIgnoreCase(especialidade.getNome()) && servico.getStatus().equals(TipoStatus.AGUARDANDO_OFERTAS)) {
     				servicosDisponiveisFornecedor.add(servico);
     			}
     		}
@@ -72,10 +78,10 @@ public class ServicoService {
 
 	public List<Servico> getServicosClienteEmProgresso(Cliente cliente) {
 		List<Servico> todosServicos = new ArrayList<>();
-		List<Servico> servicosEmAberto = servicoRepository.findServicoClienteStatus(cliente, TipoStatus.EM_ABERTO);
+		List<Servico> servicosAguardandoOfertas = servicoRepository.findServicoClienteStatus(cliente, TipoStatus.AGUARDANDO_OFERTAS);
 		List<Servico> servicosAceitos = servicoRepository.findServicoClienteStatus(cliente, TipoStatus.ACEITO);
 		todosServicos.addAll(servicosAceitos);
-		todosServicos.addAll(servicosEmAberto);
+		todosServicos.addAll(servicosAguardandoOfertas);
 		
 		return todosServicos;
 	}
@@ -124,8 +130,8 @@ public class ServicoService {
 			throw new Exception("Você não possui a especialidade requerida para o serviço");
 		}
 		
-		if(!servico.getStatus().equals(TipoStatus.EM_ABERTO)) {
-			throw new Exception("Você só pode aceitar serviços que estão em aberto!");
+		if(!servico.getStatus().equals(TipoStatus.AGUARDANDO_OFERTAS)) {
+			throw new Exception("Você só pode aceitar serviços que estão aguardando ofertas!");
 		}
 		
 		Servico servicoAtualizado = servico;
@@ -133,8 +139,6 @@ public class ServicoService {
 		servicoAtualizado.setFornecedor((Fornecedor) fornecedor);
 	
 		return servicoRepository.saveAndFlush(servicoAtualizado);
-		
-		
 	}
 	
 	public boolean checarCliente(Servico servico, Cliente cliente){
@@ -251,9 +255,9 @@ public class ServicoService {
 			throw new Exception("Você só pode cancelar serviços aceitos por você!");
 		}
 		Servico servicoCancelado = servico;
-		servicoCancelado.setStatus(TipoStatus.EM_ABERTO);
+		servicoCancelado.setStatus(TipoStatus.AGUARDANDO_OFERTAS);
 		servicoCancelado.setFornecedor(null);
-		
+		// TODO: Limpar oferta dada pelo fornecedor no serviço
 		return servicoRepository.saveAndFlush(servicoCancelado);
 	}
 

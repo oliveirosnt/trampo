@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import br.com.ufcg.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,9 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ufcg.dao.ServicoDAO;
-import br.com.ufcg.domain.Cliente;
-import br.com.ufcg.domain.Fornecedor;
-import br.com.ufcg.domain.Servico;
 import br.com.ufcg.services.ServicoService;
 import br.com.ufcg.services.UsuarioService;
 import br.com.ufcg.util.response.Response;
@@ -269,6 +267,23 @@ public class ServicoController {
 			response = new Response("Nao encontramos servicos disponiveis para voce", HttpStatus.ACCEPTED.value());
 			return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
 
+		} catch (Exception e) {
+			response = new Response(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@RequestMapping(value = "/api/fornecedor/servicos/{servicoId}/ofertas", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
+	public ResponseEntity<Response> cadastraOfertaNoServico(HttpServletRequest request, @PathVariable Long servicoId, @RequestBody Oferta oferta) {
+		Response response;
+
+		try {
+			Fornecedor fornecedor = (Fornecedor) request.getAttribute("user");
+			oferta.setFornecedor(fornecedor);
+			Servico servico = this.servicoService.adicionarOfertaNoServico(servicoId, oferta);
+			response = new Response("Oferta cadastrada com sucesso!", HttpStatus.CREATED.value(),
+					servico);
+			return new ResponseEntity<>(response, HttpStatus.CREATED);
 		} catch (Exception e) {
 			response = new Response(e.getMessage(), HttpStatus.BAD_REQUEST.value());
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
