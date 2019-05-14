@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.ws.rs.QueryParam;
 
 import br.com.ufcg.util.response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,15 +125,27 @@ public class UsuarioController {
     }
     
     @PostMapping(value = "/api/usuarios/senha", consumes = "application/json")
-    public @ResponseBody ResponseEntity<Response> atualizarSenha(HttpServletRequest request, @RequestBody NovaSenhaForm form) {
+    public @ResponseBody ResponseEntity<Response> atualizarSenha(@QueryParam("validarSenha") String validarSenha, HttpServletRequest request, @RequestBody NovaSenhaForm form) {
     	Response response;
     	
     	try {
     		Usuario userLogado = (Usuario) request.getAttribute("user");
-    		Usuario usuario = usuarioService.getByLogin(userLogado.getLogin());
-    		usuarioService.atualizarSenha(usuario, form, CONFIRMAR_SENHA);
-    		response = new Response("Usuario atualizado com sucesso!", HttpStatus.OK.value(), usuario.toDAO());
-    		return new ResponseEntity<>(response, HttpStatus.OK);
+			Usuario usuario = usuarioService.getByLogin(userLogado.getLogin());
+			
+			if(validarSenha != null) {
+				if(validarSenha.equalsIgnoreCase("false")) {
+					usuarioService.atualizarSenha(usuario, form, SEM_CONFIRMAR_SENHA);
+				} else {
+					response = new Response("Problema na requisição!", HttpStatus.BAD_REQUEST.value());
+					return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+				}
+				
+			} else {
+				usuarioService.atualizarSenha(usuario, form, CONFIRMAR_SENHA);
+			}
+    		
+    		response = new Response("Usuario atualizado com sucesso!", HttpStatus.OK.value());
+			return new ResponseEntity<>(response, HttpStatus.OK);
     		
     	} catch(Exception e) {
     		response = new Response(e.getMessage(), HttpStatus.BAD_REQUEST.value());
@@ -203,21 +216,6 @@ public class UsuarioController {
 			response = new Response(e.getMessage(), HttpStatus.BAD_REQUEST.value());
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}	
-	}
-	
-	@RequestMapping(value = "/recuperarSenha/token/*", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-	public ResponseEntity<Response> recuperacaoDeSenha(HttpServletRequest request, @RequestBody NovaSenhaForm novaSenha) {
-		Response response;
-		
-		try {
-			Usuario user = (Usuario) request.getAttribute("user");
-			usuarioService.atualizarSenha(user, novaSenha, SEM_CONFIRMAR_SENHA);
-			response = new Response("Senha atualizada com sucesso!", HttpStatus.OK.value());
-			return new ResponseEntity<>(response, HttpStatus.OK);
-		} catch(Exception e) {
-			response = new Response(e.getMessage(), HttpStatus.BAD_REQUEST.value());
-			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-		}
 	}
 	
 	private class LoginResponse {
