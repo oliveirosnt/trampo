@@ -18,6 +18,7 @@ import br.com.ufcg.dao.ServicoDAO;
 import br.com.ufcg.domain.Cliente;
 import br.com.ufcg.domain.Fornecedor;
 import br.com.ufcg.domain.Servico;
+import br.com.ufcg.dto.ServicoDTO;
 import br.com.ufcg.services.ServicoService;
 import br.com.ufcg.services.UsuarioService;
 import br.com.ufcg.util.response.Response;
@@ -155,17 +156,16 @@ public class ServicoController {
 		}
 	}
 
-	@RequestMapping(value = "/api/servicos/fornecedor", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-	public ResponseEntity<Response> setServicoParaFornecedor(HttpServletRequest request, @RequestBody Servico servico) {
+	@RequestMapping(value = "/api/servicos/cliente/aceitar_ofertar", consumes = MediaType.APPLICATION_JSON_VALUE,  produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
+	public ResponseEntity<Response> aceitarOferta(HttpServletRequest request, @RequestBody ServicoDTO servicoDTO) {
 		Response response;
 
 		try {
-			Fornecedor fornecedor = (Fornecedor) request.getAttribute("user");
-			Servico servicoAtualizado = servicoService.getServicoByID(servico.getId());
+			Cliente cliente = (Cliente) request.getAttribute("user");
+			Fornecedor fornecedor = (Fornecedor) usuarioService.getById(servicoDTO.getServico().getFornecedor().getId());
+			Servico servicoAtualizado = servicoService.aceitarOferta(cliente, fornecedor, servicoDTO);
 
-			servicoAtualizado = servicoService.setServicoParaFornecedor(servicoAtualizado, fornecedor);
-
-			response = new Response("Servico designado para voce com sucesso!", HttpStatus.OK.value(),
+			response = new Response("Serviço atualizado com sucesso!", HttpStatus.OK.value(),
 					servicoAtualizado.toDAO());
 			return new ResponseEntity<>(response, HttpStatus.OK);
 
