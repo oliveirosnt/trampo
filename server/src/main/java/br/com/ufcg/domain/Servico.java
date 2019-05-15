@@ -194,8 +194,19 @@ public class Servico {
             return null;
         }
 
-        int OFERTA_FINAL = 0;
-        return this.ofertasRecebidas.get(OFERTA_FINAL);
+        Oferta ofertaFinal = ofertasRecebidas.get(0);
+	    int i = 1;
+	    int size = ofertasRecebidas.size();
+	    long fornecedorId = this.getFornecedor().getId();
+	    while(i <  size && !ofertaFinal.getFornecedor().getId().equals(fornecedorId)) {
+	    	Oferta oferta = ofertasRecebidas.get(i);
+	    	if(oferta.getFornecedor().getId().equals(this.getFornecedor().getId())) {
+	    		ofertaFinal = oferta;
+			}
+
+			i ++;
+		}
+        return ofertaFinal;
     }
 
     @Override
