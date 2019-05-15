@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -193,9 +194,20 @@ public class Servico {
 	    if(this.status.equals(TipoStatus.AGUARDANDO_OFERTAS) || this.status.equals(TipoStatus.CANCELADO)){
             return null;
         }
-
-        int OFERTA_FINAL = 0;
-        return this.ofertasRecebidas.get(OFERTA_FINAL);
+	    
+	    Oferta ofertaFinal = null;
+	    boolean achou = false;
+		Iterator<Oferta> iterator =  this.ofertasRecebidas.iterator();
+		
+		while(iterator.hasNext() && !achou) {
+			Oferta oferta = iterator.next();
+			if(oferta.getFornecedor().getId().equals(fornecedor.getId())) {
+				ofertaFinal = oferta;
+				achou = true;	
+			}
+		}
+		
+        return ofertaFinal;
     }
 
     @Override
