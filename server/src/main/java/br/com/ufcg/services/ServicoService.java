@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -270,11 +271,31 @@ public class ServicoService {
 		if(!checarServicoFornecedor(servico, fornecedor)) {
 			throw new Exception("Você só pode cancelar serviços aceitos por você!");
 		}
-		Servico servicoCancelado = servico;
+		
+		Servico servicoCancelado = removeOfertaEmServico(servico, fornecedor);
 		servicoCancelado.setStatus(TipoStatus.AGUARDANDO_OFERTAS);
 		servicoCancelado.setFornecedor(null);
 		
 		return servicoRepository.saveAndFlush(servicoCancelado);
+	}
+	
+	public Servico removeOfertaEmServico(Servico servico, Fornecedor fornecedor) {
+		boolean achou = false;
+		Iterator<Oferta> iterator =  servico.getOfertasRecebidas().iterator();
+		
+		while(iterator.hasNext() && !achou) {
+			Oferta oferta = iterator.next();
+			
+			if(oferta.getFornecedor().getId().equals(fornecedor.getId())) {
+				List<Oferta> listaAtualizada = servico.getOfertasRecebidas();
+				listaAtualizada.remove(oferta);
+				servico.setOfertasRecebidas(listaAtualizada);
+				achou = true;	
+			}
+		}
+ 	
+	
+		return servico;
 	}
 
 	public Servico atualizarServico(Servico servico) {

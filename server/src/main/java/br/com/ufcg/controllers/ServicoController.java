@@ -162,7 +162,7 @@ public class ServicoController {
 
 		try {
 			Cliente cliente = (Cliente) request.getAttribute("user");
-			Fornecedor fornecedor = (Fornecedor) usuarioService.getById(servicoDTO.getServico().getFornecedor().getId());
+			Fornecedor fornecedor = (Fornecedor) usuarioService.getById(servicoDTO.getOferta().getFornecedor().getId());
 			Servico servicoAtualizado = servicoService.aceitarOferta(cliente, fornecedor, servicoDTO);
 
 			response = new Response("Serviço atualizado com sucesso!", HttpStatus.OK.value(),
