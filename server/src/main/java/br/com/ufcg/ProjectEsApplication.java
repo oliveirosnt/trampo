@@ -2,7 +2,6 @@ package br.com.ufcg;
 
 import br.com.ufcg.middlewares.ClienteFilter;
 import br.com.ufcg.middlewares.FornecedorFilter;
-import br.com.ufcg.middlewares.VisitanteFilter;
 import br.com.ufcg.middlewares.jwt.TokenFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -55,15 +54,6 @@ public class ProjectEsApplication {
 		return frb;
 	}
 	
-	@Bean
-	public FilterRegistrationBean filtroVisitante() {
-		ArrayList<String> urlPatterns = new ArrayList<>();
-		urlPatterns.add("/recuperarSenha/token/*");
-		FilterRegistrationBean frb = new FilterRegistrationBean();
-		frb.setFilter(new VisitanteFilter());
-		frb.setUrlPatterns(urlPatterns);
-		return frb;
-	}
 	
 	@Bean
 	public FilterRegistrationBean corsFilter() {
