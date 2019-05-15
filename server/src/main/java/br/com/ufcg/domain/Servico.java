@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -194,18 +195,18 @@ public class Servico {
             return null;
         }
 
-        Oferta ofertaFinal = ofertasRecebidas.get(0);
-	    int i = 1;
-	    int size = ofertasRecebidas.size();
-	    long fornecedorId = this.getFornecedor().getId();
-	    while(i <  size && !ofertaFinal.getFornecedor().getId().equals(fornecedorId)) {
-	    	Oferta oferta = ofertasRecebidas.get(i);
-	    	if(oferta.getFornecedor().getId().equals(this.getFornecedor().getId())) {
-	    		ofertaFinal = oferta;
-			}
+	    Oferta ofertaFinal = null;
+	    boolean achou = false;
+		Iterator<Oferta> iterator =  this.ofertasRecebidas.iterator();
 
-			i ++;
+		while(iterator.hasNext() && !achou) {
+			Oferta oferta = iterator.next();
+			if(oferta.getFornecedor().getId().equals(fornecedor.getId())) {
+				ofertaFinal = oferta;
+				achou = true;
+			}
 		}
+
         return ofertaFinal;
     }
 

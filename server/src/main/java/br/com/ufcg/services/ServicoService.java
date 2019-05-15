@@ -1,8 +1,12 @@
 package br.com.ufcg.services;
 
+import br.com.ufcg.domain.Especialidade;
+import br.com.ufcg.domain.Fornecedor;
+import br.com.ufcg.domain.Oferta;
 import br.com.ufcg.domain.*;
 import br.com.ufcg.dao.ServicoDAO;
 import br.com.ufcg.domain.enums.TipoStatus;
+import br.com.ufcg.dto.ServicoDTO;
 import br.com.ufcg.repositories.ServicoRepository;
 import br.com.ufcg.util.validadores.ServicoValidador;
 
@@ -19,7 +23,6 @@ public class ServicoService {
     
 	@Autowired
     ServicoRepository servicoRepository;
-
 
     public Servico criarServico(Usuario cliente, Servico servico) throws Exception {
     	if(!(cliente instanceof Cliente)) {
@@ -74,7 +77,7 @@ public class ServicoService {
 
     	return servico.getOfertasRecebidas();
 	}
-   
+
 	public List<Servico> getServicosDisponiveisFornecedor(Fornecedor fornecedor){
     	
     	List<Servico> servicosDisponiveisFornecedor = new ArrayList<>();
@@ -142,17 +145,40 @@ public class ServicoService {
 		return setServicosToDAO(servicosOrdenados);
 	}
 	
+	public Servico aceitarOferta(Cliente cliente, Fornecedor fornecedor, ServicoDTO servicoDTO) throws Exception {
+		if(!servicoDTO.getServico().getCliente().equals(cliente)) {
+			throw new Exception("Você só pode aceitar ofertas das suas requisições!");
+		}
+
+		Oferta oferta = servicoDTO.getOferta();
+		Servico servico = getServicoByID(servicoDTO.getServico().getId());
+
+		if(oferta.getServico().getId() != servico.getId() ) {
+			throw new Exception("Essa oferta não é referente a esse serviço!");
+		}
+
+		servico.setValor(oferta.getValor());
+		Servico servicoAtualizado = setServicoParaFornecedor(servico, fornecedor);
+
+		return servicoAtualizado;
+
+	}
+
 	public Servico setServicoParaFornecedor(Servico servico, Usuario fornecedor) throws Exception {
 		if(!(fornecedor instanceof Fornecedor)) {
 			throw new Exception("Apenas fornecedores podem aceitar serviços!");
 		}
 		
 		if(!servicoEhValidoParaFornecedor(servico, (Fornecedor) fornecedor)) {
-			throw new Exception("Você não possui a especialidade requerida para o serviço");
+			throw new Exception("O fornecedor não possui a especialidade requerida para o serviço");
 		}
 		
 		if(!servico.getStatus().equals(TipoStatus.AGUARDANDO_OFERTAS)) {
 			throw new Exception("Você só pode aceitar serviços que estão aguardando ofertas!");
+		}
+
+		if(!servico.getStatus().equals(TipoStatus.AGUARDANDO_OFERTAS)) {
+			throw new Exception("Esse serviço já possui uma oferta aceita!");
 		}
 		
 		Servico servicoAtualizado = servico;
@@ -275,11 +301,31 @@ public class ServicoService {
 		if(!checarServicoFornecedor(servico, fornecedor)) {
 			throw new Exception("Você só pode cancelar serviços aceitos por você!");
 		}
-		Servico servicoCancelado = servico;
+
+		Servico servicoCancelado = removeOfertaEmServico(servico, fornecedor);
 		servicoCancelado.setStatus(TipoStatus.AGUARDANDO_OFERTAS);
 		servicoCancelado.setFornecedor(null);
-		// TODO: Limpar oferta dada pelo fornecedor no serviço
+		
 		return servicoRepository.saveAndFlush(servicoCancelado);
+	}
+
+	public Servico removeOfertaEmServico(Servico servico, Fornecedor fornecedor) {
+		boolean achou = false;
+		Iterator<Oferta> iterator =  servico.getOfertasRecebidas().iterator();
+
+		while(iterator.hasNext() && !achou) {
+			Oferta oferta = iterator.next();
+
+			if(oferta.getFornecedor().getId().equals(fornecedor.getId())) {
+				List<Oferta> listaAtualizada = servico.getOfertasRecebidas();
+				listaAtualizada.remove(oferta);
+				servico.setOfertasRecebidas(listaAtualizada);
+				achou = true;
+			}
+		}
+
+
+		return servico;
 	}
 
 	public Servico atualizarServico(Servico servico) {
