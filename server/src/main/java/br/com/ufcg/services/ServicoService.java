@@ -7,10 +7,7 @@ import br.com.ufcg.repositories.ServicoRepository;
 import br.com.ufcg.util.validadores.ServicoValidador;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +43,8 @@ public class ServicoService {
     }
 
     public Servico adicionarOfertaNoServico(Long servicoId, Oferta oferta) throws Exception {
+    	this.verificaValidadeOferta(servicoId, oferta);
+
         Servico servico = this.getServicoByID(servicoId);
         oferta.setServico(servico);
         servico.adicionaOferta(oferta);
@@ -53,6 +52,28 @@ public class ServicoService {
         Servico servicoAtualizado = servicoRepository.save(servico);
         return servicoAtualizado;
     }
+
+    private void verificaValidadeOferta(Long servicoId, Oferta oferta) throws Exception {
+		Iterator<Oferta> ofertasIterator = getOfertasServico(servicoId).iterator();
+
+		boolean achouOfertaDoFornecedor = false;
+		while(ofertasIterator.hasNext() && !achouOfertaDoFornecedor) {
+			Oferta ofertaNoServico = ofertasIterator.next();
+			if(ofertaNoServico.getFornecedor().getId().equals(oferta.getFornecedor().getId())) {
+				achouOfertaDoFornecedor = true;
+			}
+		}
+
+		if(achouOfertaDoFornecedor) {
+			throw new Exception("Você já possui uma oferta neste serviço!");
+		}
+	}
+
+    private List<Oferta> getOfertasServico(Long servicoId) throws Exception {
+    	Servico servico = this.getServicoByID(servicoId);
+
+    	return servico.getOfertasRecebidas();
+	}
    
 	public List<Servico> getServicosDisponiveisFornecedor(Fornecedor fornecedor){
     	
