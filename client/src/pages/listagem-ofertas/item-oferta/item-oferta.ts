@@ -37,11 +37,8 @@ export class ItemOfertaPage {
   }
 
   aceitarOferta() {
-    this.limpaDadosQueNaoSeraoPersistidos();
-
-    this.servicoService.aceitarServico(this.servico, this.oferta).subscribe(
+    this.servicoService.aceitarServico(this.servico.id, this.oferta.id).subscribe(
       response => {
-        console.log(response);
         let alertMessage = this.alertCtrl.create({
           message: response.body['message'],
           buttons: [{
@@ -62,11 +59,4 @@ export class ItemOfertaPage {
     )
   }
 
-  limpaDadosQueNaoSeraoPersistidos() {
-    this.servico.id = undefined;
-    this.oferta.id = undefined;
-    this.servico.cliente.id = undefined;
-    this.servico.endereco.id = undefined;
-    this.oferta.fornecedor.id = undefined;
-  }
 }

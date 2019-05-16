@@ -27,6 +27,7 @@ public class ProjectEsApplication {
 		urlPatterns.add("/api/servicos/*");
 		urlPatterns.add("/api/usuarios/*");
 		urlPatterns.add("/api/fornecedor/servicos/*");
+		urlPatterns.add("/api/cliente/servicos/*");
 		FilterRegistrationBean frb = new FilterRegistrationBean();
 		frb.setFilter(new TokenFilter());
 		frb.setUrlPatterns(urlPatterns);

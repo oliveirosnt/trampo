@@ -157,16 +157,24 @@ public class ServicoController {
 		}
 	}
 
-	@RequestMapping(value = "/api/servicos/cliente/aceitar_oferta", consumes = MediaType.APPLICATION_JSON_VALUE,  produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-	public ResponseEntity<Response> aceitarOferta(HttpServletRequest request, @RequestBody ServicoDTO servicoDTO) {
+	@RequestMapping(value = "/api/cliente/servicos/{servicoId}/ofertas/{ofertaId}/aceitar", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
+	public ResponseEntity<Response> aceitarOferta(HttpServletRequest request, @PathVariable Long servicoId, @PathVariable Long ofertaId) {
 		Response response;
 
 		try {
 			Cliente cliente = (Cliente) request.getAttribute("user");
-			Fornecedor fornecedor = (Fornecedor) usuarioService.getById(servicoDTO.getOferta().getFornecedor().getId());
-			Servico servicoAtualizado = servicoService.aceitarOferta(cliente, fornecedor, servicoDTO);
 
-			response = new Response("Serviço atualizado com sucesso!", HttpStatus.OK.value(),
+			Servico servico = servicoService.getServicoByID(servicoId);
+
+			if(!cliente.getEmail().equals(servico.getCliente().getEmail())) {
+				response = new Response("Você só pode aceitar uma oferta de um serviço que você criou!", HttpStatus.BAD_REQUEST.value());
+				return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+			}
+
+			Oferta oferta = servicoService.getOfertaNoServico(servicoId, ofertaId);
+			Servico servicoAtualizado = servicoService.aceitarOferta(servico, oferta);
+
+			response = new Response("A Oferta escolhida será a Oferta final do Serviço!", HttpStatus.OK.value(),
 					servicoAtualizado.toDAO());
 			return new ResponseEntity<>(response, HttpStatus.OK);
 

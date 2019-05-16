@@ -45,10 +45,9 @@ export class ServicoClienteService {
         });
     }
 
-    aceitarServico(servico: ServicoDTO, oferta: OfertaDTO) {
-      const servicoComOferta = { servico: servico, oferta: oferta };
-      return this.http.post(`${API_CONFIG.baseUrl}/api/servicos/cliente/aceitar_oferta`,
-        servicoComOferta, {
+    aceitarServico(servicoId: number, ofertaId: number) {
+      return this.http.post(`${API_CONFIG.baseUrl}/api/cliente/servicos/${servicoId}/ofertas/${ofertaId}/aceitar`,
+        null, {
           observe: 'response',
           responseType: 'json'
         })
