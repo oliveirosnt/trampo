@@ -21,7 +21,6 @@ export class AvaliacaoPage {
         descricao: "",
         data: "",
         horario: "",
-        valor: "",
         tipo: "",
         endereco: {
             rua: "",

@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { API_CONFIG } from "../config/api.config";
 import { ServicoDTO } from "../models/servico.dto";
+import {OfertaDTO} from "../models/oferta.dto";
 
 @Injectable()
 export class ServicoClienteService {
@@ -42,6 +43,14 @@ export class ServicoClienteService {
             observe: 'response',
             responseType: 'json'
         });
+    }
+
+    aceitarServico(servicoId: number, ofertaId: number) {
+      return this.http.post(`${API_CONFIG.baseUrl}/api/cliente/servicos/${servicoId}/ofertas/${ofertaId}/aceitar`,
+        null, {
+          observe: 'response',
+          responseType: 'json'
+        })
     }
 
 }

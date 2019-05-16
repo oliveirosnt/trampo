@@ -78,6 +78,27 @@ public class ServicoService {
     	return servico.getOfertasRecebidas();
 	}
 
+	public Oferta getOfertaNoServico(Long servicoId, Long ofertaId) throws Exception {
+		Servico servico = this.getServicoByID(servicoId);
+
+		boolean achou = false;
+		Iterator<Oferta> iterator =  servico.getOfertasRecebidas().iterator();
+		Oferta ofertaProcurada = null;
+		while(iterator.hasNext() && !achou) {
+			Oferta oferta = iterator.next();
+
+			if(oferta.getId().equals(ofertaId)) {
+				ofertaProcurada = oferta;
+				achou = true;
+			}
+		}
+
+		if(ofertaProcurada == null) {
+		    throw new Exception("Não foi possível localizar a oferta neste serviço!");
+        }
+		return ofertaProcurada;
+	}
+
 	public List<Servico> getServicosDisponiveisFornecedor(Fornecedor fornecedor){
     	
     	List<Servico> servicosDisponiveisFornecedor = new ArrayList<>();
@@ -145,17 +166,9 @@ public class ServicoService {
 		return setServicosToDAO(servicosOrdenados);
 	}
 	
-	public Servico aceitarOferta(Cliente cliente, Fornecedor fornecedor, ServicoDTO servicoDTO) throws Exception {
-		if(!servicoDTO.getServico().getCliente().equals(cliente)) {
-			throw new Exception("Você só pode aceitar ofertas das suas requisições!");
-		}
+	public Servico aceitarOferta(Servico servico, Oferta oferta) throws Exception {
 
-		Oferta oferta = servicoDTO.getOferta();
-		Servico servico = getServicoByID(servicoDTO.getServico().getId());
-
-		if(oferta.getServico().getId() != servico.getId() ) {
-			throw new Exception("Essa oferta não é referente a esse serviço!");
-		}
+    	Fornecedor fornecedor = oferta.getFornecedor();
 
 		servico.setValor(oferta.getValor());
 		Servico servicoAtualizado = setServicoParaFornecedor(servico, fornecedor);
