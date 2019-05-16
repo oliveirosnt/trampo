@@ -194,19 +194,19 @@ public class Servico {
 	    if(this.status.equals(TipoStatus.AGUARDANDO_OFERTAS) || this.status.equals(TipoStatus.CANCELADO)){
             return null;
         }
-	    
+
 	    Oferta ofertaFinal = null;
 	    boolean achou = false;
 		Iterator<Oferta> iterator =  this.ofertasRecebidas.iterator();
-		
+
 		while(iterator.hasNext() && !achou) {
 			Oferta oferta = iterator.next();
 			if(oferta.getFornecedor().getId().equals(fornecedor.getId())) {
 				ofertaFinal = oferta;
-				achou = true;	
+				achou = true;
 			}
 		}
-		
+
         return ofertaFinal;
     }
 
@@ -229,7 +229,7 @@ public class Servico {
 
 	public ServicoDAO toDAO() {
 		return new ServicoDAO(this.id, this.tipo, this.descricao, this.data, this.horario, this.valor, this.endereco,
-				this.cliente, this.fornecedor, this.status, this.clienteAvaliou, this.fornecedorAvaliou);
+				this.cliente, this.fornecedor, this.status, this.clienteAvaliou, this.fornecedorAvaliou, this.ofertasRecebidas, this.getOfertaFinal());
 	}
 
 	public List<TipoUsuario> getQuemAvaliou() {
