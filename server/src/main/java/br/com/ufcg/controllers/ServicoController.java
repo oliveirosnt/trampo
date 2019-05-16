@@ -157,7 +157,7 @@ public class ServicoController {
 		}
 	}
 
-	@RequestMapping(value = "/api/servicos/cliente/aceitar_ofertar", consumes = MediaType.APPLICATION_JSON_VALUE,  produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
+	@RequestMapping(value = "/api/servicos/cliente/aceitar_oferta", consumes = MediaType.APPLICATION_JSON_VALUE,  produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
 	public ResponseEntity<Response> aceitarOferta(HttpServletRequest request, @RequestBody ServicoDTO servicoDTO) {
 		Response response;
 

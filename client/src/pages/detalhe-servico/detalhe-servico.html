@@ -36,7 +36,7 @@
                     </ion-item>
                 </ion-col>
             </ion-row>
-            <ion-row *ngIf="servico.tipoStatus != 'EM_ABERTO' && (user && user.tipo == 'CLIENTE')">
+            <ion-row *ngIf="servico.tipoStatus != 'AGUARDANDO_OFERTAS' && (user && user.tipo == 'CLIENTE')">
                 <ion-col col-12>
                     <ion-item>
                         <ion-label stacked>Nome do Fornecedor</ion-label>
@@ -44,7 +44,7 @@
                     </ion-item>
                 </ion-col>
             </ion-row>
-            <ion-row *ngIf="servico.tipoStatus != 'EM_ABERTO' && (user && user.tipo == 'FORNECEDOR')">
+            <ion-row *ngIf="servico.tipoStatus != 'AGUARDANDO_OFERTAS' && (user && user.tipo == 'FORNECEDOR')">
                 <ion-col col-12>
                     <ion-item>
                         <ion-label stacked>Nome do Cliente</ion-label>
@@ -84,13 +84,21 @@
                     </ion-item>
                 </ion-col>
             </ion-row>
-            <ion-row>
+            <ion-row *ngIf="servico.tipoStatus != 'AGUARDANDO_OFERTAS' && servico.tipoStatus != 'CANCELADO' && (servico.ofertaFinal)">
                 <ion-col col-12>
                     <ion-item>
                         <ion-label stacked>Valor do Serviço:</ion-label>
-                        <ion-label>{{ servico.valor | currency:"BRL":true:"1.2-2" }}</ion-label>
+                        <ion-label>{{ servico.ofertaFinal.valor | currency:"BRL":true:"1.2-2" }}</ion-label>
                     </ion-item>
                 </ion-col>
+            </ion-row>
+            <ion-row *ngIf="servico.tipoStatus != 'AGUARDANDO_OFERTAS' && servico.tipoStatus != 'CANCELADO' && (servico.ofertaFinal)">
+              <ion-col col-12>
+                <ion-item>
+                  <ion-label stacked>Estimativa de Conclusão</ion-label>
+                  <ion-label>{{ formataConclusaoServico() }}</ion-label>
+                </ion-item>
+              </ion-col>
             </ion-row>
             <ion-row>
                 <ion-col col-12>
@@ -124,19 +132,10 @@
               </ion-item>
             </ion-col>
           </ion-row>
-            <ion-row *ngIf="servico.tipoStatus == 'EM_ABERTO' && (user && user.tipo == 'CLIENTE')">
+            <ion-row *ngIf="servico.tipoStatus == 'AGUARDANDO_OFERTAS' && (user && user.tipo == 'CLIENTE') && servico.ofertasRecebidas.length > 0">
                 <ion-col col-12>
-                    <button class="cancelar" ion-button round full color="dark" (click)="cancelaServicoCliente(servico)">
-                        <ion-icon ios="ios-close-circle" md="md-close-circle"></ion-icon>Cancelar
-                        Serviço
-                    </button>
-                </ion-col>
-            </ion-row>
-            <ion-row *ngIf="servico.tipoStatus == 'EM_ABERTO' && (user && user.tipo == 'FORNECEDOR')">
-                <ion-col col-12>
-                    <button class="aceitar" ion-button round full color="pink" (click)="cadastrarServico(servico)">
-                        <ion-icon ios="ios-checkmark-circle-outline" md="md-checkmark-circle-outline"></ion-icon>Aceitar
-                        Serviço
+                    <button class="visualizar" ion-button round full color="pink" (click)="visualizarOfertas(servico)">
+                        <ion-icon ios="ios-eye" md="md-eye"></ion-icon>Visualizar Ofertas
                     </button>
                 </ion-col>
             </ion-row>
@@ -146,6 +145,14 @@
                         <ion-icon ios="ios-checkmark-circle-outline" md="md-checkmark-circle-outline"></ion-icon>Concluir
                     </button>
                 </ion-col>
+            </ion-row>
+            <ion-row *ngIf="servico.tipoStatus == 'AGUARDANDO_OFERTAS' && (user && user.tipo == 'CLIENTE')">
+              <ion-col col-12>
+                <button class="cancelar" ion-button round full color="dark" (click)="cancelaServicoCliente(servico)">
+                  <ion-icon ios="ios-close-circle" md="md-close-circle"></ion-icon>Cancelar
+                  Serviço
+                </button>
+              </ion-col>
             </ion-row>
         </ion-grid>
     </div>

@@ -27,7 +27,6 @@ export class DetalheServicoPage {
         descricao: "",
         data: "",
         horario: "",
-        valor: "",
         tipo: "",
         endereco: {
             rua: "",
@@ -55,7 +54,23 @@ export class DetalheServicoPage {
             avaliacao: null
         },
         isAvaliadoCliente: null,
-        isAvaliadoFornecedor: null
+        isAvaliadoFornecedor: null,
+        ofertaFinal: {
+            id: null,
+            estimativaConclusao: "",
+            descricao: "",
+            valor: "",
+            fornecedor: {
+              id: null,
+              login: "",
+              nomeCompleto: "",
+              tipo: "",
+              fotoPerfil: "",
+              email: "",
+              avaliacao: null
+            },
+        },
+        ofertasRecebidas: []
     };
 
     constructor(
@@ -68,7 +83,10 @@ export class DetalheServicoPage {
         public storageService: StorageService,
         public autenticacaoService: AutenticacaoService,
         public servicoClienteService: ServicoClienteService,
-        public servicoFornecedorService: ServicoFornecedorService) { }
+        public servicoFornecedorService: ServicoFornecedorService) {
+      this.servico = this.navParams.get('servico');
+      this.servico.ofertasRecebidas = this.navParams.get('ofertas');
+    }
 
 
     ionViewDidLoad() {
@@ -91,6 +109,10 @@ export class DetalheServicoPage {
 
     ionBackPage() {
         this.navCtrl.pop();
+    }
+
+    visualizarOfertas(servico: ServicoDTO) {
+      this.navCtrl.push('ListagemOfertasPage', { servico: this.servico, ofertas: this.servico.ofertasRecebidas} );
     }
 
     cadastrarServico(servico: ServicoDTO) {
@@ -167,4 +189,10 @@ export class DetalheServicoPage {
     avaliarServico() {
         this.navCtrl.push('AvaliacaoPage', this.servico);
     }
+
+    formataConclusaoServico() {
+        const estimativa = this.servico.ofertaFinal.estimativaConclusao.split(':');
+        return estimativa[0] + ' horas e ' + estimativa[1] + ' minutos';
+    }
+
 }

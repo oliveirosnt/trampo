@@ -146,7 +146,7 @@ public class ServicoService {
 	}
 	
 	public Servico aceitarOferta(Cliente cliente, Fornecedor fornecedor, ServicoDTO servicoDTO) throws Exception {
-		if(!servicoDTO.getServico().getCliente().equals(cliente)) {
+		if(!servicoDTO.getServico().getCliente().getEmail().equals(cliente.getEmail())) {
 			throw new Exception("Você só pode aceitar ofertas das suas requisições!");
 		}
 

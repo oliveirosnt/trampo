@@ -1,11 +1,11 @@
 import { DadosUsuarioDTO } from "./dados-usuario.dto";
+import { OfertaDTO } from "./oferta.dto";
 
 export interface ServicoDTO {
     id: number,
     descricao: string,
     data: string,
     horario: string,
-    valor: string,
     tipo: string,
     endereco: {
         rua: string,
@@ -17,5 +17,7 @@ export interface ServicoDTO {
     tipoStatus?: string,
     cliente?: DadosUsuarioDTO,
     isAvaliadoCliente: boolean,
-    isAvaliadoFornecedor: boolean
+    isAvaliadoFornecedor: boolean,
+    ofertasRecebidas?: OfertaDTO[],
+    ofertaFinal?: OfertaDTO
 }

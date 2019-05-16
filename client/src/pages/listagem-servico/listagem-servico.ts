@@ -28,7 +28,7 @@ export class ListagemServicoPage {
     avaliacao: null,
   };
   servicos: ServicoDTO[];
-  
+
 
   constructor(public navCtrl: NavController,
     public autenticacaoService: AutenticacaoService,
@@ -57,10 +57,10 @@ export class ListagemServicoPage {
           this.servicoFornecedorService.getServicos().subscribe(
             response => {
               this.servicos = response.body['data'];
-            });   
+            });
         }
       }
-    );    
+    );
   }
 
   ionBackPage(){
@@ -68,7 +68,7 @@ export class ListagemServicoPage {
   }
 
   openDetalhes(servico: ServicoDTO){
-    this.navCtrl.push('DetalheServicoPage', servico)
+    this.navCtrl.push('DetalheServicoPage', {servico: servico, ofertas: servico.ofertasRecebidas});
   }
 
 }
