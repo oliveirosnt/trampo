@@ -84,17 +84,20 @@ export class DetalheServicoPage {
         public autenticacaoService: AutenticacaoService,
         public servicoClienteService: ServicoClienteService,
         public servicoFornecedorService: ServicoFornecedorService) {
+      this.configurarServico();
+    }
+
+    configurarServico() {
       this.servico = this.navParams.get('servico');
       this.servico.ofertasRecebidas = this.navParams.get('ofertas');
     }
-
 
     ionViewDidLoad() {
         this.usuarioService.getMyUser().subscribe(
             response => {
                 this.user = response['data'];
 
-                this.servicoFornecedorService.getServicoById(this.navParams['data'].id).subscribe(
+                this.servicoFornecedorService.getServicoById(this.navParams.get('servico').id).subscribe(
                     response => {
                         this.servico = response.body['data'];
 
@@ -109,6 +112,10 @@ export class DetalheServicoPage {
 
     ionBackPage() {
         this.navCtrl.pop();
+    }
+
+    ionViewWillEnter() {
+      this.configurarServico();
     }
 
     visualizarOfertas(servico: ServicoDTO) {
@@ -187,12 +194,35 @@ export class DetalheServicoPage {
     }
 
     avaliarServico() {
-        this.navCtrl.push('AvaliacaoPage', this.servico);
+        this.navCtrl.push('AvaliacaoPage', { servico: this.servico });
     }
 
     formataConclusaoServico() {
         const estimativa = this.servico.ofertaFinal.estimativaConclusao.split(':');
         return estimativa[0] + ' horas e ' + estimativa[1] + ' minutos';
+    }
+
+    getEstadoServicoFormatado() {
+        let estado = '';
+        if(this.servico.tipoStatus === 'AGUARDANDO_OFERTAS') {
+          estado = "Aguardando Ofertas";
+        } else if (this.servico.tipoStatus === 'ACEITO') {
+          estado = "Aguardando Realização";
+        } else if (this.servico.tipoStatus === 'CANCELADO') {
+          estado = "Cancelado";
+        } else {
+          estado = "Concluído";
+        }
+
+        return estado;
+    }
+
+    getDataServicoFormatada() {
+      const partesData = this.servico.data.split('-');
+
+      const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
+      const mesIndex = parseInt(partesData[1]);
+      return partesData[2] + ' de ' + meses[mesIndex - 1] + ' de ' + partesData[0];
     }
 
 }

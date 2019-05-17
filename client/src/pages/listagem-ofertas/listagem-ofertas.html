@@ -1,3 +1,9 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Ofertas Disponíveis</ion-title>
+  </ion-navbar>
+</ion-header>
+
 <ion-content class="listagem-content">
   <page-item-oferta *ngFor="let oferta of servico.ofertasRecebidas" [oferta]="oferta" [servico]="servico"></page-item-oferta>
 </ion-content>

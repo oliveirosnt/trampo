@@ -70,8 +70,6 @@ export class ListagemOfertasPage {
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.servico = this.navParams.get('servico');
     this.servico.ofertasRecebidas = this.navParams.get('ofertas');
-    console.log('to na listagem de ofertas');
-    console.log(this.servico.ofertasRecebidas);
   }
 
   ionViewDidLoad() {

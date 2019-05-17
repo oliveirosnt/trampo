@@ -49,7 +49,7 @@ public class EspecialidadeController {
 
 	@PostConstruct
 	public void boostrapEspecialidade() {
-		String[] nomesEspecialidades = new String[] {"Encanador", "Pedreiro", "Eletricista", "Marceneiro", "Serralheiro", "Serviços Gerais", "Pintor" };
+		String[] nomesEspecialidades = new String[] {"Encanador", "Pedreiro", "Eletricista", "Marceneiro", "Serralheiro", "Serviço Geral", "Pintor" };
 
 		for (String nomeEspecialidade : nomesEspecialidades) {
 			try {

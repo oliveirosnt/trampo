@@ -2,13 +2,12 @@ package br.com.ufcg.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 
+import br.com.ufcg.domain.Avaliacao;
+import br.com.ufcg.domain.Servico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import br.com.ufcg.domain.Usuario;
 import br.com.ufcg.dto.AvaliacaoDTO;
@@ -29,14 +28,17 @@ public class AvaliacaoController {
 	@Autowired
 	UsuarioService usuarioService;
 	
-	 @PostMapping(value = "/api/usuarios/avaliacao/avaliar")
-	    public @ResponseBody ResponseEntity<Response> avaliarUsuario(HttpServletRequest request, @RequestBody AvaliacaoDTO avaliacao) {
+	 @PostMapping(value = "/api/usuarios/servicos/{servicoId}/avaliacao/avaliar")
+	    public @ResponseBody ResponseEntity<Response> avaliarUsuario(HttpServletRequest request, @PathVariable String servicoId, @RequestBody Avaliacao avaliacao) {
 	    	Response response;
 	    	
 	    	try {
+                Long servicoIdL = Long.parseLong(servicoId);
 	    		Usuario avaliador = (Usuario) request.getAttribute("user");
-	    		avaliacaoService.avaliarUsuario(avaliador, avaliacao);
-	    		response = new Response("O usuário foi avaliado com sucesso!", HttpStatus.OK.value(), avaliacao.getAvaliacao().toDAO());
+	    		Servico servico = servicoService.getServicoByID(servicoIdL);
+	    		AvaliacaoDTO avaliacaoDTO = new AvaliacaoDTO(avaliacao, servico);
+	    		avaliacaoService.avaliarUsuario(avaliador,  avaliacaoDTO);
+	    		response = new Response("O usuário foi avaliado com sucesso!", HttpStatus.OK.value(), avaliacaoDTO.getAvaliacao().toDAO());
 	    		return new ResponseEntity<>(response, HttpStatus.OK);
 	    	} catch(Exception e) {
 	    		response = new Response(e.getMessage(), HttpStatus.BAD_REQUEST.value());

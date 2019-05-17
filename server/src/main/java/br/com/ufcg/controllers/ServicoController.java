@@ -158,10 +158,12 @@ public class ServicoController {
 	}
 
 	@RequestMapping(value = "/api/cliente/servicos/{servicoId}/ofertas/{ofertaId}/aceitar", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-	public ResponseEntity<Response> aceitarOferta(HttpServletRequest request, @PathVariable Long servicoId, @PathVariable Long ofertaId) {
+	public ResponseEntity<Response> aceitarOferta(HttpServletRequest request, @PathVariable("servicoId") String servicoStringId, @PathVariable("ofertaId") String ofertaStringId) {
 		Response response;
 
 		try {
+			Long servicoId = Long.parseLong(servicoStringId);
+			Long ofertaId = Long.parseLong(ofertaStringId);
 			Cliente cliente = (Cliente) request.getAttribute("user");
 
 			Servico servico = servicoService.getServicoByID(servicoId);
@@ -285,10 +287,11 @@ public class ServicoController {
 	}
 
 	@RequestMapping(value = "/api/fornecedor/servicos/{servicoId}/ofertas", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-	public ResponseEntity<Response> cadastraOfertaNoServico(HttpServletRequest request, @PathVariable Long servicoId, @RequestBody Oferta oferta) {
+	public ResponseEntity<Response> cadastraOfertaNoServico(HttpServletRequest request, @PathVariable("servicoId") String servicoStringId, @RequestBody Oferta oferta) {
 		Response response;
 
 		try {
+			Long servicoId = Long.parseLong(servicoStringId);
 			Fornecedor fornecedor = (Fornecedor) request.getAttribute("user");
 			oferta.setFornecedor(fornecedor);
 			Servico servico = this.servicoService.adicionarOfertaNoServico(servicoId, oferta);

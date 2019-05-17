@@ -1,9 +1,3 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>Ofertas Disponíveis</ion-title>
-  </ion-navbar>
-</ion-header>
-
 <ion-content class="cards-bg">
 
   <ion-card>
@@ -28,6 +22,20 @@
       <ion-row no-padding>
         <ion-col>
           <strong>Valor proposto:</strong>
+          <p>
+            R$ {{formataDinheiro()}}
+          </p>
+        </ion-col>
+        <ion-col>
+          <strong>Estimativa de Conclusão:</strong>
+          <p>
+            {{formataConclusaoServico()}}
+          </p>
+        </ion-col>
+      </ion-row>
+      <ion-row no-padding>
+        <ion-col>
+          <strong>Avaliação do Usuário:</strong>
           <p>
             R$ {{formataDinheiro()}}
           </p>
