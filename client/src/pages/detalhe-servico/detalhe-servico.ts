@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, ViewController, ModalController, AlertController } from 'ionic-angular';
 import { NavParams } from 'ionic-angular/navigation/nav-params';
+import { Environment, LatLng } from '@ionic-native/google-maps';
 
 import { AutenticacaoService } from '../../services/autenticacao.service';
 import { StorageService } from '../../services/storage.service';
@@ -59,6 +60,8 @@ export class DetalheServicoPage {
         isAvaliadoFornecedor: null
     };
 
+    map: any
+
     constructor(
         public viewCtrl: ViewController,
         public alertCtrl: AlertController,
@@ -73,6 +76,7 @@ export class DetalheServicoPage {
 
 
     ionViewDidLoad() {
+        this.loadMap()
         this.usuarioService.getMyUser().subscribe(
             response => {
                 this.user = response['data'];
@@ -167,5 +171,24 @@ export class DetalheServicoPage {
 
     avaliarServico() {
         this.navCtrl.push('AvaliacaoPage', this.servico);
+    }
+    loadMap() {
+
+        // This code is necessary for browser
+        Environment.setEnv({
+          'API_KEY_FOR_BROWSER_RELEASE': 'AIzaSyBTyczdC5fDO-MkSilkJynkL8IXrN6HDIk',
+          'API_KEY_FOR_BROWSER_DEBUG': 'AIzaSyBTyczdC5fDO-MkSilkJynkL8IXrN6HDIk'
+        });
+    
+        this.map = new google.maps.Map(document.getElementById('map_canvas'), {
+            center: this.servico.endereco.location,
+            zoom: 12,
+            disableDefaultUI: true,
+          });
+        
+        var marker = new google.maps.Marker();
+        marker.setMap(this.map)
+        marker.setPosition(this.servico.endereco.location);
+        marker.setVisible(true);
     }
 }

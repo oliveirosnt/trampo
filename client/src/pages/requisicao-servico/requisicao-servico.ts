@@ -72,29 +72,27 @@ export class RequisicaoServicoPage {
     }
 
     cadastrar(servico: ServicoDTO) {
-        servico.endereco = endereco;
-        console.log(servico);
-        // this.cadastroServService.cadastraServicoCliente(servico).subscribe(
-        //     response => {
-        //         let alertMessage = this.alertCtrl.create({
-        //             message: response.body['message'],
-        //             buttons: [{
-        //                 text: 'Ok'
-        //             }]
-        //         });
-        //         alertMessage.present();
-        //         this.navCtrl.setRoot('HomePage');
-        //     },
-        //     error => {
-        //         let alertMessage = this.alertCtrl.create({
-        //             message: error.error['message'],
-        //             buttons: [{
-        //                 text: 'Ok'
-        //             }]
-        //         });
-        //         alertMessage.present();
-        //     }
-        // );
+        this.cadastroServService.cadastraServicoCliente(servico).subscribe(
+            response => {
+                let alertMessage = this.alertCtrl.create({
+                    message: response.body['message'],
+                    buttons: [{
+                        text: 'Ok'
+                    }]
+                });
+                alertMessage.present();
+                this.navCtrl.setRoot('HomePage');
+            },
+            error => {
+                let alertMessage = this.alertCtrl.create({
+                    message: error.error['message'],
+                    buttons: [{
+                        text: 'Ok'
+                    }]
+                });
+                alertMessage.present();
+            }
+        );
     }
 
     isEnabled() {
