@@ -8,11 +8,13 @@ import { ServicoDTO } from '../../models/servico.dto';
 import { ServicoClienteService } from '../../services/servico-cliente.service';
 import { UsuarioService } from '../../services/usuario.service';
 
+var endereco: any;
 @IonicPage()
 @Component({
     selector: 'page-requisicao',
     templateUrl: 'requisicao-servico.html',
 })
+
 export class RequisicaoServicoPage {
 
     minData = null;
@@ -35,8 +37,6 @@ export class RequisicaoServicoPage {
         isAvaliadoCliente: null,
         isAvaliadoFornecedor: null
     }
-
-    endereco: any;
 
     constructor(public navCtrl: NavController,
         public autenticacaoService: AutenticacaoService,
@@ -72,7 +72,7 @@ export class RequisicaoServicoPage {
     }
 
     cadastrar(servico: ServicoDTO) {
-        servico.endereco = this.endereco;
+        servico.endereco = endereco;
         console.log(servico);
         // this.cadastroServService.cadastraServicoCliente(servico).subscribe(
         //     response => {
@@ -99,7 +99,7 @@ export class RequisicaoServicoPage {
 
     isEnabled() {
         return (this.dados_servico.data && this.dados_servico.horario && this.dados_servico.valor && this.dados_servico.tipo
-            && this.endereco)
+            && endereco)
     }
 
     loadMap() {
@@ -170,12 +170,12 @@ export class RequisicaoServicoPage {
             infowindowContent.children['place-address'].textContent = address;
             infowindow.open(this.map, marker);
 
-            this.endereco = {
+            endereco = {
                 nome: "",
                 location: null,
             }
-            this.endereco.location = place.geometry.location.toJSON();
-            this.endereco.nome = address;
+            endereco.location = place.geometry.location.toJSON();
+            endereco.nome = address;
             console.log(this.dados_servico);
           });
         }  
