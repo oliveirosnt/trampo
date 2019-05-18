@@ -24,10 +24,11 @@ export class AvaliacaoPage {
         valor: "",
         tipo: "",
         endereco: {
-            rua: "",
-            bairro: "",
-            numero: "",
-            complemento: ""
+            nome: "",
+            location : {
+                lat: null,
+                lng: null,
+            }
         },
         tipoStatus: "",
         fornecedor: {
