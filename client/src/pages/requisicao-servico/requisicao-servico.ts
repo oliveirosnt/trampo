@@ -8,7 +8,6 @@ import { ServicoDTO } from '../../models/servico.dto';
 import { ServicoClienteService } from '../../services/servico-cliente.service';
 import { UsuarioService } from '../../services/usuario.service';
 
-var endereco: any;
 @IonicPage()
 @Component({
     selector: 'page-requisicao',
@@ -55,6 +54,21 @@ export class RequisicaoServicoPage {
             this.user = localUser.username.split(" ")[0];
         }
 
+        this.dados_servico = {
+          id: null,
+          descricao: "",
+          data: "",
+          horario: "",
+          tipo: "",
+          endereco: {
+            nome: "",
+            location : null,
+            pontoReferencia: ""
+          },
+          isAvaliadoCliente: null,
+          isAvaliadoFornecedor: null
+        };
+
         this.loadMap();
     }
 
@@ -96,7 +110,7 @@ export class RequisicaoServicoPage {
 
     isEnabled() {
         return (this.dados_servico.data && this.dados_servico.horario && this.dados_servico.tipo
-            && endereco)
+            && this.dados_servico.endereco.nome && this.dados_servico.endereco.location)
     }
 
     loadMap() {
@@ -110,7 +124,9 @@ export class RequisicaoServicoPage {
         this.map = new google.maps.Map(document.getElementById('map_canvas'), {
             center: {lat: -7.229075, lng: -35.880834},
             zoom: 12,
-            disableDefaultUI: true,
+            disableDefaultUI: false,
+            streetViewControl: false,
+            mapTypeControl: false
           });
 
         var input = document.getElementById('loc-input').getElementsByTagName('input')[0];
@@ -128,9 +144,61 @@ export class RequisicaoServicoPage {
         var infowindowContent = document.getElementById('infowindow-content');
         infowindow.setContent(infowindowContent);
         var marker = new google.maps.Marker();
-        marker.setMap(this.map)
+        marker.setMap(this.map);
+        marker.setTitle('Local do Serviço');
+        let geocoder = new google.maps.Geocoder;
 
-        autocomplete.addListener('place_changed', function() {
+        marker.addListener('click', function() {
+          this.map.setZoom(17);
+          this.map.setCenter(marker.getPosition());
+        });
+
+      marker.addListener('dragend', (event) => {
+          marker.setPosition(event.latLng);
+          marker.setVisible(true);
+          marker.setDraggable(true);
+          geocoder.geocode({'location': event.latLng}, (results, status) => {
+            let inputs = [];
+            inputs.push(document.querySelector('#loc-input > input'));
+            inputs[0].value = results[0].formatted_address;
+            const endereco: any = {
+              nome: results[0].formatted_address,
+              location: {
+                lat: parseFloat(JSON.stringify(event.latLng.lat())),
+                lng: parseFloat(JSON.stringify(event.latLng.lng()))
+              },
+            };
+
+            this.dados_servico.endereco = endereco;
+          });
+          this.map.setZoom(17);
+          this.map.setCenter(marker.getPosition());
+      });
+
+
+      this.map.addListener('click', (event) => {
+            marker.setPosition(event.latLng);
+            marker.setVisible(true);
+            marker.setDraggable(true);
+            geocoder.geocode({'location': event.latLng}, (results, status) => {
+              let inputs = [];
+              inputs.push(document.querySelector('#loc-input > input'));
+              inputs[0].value = results[0].formatted_address;
+              const endereco: any = {
+                nome: results[0].formatted_address,
+                location: {
+                  lat: parseFloat(JSON.stringify(event.latLng.lat())),
+                  lng: parseFloat(JSON.stringify(event.latLng.lng()))
+                },
+              };
+
+              this.dados_servico.endereco = endereco;
+            });
+            this.map.setZoom(17);
+            this.map.setCenter(marker.getPosition());
+        });
+
+        autocomplete.addListener('place_changed', () => {
             infowindow.close();
             marker.setVisible(false);
             var place = autocomplete.getPlace();
@@ -145,13 +213,16 @@ export class RequisicaoServicoPage {
                 alertMessage.present();
               return;
             }
+
             if (!place.geometry.viewport) {
                 this.map.setCenter(place.geometry.location);
                 this.map.setZoom(17);  // Why 17? Because it looks good.
             }
 
+
             marker.setPosition(place.geometry.location);
             marker.setVisible(true);
+            marker.setDraggable(true);
 
             var address = '';
             if (place.address_components) {
@@ -167,12 +238,13 @@ export class RequisicaoServicoPage {
             infowindowContent.children['place-address'].textContent = address;
             infowindow.open(this.map, marker);
 
-            endereco = {
+            const endereco: any = {
                 nome: "",
                 location: null,
             }
             endereco.location = place.geometry.location.toJSON();
             endereco.nome = address;
+            this.dados_servico.endereco = endereco;
           });
         }
 }
