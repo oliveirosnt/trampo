@@ -6,6 +6,7 @@ import br.com.ufcg.domain.Avaliacao;
 import br.com.ufcg.domain.Servico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,8 @@ import br.com.ufcg.services.AvaliacaoService;
 import br.com.ufcg.services.ServicoService;
 import br.com.ufcg.services.UsuarioService;
 import br.com.ufcg.util.response.Response;
+
+import java.util.HashMap;
 
 @RestController
 public class AvaliacaoController {
@@ -61,6 +64,28 @@ public class AvaliacaoController {
 	    		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	    	}
 	    }
+
+		@RequestMapping(value = "/api/usuarios/avaliacao", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+        public @ResponseBody ResponseEntity<Response> getAvaliacoesMedia(@RequestParam("logins") String[] logins){
+            Response response;
+             try {
+                 HashMap<String, Double> loginsComAvaliacao = new HashMap<>();
+                 for(String login: logins) {
+                     Usuario user = usuarioService.getByLogin(login.toLowerCase());
+                     Double mediaAvaliacoes = avaliacaoService.calcularAvaliacaoMedia(user);
+                     loginsComAvaliacao.put(login, mediaAvaliacoes);
+                 }
+
+                 response = new Response("Média das avaliações calculada com sucesso!", HttpStatus.OK.value(), loginsComAvaliacao);
+                 return new ResponseEntity<>(response, HttpStatus.OK);
+             } catch(Exception e) {
+                 response = new Response(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+                 return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+             }
+
+        }
+
+
 	    
 	    
 }

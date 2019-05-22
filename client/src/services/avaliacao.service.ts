@@ -25,4 +25,19 @@ export class AvaliacaoService {
                 responseType: 'json'
             });
     }
+
+    getAvaliacoesUsuario(listaLogins) {
+      let logins = '';
+      for(let i = 0; i < (listaLogins.length - 1); i ++) {
+          logins += listaLogins[i] + ',';
+      }
+
+      logins += listaLogins[listaLogins.length - 1];
+
+      return this.http.get(`${API_CONFIG.baseUrl}/api/usuarios/avaliacao?logins=${logins}`,
+        {
+          observe: 'response',
+          responseType: 'json'
+        });
+    }
 }

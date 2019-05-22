@@ -34,18 +34,29 @@
         </ion-col>
       </ion-row>
       <ion-row no-padding>
-        <ion-col>
+        <ion-col *ngIf="oferta.fornecedor.avaliacao > 0; else noRating">
           <strong>Avaliação do Usuário:</strong>
-          <p>
-            R$ {{formataDinheiro()}}
-          </p>
+          <ion-row>
+            <span class="stars align" >
+              <span   [ngStyle]="{ 'width': getMediaAvaliacao(oferta.fornecedor.avaliacao) }"></span>
+            </span>
+            <span>&ensp; {{ oferta.fornecedor.avaliacao | number: '1.2-2'}}</span>
+          </ion-row>
         </ion-col>
+        <ng-template #noRating>
+          <ion-col>
+            <strong>Avaliação do Usuário:</strong>
+            <span>Usuário ainda não foi avaliado</span>
+          </ion-col>
+        </ng-template>
         <ion-col>
-          <strong>Estimativa de Conclusão:</strong>
-          <p>
-            {{formataConclusaoServico()}}
-          </p>
+          <strong>Especialidades</strong>
+          <p *ngFor="let especialidade of oferta.fornecedor.listaEspecialidades"> <b>*</b> {{
+            especialidade.nome }} </p>
         </ion-col>
+      </ion-row>
+      <ion-row>
+
       </ion-row>
 
     </ion-card-content>

@@ -61,4 +61,9 @@ export class ItemOfertaPage {
       }
     )
   }
+
+  getMediaAvaliacao(nota: number) {
+    return ((nota/5.0)*100) + '%';
+
+  }
 }
