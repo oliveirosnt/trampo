@@ -46,7 +46,10 @@ export class ItemOfertaPage {
           }]
         });
         alertMessage.present();
-        this.navCtrl.setRoot('ListagemServicoPage');
+        const servicoAtualizado = response.body['data'];
+        this.navCtrl.getPrevious()['data']['servico'] = servicoAtualizado;
+        this.navCtrl.getPrevious()['data']['ofertas'] = servicoAtualizado.ofertasRecebidas;
+        this.navCtrl.pop();
       }, error => {
         let alertMessage = this.alertCtrl.create({
           message: error.error['message'],
@@ -59,4 +62,8 @@ export class ItemOfertaPage {
     )
   }
 
+  getMediaAvaliacao(nota: number) {
+    return ((nota/5.0)*100) + '%';
+
+  }
 }

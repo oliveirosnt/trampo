@@ -51,12 +51,8 @@ export class AvaliacaoPage {
         isAvaliadoFornecedor: null
     };
 
-    avaliar: AvaliacaoDTO = {
-        avaliacao: {
-            id: null,
-            nota: null
-        },
-        servico: this.servico
+    avaliacao: any = {
+      nota: 0
     };
 
     constructor(
@@ -69,7 +65,7 @@ export class AvaliacaoPage {
     }
 
   ionViewDidLoad() {
-      this.servico = this.navParams['data'];
+      this.servico = this.navParams.get('servico');
 
       const usuario = this.storageService.getLocalUser()["user"]
 
@@ -86,9 +82,9 @@ export class AvaliacaoPage {
       }
   }
 
-    confirmarAvaliacao(avaliar: AvaliacaoDTO) {
-        avaliar.servico = this.servico;
-        this.avaliacaoService.avaliacaoServico(avaliar).subscribe(
+    confirmarAvaliacao(avaliacao: any) {
+
+        this.avaliacaoService.avaliacaoServico(this.servico.id, avaliacao).subscribe(
             response => {
                 let alertMessage = this.alertCtrl.create({
                     message: response.body['message'],

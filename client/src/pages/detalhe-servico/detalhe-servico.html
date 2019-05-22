@@ -31,24 +31,8 @@
             <ion-row>
                 <ion-col col-12>
                     <ion-item>
-                        <ion-label stacked>Status</ion-label>
-                        <ion-label>{{ servico.tipoStatus }}</ion-label>
-                    </ion-item>
-                </ion-col>
-            </ion-row>
-            <ion-row *ngIf="servico.tipoStatus != 'AGUARDANDO_OFERTAS' && (user && user.tipo == 'CLIENTE')">
-                <ion-col col-12>
-                    <ion-item>
-                        <ion-label stacked>Nome do Fornecedor</ion-label>
-                        <ion-label>{{ servico.fornecedor?.nomeCompleto || "Nenhum fornecedor havia aceitado o serviço" }}</ion-label>
-                    </ion-item>
-                </ion-col>
-            </ion-row>
-            <ion-row *ngIf="servico.tipoStatus != 'AGUARDANDO_OFERTAS' && (user && user.tipo == 'FORNECEDOR')">
-                <ion-col col-12>
-                    <ion-item>
-                        <ion-label stacked>Nome do Cliente</ion-label>
-                        <ion-label>{{ servico.cliente.nomeCompleto }}</ion-label>
+                        <ion-label stacked>Estado</ion-label>
+                        <ion-label>{{ this.getEstadoServicoFormatado() }}</ion-label>
                     </ion-item>
                 </ion-col>
             </ion-row>
@@ -72,7 +56,7 @@
                 <ion-col col-12>
                     <ion-item>
                         <ion-label stacked>Data do Serviço</ion-label>
-                        <ion-label>{{ servico.data }}</ion-label>
+                        <ion-label>{{ this.getDataServicoFormatada() }}</ion-label>
                     </ion-item>
                 </ion-col>
             </ion-row>
@@ -84,22 +68,11 @@
                     </ion-item>
                 </ion-col>
             </ion-row>
-            <ion-row *ngIf="servico.tipoStatus != 'AGUARDANDO_OFERTAS' && servico.tipoStatus != 'CANCELADO' && (servico.ofertaFinal)">
-                <ion-col col-12>
-                    <ion-item>
-                        <ion-label stacked>Valor do Serviço:</ion-label>
-                        <ion-label>{{ servico.ofertaFinal.valor | currency:"BRL":true:"1.2-2" }}</ion-label>
-                    </ion-item>
-                </ion-col>
-            </ion-row>
-            <ion-row *ngIf="servico.tipoStatus != 'AGUARDANDO_OFERTAS' && servico.tipoStatus != 'CANCELADO' && (servico.ofertaFinal)">
-              <ion-col col-12>
-                <ion-item>
-                  <ion-label stacked>Estimativa de Conclusão</ion-label>
-                  <ion-label>{{ formataConclusaoServico() }}</ion-label>
-                </ion-item>
-              </ion-col>
-            </ion-row>
+          <ion-row>
+            <ion-col col-12>
+              <span><strong>Endereço:</strong></span>
+            </ion-col>
+          </ion-row>
             <ion-row>
                 <ion-col col-12>
                     <ion-item>
@@ -129,6 +102,56 @@
               <ion-item>
                 <ion-label stacked>Complemento</ion-label>
                 <ion-label>{{ servico.endereco.complemento }}</ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="servico.tipoStatus != 'AGUARDANDO_OFERTAS' && servico.tipoStatus != 'CANCELADO' && (servico.ofertaFinal)">
+            <ion-col col-12>
+              <span><strong>Oferta feita pelo Fornecedor:</strong></span>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="servico.tipoStatus != 'AGUARDANDO_OFERTAS' && (user && user.tipo == 'CLIENTE')">
+            <ion-col col-12>
+              <ion-item>
+                <ion-label stacked>Nome do Fornecedor</ion-label>
+                <ion-label>{{ servico.fornecedor?.nomeCompleto || "Nenhum fornecedor havia aceitado o serviço" }}</ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="servico.tipoStatus != 'AGUARDANDO_OFERTAS' && servico.tipoStatus != 'CANCELADO' && (servico.ofertaFinal)">
+            <ion-col col-12>
+              <ion-item>
+                <ion-label stacked>Descrição do orçamento:</ion-label>
+                <ion-label>{{ servico.ofertaFinal.descricao }}</ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="servico.tipoStatus != 'AGUARDANDO_OFERTAS' && servico.tipoStatus != 'CANCELADO' && (servico.ofertaFinal)">
+            <ion-col col-12>
+              <ion-item>
+                <ion-label stacked>Valor do Serviço:</ion-label>
+                <ion-label>{{ servico.ofertaFinal.valor | currency:"BRL":true:"1.2-2" }}</ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="servico.tipoStatus != 'AGUARDANDO_OFERTAS' && servico.tipoStatus != 'CANCELADO' && (servico.ofertaFinal)">
+            <ion-col col-12>
+              <ion-item>
+                <ion-label stacked>Estimativa de Conclusão</ion-label>
+                <ion-label>{{ formataConclusaoServico() }}</ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="servico.tipoStatus != 'AGUARDANDO_OFERTAS' && (user && user.tipo == 'FORNECEDOR')">
+            <ion-col col-12>
+              <span><strong>Dados do Cliente:</strong></span>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="servico.tipoStatus != 'AGUARDANDO_OFERTAS' && (user && user.tipo == 'FORNECEDOR')">
+            <ion-col col-12>
+              <ion-item>
+                <ion-label stacked>Nome do Cliente</ion-label>
+                <ion-label>{{ servico.cliente.nomeCompleto }}</ion-label>
               </ion-item>
             </ion-col>
           </ion-row>
