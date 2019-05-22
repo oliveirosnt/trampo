@@ -33,9 +33,7 @@ public class ServicoValidador {
         validaDescricao(servico.getDescricao());
      
         UtilCampos.validaTamanhoCampo(servico.getTipo(), 5, 20, "Tipo Serviço");
-        UtilCampos.validaTamanhoCampo(servico.getEndereco().getBairro(), 2, 255, "Bairro");
-        UtilCampos.validaTamanhoCampo(servico.getEndereco().getRua(), 2, 255, "Rua");
-        UtilCampos.validaTamanhoCampo(servico.getEndereco().getNumero(), 0, 6, "Número da Residência");
+        UtilCampos.validaTamanhoCampo(servico.getEndereco().getNome(), 4, 20, "Nome do endereço");
         UtilCampos.validaTamanhoCampo(servico.getDescricao(), 8, 255, "Descrição do serviço");
     }
 
