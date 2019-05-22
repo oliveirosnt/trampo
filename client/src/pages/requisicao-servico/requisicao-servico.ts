@@ -108,7 +108,7 @@ export class RequisicaoServicoPage {
         });
 
         this.map = new google.maps.Map(document.getElementById('map_canvas'), {
-            center: {lat: -33.8688, lng: 151.2195},
+            center: {lat: -7.229075, lng: -35.880834},
             zoom: 12,
             disableDefaultUI: true,
           });
