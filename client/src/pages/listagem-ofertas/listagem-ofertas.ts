@@ -104,10 +104,6 @@ export class ListagemOfertasPage {
     for(let i = 0; i < this.servico.ofertasRecebidas.length; i ++) {
       const loginFornecedor = this.servico.ofertasRecebidas[i].fornecedor.login;
       let avaliacao = avaliacoes[loginFornecedor];
-
-      if(!(avaliacao >='0' && avaliacao <= '9')) { // Se não for um numero
-          avaliacao = 0;
-      }
       this.servico.ofertasRecebidas[i].fornecedor.avaliacao = avaliacao;
     }
   }
