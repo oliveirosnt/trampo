@@ -70,40 +70,32 @@
             </ion-row>
           <ion-row>
             <ion-col col-12>
-              <span><strong>Endereço:</strong></span>
+              <span><strong>Localização:</strong></span>
             </ion-col>
           </ion-row>
-            <ion-row>
-                <ion-col col-12>
-                    <ion-item>
-                        <ion-label stacked>Bairro</ion-label>
-                        <ion-label>{{ servico.endereco.bairro }}</ion-label>
-                    </ion-item>
-                </ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col col-12>
-                    <ion-item>
-                        <ion-label stacked>Rua</ion-label>
-                        <ion-label>{{ servico.endereco.rua }}</ion-label>
-                    </ion-item>
-                </ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col col-12>
-                    <ion-item>
-                        <ion-label stacked>Número</ion-label>
-                        <ion-label>{{ servico.endereco.numero }}</ion-label>
-                    </ion-item>
-                </ion-col>
-            </ion-row>
+          <ion-row>
+            <ion-col col-12>
+                <ion-item>
+                    <ion-label stacked>Endereço</ion-label>
+                    <ion-label>{{ servico.endereco.nome }}</ion-label>
+                </ion-item>
+            </ion-col>
+          </ion-row>
           <ion-row>
             <ion-col col-12>
               <ion-item>
-                <ion-label stacked>Complemento</ion-label>
-                <ion-label>{{ servico.endereco.complemento }}</ion-label>
+                <ion-label stacked>Ponto de Referência</ion-label>
+                <ion-label>{{ servico.endereco.pontoReferencia }}</ion-label>
               </ion-item>
             </ion-col>
+          </ion-row>
+          <ion-row justify-content-center align-items-center>
+            <div id="infowindow-content">
+              <img src="" width="16" height="16" id="place-icon">
+              <span id="place-name"  class="title"></span><br>
+              <span id="place-address"></span>
+            </div>
+            <div id="map_canvas"></div>
           </ion-row>
           <ion-row *ngIf="servico.tipoStatus != 'AGUARDANDO_OFERTAS' && servico.tipoStatus != 'CANCELADO' && (servico.ofertaFinal)">
             <ion-col col-12>

@@ -8,10 +8,12 @@ export interface ServicoDTO {
     horario: string,
     tipo: string,
     endereco: {
-        rua: string,
-        bairro: string,
-        numero: string,
-        complemento: string
+        nome: string
+        location : {
+            lat: number,
+            lng: number,
+        },
+        pontoReferencia: string
     },
     fornecedor?: DadosUsuarioDTO,
     tipoStatus?: string,
