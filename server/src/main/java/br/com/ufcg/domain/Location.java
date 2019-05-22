@@ -20,10 +20,10 @@ public class Location {
 	    private Long id;
 		
 		@Column(name = "TX_LAT", nullable = false)
-		private String lat;
+		private Double lat;
 		
 		@Column(name = "TX_LNG", nullable = false) 
-		private String lng;
+		private Double lng;
 		
 		public Location() {}
 
@@ -35,19 +35,19 @@ public class Location {
 			this.id = id;
 		}
 
-		public String getLat() {
+		public Double getLat() {
 			return lat;
 		}
 
-		public void setLat(String lat) {
+		public void setLat(Double lat) {
 			this.lat = lat;
 		}
 
-		public String getLng() {
+		public Double getLng() {
 			return lng;
 		}
 
-		public void setLng(String lng) {
+		public void setLng(Double lng) {
 			this.lng = lng;
 		}
 
