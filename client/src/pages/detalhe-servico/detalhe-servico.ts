@@ -9,7 +9,6 @@ import { UsuarioService } from '../../services/usuario.service';
 import { ServicoFornecedorService } from '../../services/servico-fornecedor.service';
 import { ServicoClienteService } from '../../services/servico-cliente.service';
 
-
 import { ServicoDTO } from '../../models/servico.dto';
 import { DadosUsuarioDTO } from '../../models/dados-usuario.dto';
 
@@ -22,6 +21,7 @@ export class DetalheServicoPage {
 
     nomeFornecedor: string;
     user: DadosUsuarioDTO;
+    tipoUsuario: string;
 
     servico: ServicoDTO = {
         id: null,
@@ -102,7 +102,7 @@ export class DetalheServicoPage {
         this.usuarioService.getMyUser().subscribe(
             response => {
                 this.user = response['data'];
-
+                this.tipoUsuario = response['data']['tipo'];
                 this.servicoFornecedorService.getServicoById(this.navParams.get('servico').id).subscribe(
                     response => {
                         this.servico = response.body['data'];
@@ -248,6 +248,10 @@ export class DetalheServicoPage {
       const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
       const mesIndex = parseInt(partesData[1]);
       return partesData[2] + ' de ' + meses[mesIndex - 1] + ' de ' + partesData[0];
+    }
+
+    adicionarOferta() {
+        this.navCtrl.push('CadastroOfertaPage', { servico: this.servico });
     }
 
 }

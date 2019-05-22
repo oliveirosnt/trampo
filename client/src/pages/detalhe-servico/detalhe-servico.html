@@ -171,4 +171,10 @@
             </ion-row>
         </ion-grid>
     </div>
+
+    <ion-fab right bottom *ngIf="tipoUsuario == 'FORNECEDOR'">
+        <button class="add" ion-fab color="green" (click)="adicionarOferta()">
+            <ion-icon name="add"></ion-icon>
+        </button>
+    </ion-fab>
 </ion-content>
