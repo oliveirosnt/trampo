@@ -33,14 +33,14 @@
             <ion-col col-12>
               <ion-item>
                 <ion-label stacked>Estimativa de Conclusão:</ion-label>
-                <ion-datetime displayFormat="HH:mm " pickerFormat="HH mm" min="07:00" max="20:00" doneText="Ok" cancelText="Cancelar" placeholder="Informe o tempo estimado para conclusão" name="horario" [(ngModel)]="oferta.estimativaConclusao"></ion-datetime>
+                <ion-datetime displayFormat="HH:mm " pickerFormat="HH mm" min="00:15" max="24:00" doneText="Ok" cancelText="Cancelar" placeholder="Informe o tempo estimado para conclusão" name="horario" [(ngModel)]="oferta.estimativaConclusao"></ion-datetime>           
               </ion-item>
             </ion-col>
           </ion-row>
           <ion-row>
             <ion-col col-12>
               <ion-item>
-                <ion-label stacked>Descrição</ion-label>
+                <ion-label stacked>Descrição da Oferta</ion-label>
                 <ion-input type="text" name="descricao" placeholder="Informe a descrição da oferta" [(ngModel)]="oferta.descricao"></ion-input>
               </ion-item>
             </ion-col>

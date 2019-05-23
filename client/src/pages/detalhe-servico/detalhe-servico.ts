@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, ViewController, ModalController, AlertController } from 'ionic-angular';
 import { NavParams } from 'ionic-angular/navigation/nav-params';
-import { Environment, LatLng } from '@ionic-native/google-maps';
+import { Environment } from '@ionic-native/google-maps';
 
 import { AutenticacaoService } from '../../services/autenticacao.service';
 import { StorageService } from '../../services/storage.service';
