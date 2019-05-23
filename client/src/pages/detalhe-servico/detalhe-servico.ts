@@ -240,6 +240,8 @@ export class DetalheServicoPage {
         marker.setMap(this.map)
         marker.setPosition(this.servico.endereco.location);
         marker.setVisible(true);
+        this.map.setZoom(17);
+        this.map.setCenter(marker.getPosition());
     }
 
     getDataServicoFormatada() {

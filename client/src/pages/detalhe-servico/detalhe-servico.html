@@ -172,7 +172,7 @@
         </ion-grid>
     </div>
 
-    <ion-fab right bottom *ngIf="tipoUsuario == 'FORNECEDOR'">
+    <ion-fab right bottom *ngIf="tipoUsuario == 'FORNECEDOR' && servico.tipoStatus == 'AGUARDANDO_OFERTAS'">
         <button class="add" ion-fab color="green" (click)="adicionarOferta()">
             <ion-icon name="add"></ion-icon>
         </button>
