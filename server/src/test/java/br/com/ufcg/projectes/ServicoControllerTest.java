@@ -122,14 +122,10 @@ public class ServicoControllerTest {
 		uc.cadastrarFornecedor((Fornecedor) fornecedor2);
 		
 		endereco1 = new Endereco();
-		endereco1.setBairro("liberdade");
-		endereco1.setRua("rua souza e lima");
-		endereco1.setNumero("129");
+		
 		
 		endereco2 = new Endereco();
-		endereco2.setBairro("catole");
-		endereco2.setNumero("456");
-		endereco2.setRua("rua francisco");
+		
 		
 		data1 = LocalDate.now().plusDays(40);
 		data2 = LocalDate.now().plusDays(5);

@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {ServicoDTO} from "../../models/servico.dto";
+import { ServicoDTO } from "../../models/servico.dto";
 import {AvaliacaoService} from "../../services/avaliacao.service";
-
 
 @IonicPage()
 @Component({

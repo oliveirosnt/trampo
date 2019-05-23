@@ -1,8 +1,8 @@
-import {Component, Input} from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
-import {ServicoDTO} from "../../../models/servico.dto";
-import {OfertaDTO} from "../../../models/oferta.dto";
-import {ServicoClienteService} from "../../../services/servico-cliente.service";
+import { Component, Input } from '@angular/core';
+import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { ServicoDTO } from "../../../models/servico.dto";
+import { OfertaDTO } from "../../../models/oferta.dto";
+import { ServicoClienteService } from "../../../services/servico-cliente.service";
 
 @IonicPage()
 @Component({

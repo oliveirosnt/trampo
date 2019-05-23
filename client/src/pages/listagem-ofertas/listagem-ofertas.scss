@@ -1,28 +1,58 @@
 page-listagem-ofertas {
-  font-family: Dessau-Light;
+    font-family: Dessau-Light;
 
-  ion-header.listagem-header {
-    color:  white;
-    font-weight: bold;
+    ion-header.listagem-ofertas-header {
+        color:  white;
+        font-weight: bold;
 
-    .title-header {
-      display: table;
-      font-size: 1.5em;
-      font-weight: bold;
-      width: 100%;
+        .title-header {
+            display: table;
+            font-size: 1.5em;
+            font-weight: bold;
+            width: 100%;
 
-      button {
-        float: left;
-      }
+            button {
+                float: left;
+            }
 
-      .title-text {
-        align-items: center;
-        height: 32px;
-      }
+            .title-text {
+                align-items: center; 
+                height: 32px;
+            }
+        }
+
+        .toolbar-md {
+            height: 56px;
+        }
     }
 
-    .toolbar-md {
-      height: 56px;
+    ion-content.listagem-ofertas-content {
+        ion-avatar {
+            background-color: #e0e0e0;
+            display: table;
+            text-align: center;
+            width: 100%;
+
+            ion-icon {
+                font-size: 25vh;
+            }
+        }
+
+        ion-label {
+            color: black !important;
+            margin: 0 8px 11px 0;
+        }
     }
-  }
+
+    input {
+        text-overflow: ellipsis;
+    }
+
+    button.confirmar {
+        font-weight: bold;
+        
+        ion-icon {
+            margin-right: 10px;
+        }
+    }
 }

@@ -1,9 +1,9 @@
-<ion-header>
+<ion-header class="listagem-ofertas-header">
   <ion-navbar>
     <ion-title>Ofertas Disponíveis</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content class="listagem-content">
+<ion-content class="listagem-ofertas-content">
   <page-item-oferta *ngFor="let oferta of getOfertasOrdenadasPorAvaliacao()" [oferta]="oferta" [servico]="servico"></page-item-oferta>
 </ion-content>
