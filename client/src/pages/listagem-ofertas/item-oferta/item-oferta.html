@@ -1,0 +1,75 @@
+<ion-content class="cards-bg">
+
+  <ion-card>
+
+    <ion-card-content>
+      <ion-card-title>
+        Oferta do Fornecedor <strong>{{oferta.fornecedor.nomeCompleto}}</strong>
+      </ion-card-title>
+      <ion-row>
+        <ion-col col-12 class="profile-avatar">
+          <img src="{{oferta.fornecedor.fotoPerfil === '' ? imgPerfil : oferta.fornecedor.fotoPerfil}}">
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <strong>Descrição:</strong>
+          <p style="text-align: justify;">
+            {{oferta.descricao}}
+          </p>
+        </ion-col>
+      </ion-row>
+      <ion-row no-padding>
+        <ion-col>
+          <strong>Valor proposto:</strong>
+          <p>
+            R$ {{formataDinheiro()}}
+          </p>
+        </ion-col>
+        <ion-col>
+          <strong>Estimativa de Conclusão:</strong>
+          <p>
+            {{formataConclusaoServico()}}
+          </p>
+        </ion-col>
+      </ion-row>
+      <ion-row no-padding>
+        <ion-col *ngIf="oferta.fornecedor.avaliacao > 0; else noRating">
+          <strong>Avaliação do Usuário:</strong>
+          <ion-row>
+            <span class="stars align" >
+              <span   [ngStyle]="{ 'width': getMediaAvaliacao(oferta.fornecedor.avaliacao) }"></span>
+            </span>
+            <span>&ensp; {{ oferta.fornecedor.avaliacao | number: '1.2-2'}}</span>
+          </ion-row>
+        </ion-col>
+        <ng-template #noRating>
+          <ion-col>
+            <strong>Avaliação do Usuário:</strong>
+            <span>Usuário ainda não foi avaliado</span>
+          </ion-col>
+        </ng-template>
+        <ion-col>
+          <strong>Especialidades</strong>
+          <p *ngFor="let especialidade of oferta.fornecedor.listaEspecialidades"> <b>*</b> {{
+            especialidade.nome }} </p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+
+      </ion-row>
+
+    </ion-card-content>
+
+    <ion-row no-padding>
+      <ion-col>
+        <button ion-button clear small color="danger" icon-start (click)="aceitarOferta()">
+          <ion-icon ios="ios-checkmark" md='md-checkmark'></ion-icon>
+          Aceitar Oferta
+        </button>
+      </ion-col>
+    </ion-row>
+
+  </ion-card>
+
+</ion-content>

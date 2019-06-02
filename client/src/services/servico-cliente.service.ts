@@ -44,4 +44,12 @@ export class ServicoClienteService {
         });
     }
 
+    aceitarServico(servicoId: number, ofertaId: number) {
+      return this.http.post(`${API_CONFIG.baseUrl}/api/cliente/servicos/${servicoId}/ofertas/${ofertaId}/aceitar`,
+        null, {
+          observe: 'response',
+          responseType: 'json'
+        })
+    }
+
 }

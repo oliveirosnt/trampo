@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, AlertController } from 'ionic-angular';
 import { ServicoDTO } from '../../models/servico.dto';
-import { AvaliacaoDTO } from '../../models/avaliacao-servico.dto';
+//import { AvaliacaoDTO } from '../../models/avaliacao-servico.dto';
 import { AvaliacaoService } from '../../services/avaliacao.service';
-import {StorageService} from "../../services/storage.service";
+import { StorageService } from "../../services/storage.service";
 
 
 @IonicPage()
@@ -21,13 +21,14 @@ export class AvaliacaoPage {
         descricao: "",
         data: "",
         horario: "",
-        valor: "",
         tipo: "",
         endereco: {
-            rua: "",
-            bairro: "",
-            numero: "",
-            complemento: ""
+            nome: "",
+            location : {
+                lat: null,
+                lng: null,
+            },
+          pontoReferencia: ""
         },
         tipoStatus: "",
         fornecedor: {
@@ -52,12 +53,8 @@ export class AvaliacaoPage {
         isAvaliadoFornecedor: null
     };
 
-    avaliar: AvaliacaoDTO = {
-        avaliacao: {
-            id: null,
-            nota: null
-        },
-        servico: this.servico
+    avaliacao: any = {
+      nota: 0
     };
 
     constructor(
@@ -70,7 +67,7 @@ export class AvaliacaoPage {
     }
 
   ionViewDidLoad() {
-      this.servico = this.navParams['data'];
+      this.servico = this.navParams.get('servico');
 
       const usuario = this.storageService.getLocalUser()["user"]
 
@@ -87,9 +84,9 @@ export class AvaliacaoPage {
       }
   }
 
-    confirmarAvaliacao(avaliar: AvaliacaoDTO) {
-        avaliar.servico = this.servico;
-        this.avaliacaoService.avaliacaoServico(avaliar).subscribe(
+    confirmarAvaliacao(avaliacao: any) {
+
+        this.avaliacaoService.avaliacaoServico(this.servico.id, avaliacao).subscribe(
             response => {
                 let alertMessage = this.alertCtrl.create({
                     message: response.body['message'],

@@ -1,0 +1,21 @@
+page-item-oferta {
+  .profile-avatar img {
+    margin: auto;
+    width: 35vw;
+    height: 35vw;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  span.stars, .stars span {
+    display: block;
+    background: url('../../../assets/icon/stars.png') 0 -16px repeat-x;
+    width: 80px;
+    height: 16px;
+  }
+
+  span.stars span {
+    background-position: 0 0;
+  }
+}

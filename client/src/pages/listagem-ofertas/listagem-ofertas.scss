@@ -1,7 +1,7 @@
-page-detalhes {
+page-listagem-ofertas {
     font-family: Dessau-Light;
 
-    ion-header.detalhes-header {
+    ion-header.listagem-ofertas-header {
         color:  white;
         font-weight: bold;
 
@@ -16,7 +16,7 @@ page-detalhes {
             }
 
             .title-text {
-                align-items: center;
+                align-items: center; 
                 height: 32px;
             }
         }
@@ -26,7 +26,7 @@ page-detalhes {
         }
     }
 
-    ion-content.detalhes-content {
+    ion-content.listagem-ofertas-content {
         ion-avatar {
             background-color: #e0e0e0;
             display: table;
@@ -39,20 +39,20 @@ page-detalhes {
         }
 
         ion-label {
+            color: black !important;
             margin: 0 8px 11px 0;
         }
     }
 
-    button.visualizar, .cancelar, .finalizar {
-        font-weight: bold;
+    input {
+        text-overflow: ellipsis;
+    }
 
+    button.confirmar {
+        font-weight: bold;
+        
         ion-icon {
             margin-right: 10px;
         }
-    }
-
-    button.add {
-        background-color: #00ff00;
-  
     }
 }

@@ -5,17 +5,20 @@
     <ion-grid>
         <ion-row>
             <ion-col col-12>
-                <span>{{ servico.descricao}} do tipo {{ servico.tipo }}</span>
+                <span>{{ servico.descricao}}</span>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+              <span><strong>Estado:</strong> {{ getEstadoServicoFormatado() }}</span>
+            </ion-col>
+            <ion-col>
+              <span><strong>Área do(a):</strong> {{ formataArea() }}</span>
             </ion-col>
         </ion-row>
         <ion-row>
             <ion-col col-12>
-                <span>Status: {{ servico.tipoStatus }}</span>
-            </ion-col>
-        </ion-row>
-        <ion-row>
-            <ion-col col-12>
-                <span>Data: {{ servico.data }}</span>
+              <span><strong>Data:</strong> {{ getDataServicoFormatada() }}</span>
             </ion-col>
         </ion-row>
     </ion-grid>

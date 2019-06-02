@@ -31,24 +31,8 @@
             <ion-row>
                 <ion-col col-12>
                     <ion-item>
-                        <ion-label stacked>Status</ion-label>
-                        <ion-label>{{ servico.tipoStatus }}</ion-label>
-                    </ion-item>
-                </ion-col>
-            </ion-row>
-            <ion-row *ngIf="servico.tipoStatus != 'EM_ABERTO' && (user && user.tipo == 'CLIENTE')">
-                <ion-col col-12>
-                    <ion-item>
-                        <ion-label stacked>Nome do Fornecedor</ion-label>
-                        <ion-label>{{ servico.fornecedor?.nomeCompleto || "Nenhum fornecedor havia aceitado o serviço" }}</ion-label>
-                    </ion-item>
-                </ion-col>
-            </ion-row>
-            <ion-row *ngIf="servico.tipoStatus != 'EM_ABERTO' && (user && user.tipo == 'FORNECEDOR')">
-                <ion-col col-12>
-                    <ion-item>
-                        <ion-label stacked>Nome do Cliente</ion-label>
-                        <ion-label>{{ servico.cliente.nomeCompleto }}</ion-label>
+                        <ion-label stacked>Estado</ion-label>
+                        <ion-label>{{ this.getEstadoServicoFormatado() }}</ion-label>
                     </ion-item>
                 </ion-col>
             </ion-row>
@@ -72,7 +56,7 @@
                 <ion-col col-12>
                     <ion-item>
                         <ion-label stacked>Data do Serviço</ion-label>
-                        <ion-label>{{ servico.data }}</ion-label>
+                        <ion-label>{{ this.getDataServicoFormatada() }}</ion-label>
                     </ion-item>
                 </ion-col>
             </ion-row>
@@ -84,59 +68,89 @@
                     </ion-item>
                 </ion-col>
             </ion-row>
-            <ion-row>
-                <ion-col col-12>
-                    <ion-item>
-                        <ion-label stacked>Valor do Serviço:</ion-label>
-                        <ion-label>{{ servico.valor | currency:"BRL":true:"1.2-2" }}</ion-label>
-                    </ion-item>
-                </ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col col-12>
-                    <ion-item>
-                        <ion-label stacked>Bairro</ion-label>
-                        <ion-label>{{ servico.endereco.bairro }}</ion-label>
-                    </ion-item>
-                </ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col col-12>
-                    <ion-item>
-                        <ion-label stacked>Rua</ion-label>
-                        <ion-label>{{ servico.endereco.rua }}</ion-label>
-                    </ion-item>
-                </ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col col-12>
-                    <ion-item>
-                        <ion-label stacked>Número</ion-label>
-                        <ion-label>{{ servico.endereco.numero }}</ion-label>
-                    </ion-item>
-                </ion-col>
-            </ion-row>
+          <ion-row>
+            <ion-col col-12>
+              <span><strong>Localização:</strong></span>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col col-12>
+                <ion-item>
+                    <ion-label stacked>Endereço</ion-label>
+                    <ion-label>{{ servico.endereco.nome }}</ion-label>
+                </ion-item>
+            </ion-col>
+          </ion-row>
           <ion-row>
             <ion-col col-12>
               <ion-item>
-                <ion-label stacked>Complemento</ion-label>
-                <ion-label>{{ servico.endereco.complemento }}</ion-label>
+                <ion-label stacked>Ponto de Referência</ion-label>
+                <ion-label>{{ servico.endereco.pontoReferencia }}</ion-label>
               </ion-item>
             </ion-col>
           </ion-row>
-            <ion-row *ngIf="servico.tipoStatus == 'EM_ABERTO' && (user && user.tipo == 'CLIENTE')">
+          <ion-row justify-content-center align-items-center>
+            <div id="infowindow-content">
+              <img src="" width="16" height="16" id="place-icon">
+              <span id="place-name"  class="title"></span><br>
+              <span id="place-address"></span>
+            </div>
+            <div id="map_canvas"></div>
+          </ion-row>
+          <ion-row *ngIf="servico.tipoStatus != 'AGUARDANDO_OFERTAS' && servico.tipoStatus != 'CANCELADO' && (servico.ofertaFinal)">
+            <ion-col col-12>
+              <span><strong>Oferta feita pelo Fornecedor:</strong></span>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="servico.tipoStatus != 'AGUARDANDO_OFERTAS' && (user && user.tipo == 'CLIENTE')">
+            <ion-col col-12>
+              <ion-item>
+                <ion-label stacked>Nome do Fornecedor</ion-label>
+                <ion-label>{{ servico.fornecedor?.nomeCompleto || "Nenhum fornecedor havia aceitado o serviço" }}</ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="servico.tipoStatus != 'AGUARDANDO_OFERTAS' && servico.tipoStatus != 'CANCELADO' && (servico.ofertaFinal)">
+            <ion-col col-12>
+              <ion-item>
+                <ion-label stacked>Descrição do orçamento:</ion-label>
+                <ion-label>{{ servico.ofertaFinal.descricao }}</ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="servico.tipoStatus != 'AGUARDANDO_OFERTAS' && servico.tipoStatus != 'CANCELADO' && (servico.ofertaFinal)">
+            <ion-col col-12>
+              <ion-item>
+                <ion-label stacked>Valor do Serviço:</ion-label>
+                <ion-label>{{ servico.ofertaFinal.valor | currency:"BRL":true:"1.2-2" }}</ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="servico.tipoStatus != 'AGUARDANDO_OFERTAS' && servico.tipoStatus != 'CANCELADO' && (servico.ofertaFinal)">
+            <ion-col col-12>
+              <ion-item>
+                <ion-label stacked>Estimativa de Conclusão</ion-label>
+                <ion-label>{{ formataConclusaoServico() }}</ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="servico.tipoStatus != 'AGUARDANDO_OFERTAS' && (user && user.tipo == 'FORNECEDOR')">
+            <ion-col col-12>
+              <span><strong>Dados do Cliente:</strong></span>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="servico.tipoStatus != 'AGUARDANDO_OFERTAS' && (user && user.tipo == 'FORNECEDOR')">
+            <ion-col col-12>
+              <ion-item>
+                <ion-label stacked>Nome do Cliente</ion-label>
+                <ion-label>{{ servico.cliente.nomeCompleto }}</ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+            <ion-row *ngIf="servico.tipoStatus == 'AGUARDANDO_OFERTAS' && (user && user.tipo == 'CLIENTE') && servico.ofertasRecebidas.length > 0">
                 <ion-col col-12>
-                    <button class="cancelar" ion-button round full color="dark" (click)="cancelaServicoCliente(servico)">
-                        <ion-icon ios="ios-close-circle" md="md-close-circle"></ion-icon>Cancelar
-                        Serviço
-                    </button>
-                </ion-col>
-            </ion-row>
-            <ion-row *ngIf="servico.tipoStatus == 'EM_ABERTO' && (user && user.tipo == 'FORNECEDOR')">
-                <ion-col col-12>
-                    <button class="aceitar" ion-button round full color="pink" (click)="cadastrarServico(servico)">
-                        <ion-icon ios="ios-checkmark-circle-outline" md="md-checkmark-circle-outline"></ion-icon>Aceitar
-                        Serviço
+                    <button class="visualizar" ion-button round full color="pink" (click)="visualizarOfertas(servico)">
+                        <ion-icon ios="ios-eye" md="md-eye"></ion-icon>Visualizar Ofertas
                     </button>
                 </ion-col>
             </ion-row>
@@ -147,6 +161,20 @@
                     </button>
                 </ion-col>
             </ion-row>
+            <ion-row *ngIf="servico.tipoStatus == 'AGUARDANDO_OFERTAS' && (user && user.tipo == 'CLIENTE')">
+              <ion-col col-12>
+                <button class="cancelar" ion-button round full color="dark" (click)="cancelaServicoCliente(servico)">
+                  <ion-icon ios="ios-close-circle" md="md-close-circle"></ion-icon>Cancelar
+                  Serviço
+                </button>
+              </ion-col>
+            </ion-row>
         </ion-grid>
     </div>
+
+    <ion-fab right bottom *ngIf="tipoUsuario == 'FORNECEDOR' && servico.tipoStatus == 'AGUARDANDO_OFERTAS'">
+        <button class="add" ion-fab color="green" (click)="adicionarOferta()">
+            <ion-icon name="add"></ion-icon>
+        </button>
+    </ion-fab>
 </ion-content>
