@@ -22,7 +22,7 @@
 	<ion-grid class="button-group">
   		<ion-row>
     		<ion-col>
-      			<button ion-button block color="pink">Semanal</button>
+      			<button ion-button block>Semanal</button>
     		</ion-col>
     		<ion-col>
       			<button ion-button block>Mensal</button>
@@ -52,8 +52,11 @@
         <ion-grid>
             <ion-row *ngIf="servicos?.length > 0; else noServices">
                 <ion-col col-12>
+                    <h2>Serviços em atendimento</h2>
+                </ion-col>
+                <ion-col col-12>
                     <ion-list>
-                        <item-list-servico *ngFor="let servico of servicos" [servico]="servico" (click)="openDetalhes(servico)"></item-list-servico>
+                        <item-list-dashboard *ngFor="let servico of servicos" [servico]="servico" (click)="openDetalhes(servico)"></item-list-dashboard>
                     </ion-list>
                 </ion-col>
             </ion-row>
@@ -64,5 +67,5 @@
             </ng-template>
         </ion-grid>
     </div>
-    
+
 </ion-content>

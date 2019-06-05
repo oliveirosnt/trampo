@@ -1,0 +1,25 @@
+<ion-item>
+    <ion-thumbnail item-start>
+        <ion-icon ios="ios-construct" md="md-construct"></ion-icon>
+    </ion-thumbnail>
+    <ion-grid>
+        <ion-row>
+            <ion-col col-12>
+                <span>{{ servico.descricao}}</span>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+				<span><strong>Área do(a):</strong> {{ formataArea() }}</span>
+            </ion-col>
+            <ion-col>
+				<span><strong>Valor do Serviço:</strong> {{ servico.ofertaFinal.valor | currency:"BRL":true:"1.2-2" }}</span> 
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col col-12>
+              <span><strong>Data para Realização</strong> {{ getDataServicoFormatada() }}</span>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-item>
