@@ -12,6 +12,8 @@ import { ServicoClienteService } from '../../services/servico-cliente.service';
 import { ServicoDTO } from '../../models/servico.dto';
 import { DadosUsuarioDTO } from '../../models/dados-usuario.dto';
 
+declare var google;
+
 @IonicPage()
 @Component({
     selector: 'page-detalhes',
