@@ -19,7 +19,7 @@
 
 <ion-content class="dashboard-content">
 
-	<ion-grid class="button-group">
+	<ion-grid class="button-group"  *ngIf="servicos?.length > 0">
   		<ion-row>
     		<ion-col>
       			<button ion-button block>Semanal</button>
@@ -32,27 +32,19 @@
     		</ion-col>
   		</ion-row>
 	</ion-grid>
-
-    <ion-avatar item-start>
-      <ion-card-content>
-        <ion-thumbnail item-start>
-          <ion-row>
-            <ion-col col-12>
-
-            	<!-- LOCAL PARA POOR GRAFICO -->
-
-            	<ion-icon ios="ios-ionic" md="md-ionic"></ion-icon>
-            </ion-col>
-          </ion-row>
-        </ion-thumbnail>
-      </ion-card-content>
-    </ion-avatar>
-
+    <ion-card-content style="align-content: center;">
+      <ion-row>
+        <ion-col col-12>
+          <!-- LOCAL PARA POOR GRAFICO -->
+          <google-chart [data]="pieChartData"></google-chart>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
     <div padding>
         <ion-grid>
             <ion-row *ngIf="servicos?.length > 0; else noServices">
                 <ion-col col-12>
-                    <h2>Serviços Em Atendimento</h2>
+                    <h2>Meus Serviços</h2>
                 </ion-col>
                 <ion-col col-12>
                     <ion-list>

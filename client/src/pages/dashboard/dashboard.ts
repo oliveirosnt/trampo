@@ -21,10 +21,11 @@ import { ServicoClienteService } from '../../services/servico-cliente.service';
 export class DashboardPage {
 
 	user: DadosUsuarioDTO;
-    servicos: ServicoDTO[];
+	servicos: ServicoDTO[];
+	pieChartData: any;
 
   	constructor(
-  		public navCtrl: NavController, 
+  		public navCtrl: NavController,
         public servicoFornecedorService: ServicoFornecedorService,
         public usuarioService: UsuarioService,
 
@@ -38,13 +39,41 @@ export class DashboardPage {
     ionViewDidLoad() {
         this.usuarioService.getMyUser().subscribe(
             response => {
-                this.servicoFornecedorService.getServicosAceitos().subscribe(
+                this.servicoFornecedorService.getHistorico().subscribe(
                     response => {
                         this.servicos = response.body['data'];
+                        let aguardandoRealizacao = 0;
+                        let concluido = 0;
+
+                        this.servicos.map((servico) => {
+                          if(servico.tipoStatus === 'ACEITO') {
+                            aguardandoRealizacao += 1;
+                          } else if(servico.tipoStatus === 'CONCLUIDO') {
+                            concluido += 1;
+                          }
+                        });
+
+
+                        const dataToChart = [['Estado', 'Percent'], ['Aguardando Realização', aguardandoRealizacao], ['Concluído', concluido]];
+                        this.useAngularLibrary(dataToChart);
                     });
             }
         );
 
+    }
+
+    useAngularLibrary(data) {
+      this.pieChartData = {
+        chartType: 'PieChart',
+        dataTable: data,
+        options: {
+          'width': 400,
+          'height': 300,
+          'pieHole': 0.65,
+          'title': 'Distribuição dos Serviços',
+          'colors': ['#ffd700', '#3fdc54']
+        }
+      };
     }
 
     ionBackPage() {
@@ -52,7 +81,7 @@ export class DashboardPage {
     }
 
     openDetalhes(servico: ServicoDTO) {
-        this.navCtrl.push('DetalheServicoPage', servico)
+        this.navCtrl.push('DetalheServicoPage', {servico: servico, ofertas: servico.ofertasRecebidas})
     }
 
 }

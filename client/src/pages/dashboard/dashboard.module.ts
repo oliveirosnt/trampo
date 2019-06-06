@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { DashboardPage } from './dashboard';
 import { ItemListDashboardModule } from '../../components/item-list-dashboard/item-list-dashboard.module';
+import {Ng2GoogleChartsModule} from "ng2-google-charts";
 
 @NgModule({
   declarations: [
@@ -9,7 +10,8 @@ import { ItemListDashboardModule } from '../../components/item-list-dashboard/it
   ],
   imports: [
     IonicPageModule.forChild(DashboardPage),
-    ItemListDashboardModule
+    ItemListDashboardModule,
+    Ng2GoogleChartsModule
   ],
 })
 export class DashboardPageModule {}
