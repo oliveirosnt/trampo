@@ -34,15 +34,35 @@ $app-direction: ltr;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #212121,
-  secondary:  #757575,
+  primary:    #424242,
+  secondary:  #fcd736,
   danger:     #f53d3d,
   light:      #f4f4f4,
-  dark:       #222,
-  alert:  	  #FFDF00,
-  purple:	  #9027B0,
-  pink:       #DE3C58
-
+  accent:     #202020,
+  dark:       #222222,
+  favorite:   #69BB7B,
+  pink:       #DE3C58,
+  blue:       #0090d0,
+  // Button Twitter
+  twitter:(
+    base: #64B5F6,
+    contrast: #fff
+  ),
+  // Button Facebook
+  facebook:(
+    base: #3949ab,
+    contrast: #fff
+  ),
+  // Button Google
+  google:(
+    base: #bf360c,
+    contrast: #fff
+  ),
+  // Button Pinterest
+  pinterest:(
+    base: #ff3d00,
+    contrast: #fff
+  ),
 );
 
 $toolbar-background: color($colors, secondary, base);
@@ -118,3 +138,56 @@ $text-input-md-highlight-color-valid: 1px #dedede;
         url("#{$font-path}/Granite-regular.woff") format("woff");
 }
 // -----------------------------------------------------------------
+
+
+
+
+// App iOS Variables
+// --------------------------------------------------
+// iOS only Sass variables can go here
+
+
+
+
+// App Material Design Variables
+// --------------------------------------------------
+// Material Design only Sass variables can go here
+
+
+
+
+// App Windows Variables
+// --------------------------------------------------
+// Windows only Sass variables can go here
+
+
+
+
+// App Theme
+// --------------------------------------------------
+// Ionic apps can have different themes applied, which can
+// then be future customized. This import comes last
+// so that the above variables are used and Ionic's
+// default are overridden.
+
+@import "ionic.theme.default";
+
+// App Animation
+// --------------------------------------------------
+@import "animate";
+
+// App Main Sass
+// --------------------------------------------------
+@import "main";
+
+
+// Ionicons
+// --------------------------------------------------
+// The premium icon font for Ionic. For more info, please see:
+// http://ionicframework.com/docs/v2/ionicons/
+
+// // App Fontelo Style
+//--------------------------------------------------
+@import "fontello";
+
+@import "ionicons";

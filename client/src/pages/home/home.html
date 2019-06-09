@@ -17,7 +17,7 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content class="home-content">
+<ion-content class="home-content" has-header white-background>
     <div padding>
         <ion-grid>
             <ion-row>
@@ -40,7 +40,7 @@
         </ion-grid>
     </div>
     <ion-fab right bottom *ngIf="tipoUsuario == 'CLIENTE'">
-        <button ion-fab color="pink" (click)="openAddService()">
+        <button ion-fab color="blue" (click)="openAddService()">
             <ion-icon name="add"></ion-icon>
         </button>
     </ion-fab>

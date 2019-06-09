@@ -14,17 +14,8 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content class="detalhes-content">
+<ion-content class="detalhes-content" has-header white-background>
     <ion-avatar item-start>
-        <ion-card-content>
-            <ion-thumbnail item-start>
-                <ion-row>
-                    <ion-col col-12>
-                        <ion-icon ios="ios-construct" md="md-construct"></ion-icon>
-                    </ion-col>
-                </ion-row>
-            </ion-thumbnail>
-        </ion-card-content>
     </ion-avatar>
     <div padding>
         <ion-grid>
@@ -149,7 +140,7 @@
           </ion-row>
             <ion-row *ngIf="servico.tipoStatus == 'AGUARDANDO_OFERTAS' && (user && user.tipo == 'CLIENTE') && servico.ofertasRecebidas.length > 0">
                 <ion-col col-12>
-                    <button class="visualizar" ion-button round full color="pink" (click)="visualizarOfertas(servico)">
+                    <button class="visualizar" ion-button round full color="blue" (click)="visualizarOfertas(servico)">
                         <ion-icon ios="ios-eye" md="md-eye"></ion-icon>Visualizar Ofertas
                     </button>
                 </ion-col>
