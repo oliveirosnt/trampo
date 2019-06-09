@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ufcg.dao.ServicoDAO;
@@ -50,13 +51,13 @@ public class ServicoController {
 	}
 
 	@RequestMapping(value = "/api/servicos/fornecedor/historico", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-	public ResponseEntity<Response> historicoServicoFornecedor(HttpServletRequest request) {
+	public ResponseEntity<Response> historicoServicoFornecedor(HttpServletRequest request, @RequestParam("periodo") String tipoPeriodo) {
 
 		Response response;
 
 		try {
 			Fornecedor fornecedor = (Fornecedor) request.getAttribute("user");
-			List<Servico> servicosParticipados = servicoService.getServicosDoFornecedor(fornecedor);
+			List<Servico> servicosParticipados = servicoService.getServicosFornecedor(fornecedor, tipoPeriodo);
 
 			if (servicosParticipados.isEmpty()) {
 				response = new Response("Voce ainda nao participou de nenhum servico", HttpStatus.OK.value());
@@ -74,21 +75,21 @@ public class ServicoController {
 	}
 
 	@RequestMapping(value = "/api/servicos/cliente/historico", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-	public ResponseEntity<Response> historicoServicoCliente(HttpServletRequest request) {
+	public ResponseEntity<Response> historicoServicoCliente(HttpServletRequest request, @RequestParam(value="periodo", required=false) String tipoPeriodo) {
 
 		Response response;
 
 		try {
 			Cliente cliente = (Cliente) request.getAttribute("user");
 
-			List<Servico> servicosParticipados = servicoService.getServicosCliente(cliente);
+			List<Servico> servicosParticipados = servicoService.getServicosCliente(cliente, tipoPeriodo);
 
 			if (servicosParticipados.isEmpty()) {
-				response = new Response("Voce ainda nao participou de nenhum servico", HttpStatus.OK.value());
+				response = new Response("Não há serviços!", HttpStatus.OK.value());
 				return new ResponseEntity<>(response, HttpStatus.OK);
 			}
 
-			response = new Response("Servicos que voce participou", HttpStatus.OK.value(),
+			response = new Response("Serviços que você participou", HttpStatus.OK.value(),
 					servicoService.ordenaServicosPorData(servicosParticipados));
 			return new ResponseEntity<>(response, HttpStatus.OK);
 

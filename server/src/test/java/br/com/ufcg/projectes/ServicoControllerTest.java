@@ -161,9 +161,9 @@ public class ServicoControllerTest {
 		
 		try {
 			ss.criarServico(cliente, servico1);
-			assertEquals(1, ss.getServicosCliente(cliente).size());
+			assertEquals(1, ss.getServicosCliente(cliente, null).size());
 			ss.criarServico(cliente, servico2);
-			assertEquals(2, ss.getServicosCliente(cliente).size());
+			assertEquals(2, ss.getServicosCliente(cliente, null).size());
 			
 		} catch(Exception e) {
 			e.printStackTrace();
