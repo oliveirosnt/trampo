@@ -51,7 +51,7 @@ public class ServicoController {
 	}
 
 	@RequestMapping(value = "/api/servicos/fornecedor/historico", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-	public ResponseEntity<Response> historicoServicoFornecedor(HttpServletRequest request, @RequestParam("periodo") String tipoPeriodo) {
+	public ResponseEntity<Response> historicoServicoFornecedor(HttpServletRequest request, @RequestParam(value="periodo", required=false) String tipoPeriodo) {
 
 		Response response;
 
@@ -60,11 +60,11 @@ public class ServicoController {
 			List<Servico> servicosParticipados = servicoService.getServicosFornecedor(fornecedor, tipoPeriodo);
 
 			if (servicosParticipados.isEmpty()) {
-				response = new Response("Voce ainda nao participou de nenhum servico", HttpStatus.OK.value());
+				response = new Response("Não há serviços!", HttpStatus.OK.value());
 				return new ResponseEntity<>(response, HttpStatus.OK);
 			}
 
-			response = new Response("Servicos que voce participou", HttpStatus.OK.value(),
+			response = new Response("Serviços que você participou", HttpStatus.OK.value(),
 					servicoService.ordenaServicosPorData(servicosParticipados));
 			return new ResponseEntity<>(response, HttpStatus.OK);
 
