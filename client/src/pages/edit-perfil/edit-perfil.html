@@ -14,7 +14,7 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content class="editar-content">
+<ion-content class="editar-content" white-background>
     <div padding>
         <form name="dadosClienteForm">
             <ion-avatar item-start>
@@ -28,7 +28,7 @@
                       <ion-row>
                         <ion-col col-12>
                           <p color="dark">Modifique seu avatar</p>
-                          <button type="button" class="inserir" ion-button color="pink" round small (click)="getPhoto()">
+                          <button type="button" class="inserir" ion-button color="blue" round small (click)="getPhoto()">
                             <ion-icon ios="ios-add" md="md-add"></ion-icon>Inserir
                           </button>
                         </ion-col>
@@ -80,7 +80,7 @@
                 </ion-row>
                 <ion-row>
                     <ion-col col-12>
-                        <button class="salvar" ion-button round full color="pink" (click)="salvar(dadosAtualizados)">
+                        <button class="salvar" ion-button round full color="blue" (click)="salvar(dadosAtualizados)">
                             <ion-icon ios="ios-heart" md="md-heart"></ion-icon>Salvar
                         </button>
                     </ion-col>

@@ -1,4 +1,5 @@
 
+
 <ion-content class="login-content">
   <p>
     <a (click)="cadastroFornecedor()"><u>Deseja trabalhar conosco?</u></a>
@@ -6,11 +7,9 @@
 
   <div padding>
     <ion-list>
-  
-      <form name="loginForm">     
-        <ion-avatar item-start>
-          <img class="logo" src="assets/imgs/trampo-logo.png">
-        </ion-avatar>
+      <form name="loginForm">
+        <img src="assets/imgs/logo-login.png">
+        <h2 item-title-header text-center style="color: #0090d0; font-family: Dessau-Light; font-size: 40px;">trampo</h2>
         
         <ion-item>
           <ion-label floating>Usuário</ion-label>
@@ -34,7 +33,7 @@
       </form>
 
       <ion-item>
-        <button class="login" ion-button full color="pink" round block (click)="login()" >
+        <button class="login" ion-button full color="blue" round block (click)="login()" >
           <ion-icon ios="ios-log-in" md="md-log-in"></ion-icon> Login
         </button>
       </ion-item>
@@ -48,7 +47,7 @@
   </div>
 
   <div class="botton">
-    <p class="foot-note">&copy; 2018 Trampo - Todos os direitos reservados</p>  
+    <p class="foot-note">&copy; 2019 Trampo - Todos os direitos reservados</p>
   </div>
 
 </ion-content>
