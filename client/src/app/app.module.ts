@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
-//import { LocationStrategy, PathLocationStrategy } from '@angular/common'; //Ativar essa função na SPRINT 4
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { ImagePicker } from '@ionic-native/image-picker/ngx';
@@ -19,6 +18,7 @@ import { ServicoClienteService } from '../services/servico-cliente.service';
 import { ServicoFornecedorService } from '../services/servico-fornecedor.service';
 import { RedefinicaoSenhaService } from '../services/redefinicao-senha.service';
 import { AvaliacaoService } from '../services/avaliacao.service';
+import { GoogleMaps } from "@ionic-native/google-maps";
 
 @NgModule({
     declarations: [
@@ -37,7 +37,6 @@ import { AvaliacaoService } from '../services/avaliacao.service';
         StatusBar,
         SplashScreen,
         { provide: ErrorHandler, useClass: IonicErrorHandler },
-        // {provide: LocationStrategy, useClass: PathLocationStrategy},  //Ativar essa função na SPRINT 4
         Base64,
         ImagePicker,
         CadastroUsuarioService,
@@ -50,7 +49,8 @@ import { AvaliacaoService } from '../services/avaliacao.service';
         UsuarioService,
         ServicoFornecedorService,
         RedefinicaoSenhaService,
-        AvaliacaoService
+        AvaliacaoService,
+        GoogleMaps
     ]
 })
 export class AppModule { }
