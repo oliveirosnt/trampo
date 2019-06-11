@@ -17,7 +17,7 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content class="dashboard-content">
+<ion-content class="dashboard-content" has-header white-background>
 
 	<ion-grid class="button-group"  *ngIf="servicos?.length > 0">
   		<ion-row>
@@ -33,7 +33,7 @@
   		</ion-row>
 	</ion-grid>
 	
-    <ion-card-content style="align-content: center;">
+    <ion-card-content>
       <ion-row *ngIf="chartIsNotNull; else noServices">
         <ion-col col-12>
           <google-chart [data]="pieChartData"></google-chart>

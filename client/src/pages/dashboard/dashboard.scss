@@ -44,6 +44,10 @@ page-dashboard {
         }
     }
 
+    ion-card-content {
+        align-content: center;
+    }
+
     input {
         text-overflow: ellipsis;
     }
@@ -54,12 +58,12 @@ page-dashboard {
                 padding-right: 0;
                 .button {
                     font-weight: bold;
-                    background-color: #757575;
+                    background-color: #0090d0;
                     border-top-right-radius: 0;
                     border-bottom-right-radius: 0;
                 }
                 .button:active, .button:focus{
-                    background-color: #DE3C58;
+                    background-color: #222;
                 }
             }
 
@@ -68,11 +72,11 @@ page-dashboard {
                 padding-left: 0;
                 .button {
                     font-weight: bold;
-                    background-color: #757575;
+                    background-color: #0090d0;
                     border-radius: 0;
                 }
                 .button:active, .button:focus{
-                    background-color: #DE3C58;
+                    background-color: #222;
                 }
             }
         
@@ -80,12 +84,12 @@ page-dashboard {
                 padding-left: 0;
                 .button {
                     font-weight: bold;
-                    background-color: #757575;
+                    background-color: #0090d0;
                     border-top-left-radius: 0;
                     border-bottom-left-radius: 0;
                 }
                 .button:active, .button:focus{
-                    background-color: #DE3C58;
+                    background-color: #222;
                 }
             }
         }

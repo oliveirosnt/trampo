@@ -51,7 +51,7 @@ export class DashboardPage {
         'height': 300,
         'pieHole': 0.65,
         'title': 'Distribuição dos Serviços',
-        'colors': ['#ffd700', '#3fdc54']
+        'colors': ['#0090d0', '#222']
       }
     };
   }
