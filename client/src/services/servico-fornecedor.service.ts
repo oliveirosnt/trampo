@@ -25,12 +25,21 @@ export class ServicoFornecedorService {
             });
     }
 
-    getHistorico() {
-        return this.http.get(`${API_CONFIG.baseUrl}/api/servicos/fornecedor/historico`,
+    getHistorico(periodoServico?:string) {
+        if(!periodoServico) {
+          return this.http.get(`${API_CONFIG.baseUrl}/api/servicos/fornecedor/historico`,
             {
-                observe: 'response',
-                responseType: 'json'
+              observe: 'response',
+              responseType: 'json'
             });
+        } else {
+          return this.http.get(`${API_CONFIG.baseUrl}/api/servicos/fornecedor/historico?periodo=${periodoServico[0]}`,
+            {
+              observe: 'response',
+              responseType: 'json'
+            });
+        }
+
     }
 
     getServicosAceitos() {
