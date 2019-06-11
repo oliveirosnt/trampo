@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 import { AutenticacaoService } from '../../services/autenticacao.service';
 import { StorageService } from '../../services/storage.service';
 
@@ -31,8 +31,7 @@ export class DashboardPage {
     public servicoFornecedorService: ServicoFornecedorService,
     public usuarioService: UsuarioService,
     public autenticacaoService: AutenticacaoService,
-    public storageService: StorageService,
-    public alertCtrl: AlertController
+    public storageService: StorageService
   ) {}
 
   ionViewDidLoad() {
@@ -65,7 +64,7 @@ export class DashboardPage {
     var anoServico = servico.data.substr(0, 4);
     var mesServico = servico.data.substr(5, 2);
     var diaServico = servico.data.substr(8, 2);
-    var numeroSemanaAtual = getWeeksInMonth(date.substr(8, 2), mesAtual, anoAtual);
+    var numeroSemanaAtual = getWeeksInMonth(diaAtual, mesAtual, anoAtual);
 
     if(this.isSemanal) {
       var numeroSemanaServico = getWeeksInMonth(diaServico, mesServico, anoServico);

@@ -32,6 +32,7 @@
     		</ion-col>
   		</ion-row>
 	</ion-grid>
+	
     <ion-card-content style="align-content: center;">
       <ion-row *ngIf="chartIsNotNull; else noServices">
         <ion-col col-12>
@@ -40,11 +41,12 @@
       </ion-row>
       <ng-template #noServices>
            <ion-col col-12>
-                    <span>Você não está atrelado a nenhum serviço neste periodo selecionado.</span>
+                    <span>Você não está atrelado ou ainda não participou de algum serviço durante este periodo.</span>
                 </ion-col>
       </ng-template>
     </ion-card-content>
-    <div padding *ngIf="chartIsNotNull;">
+
+    <div padding *ngIf="chartIsNotNull;">    	
         <ion-grid>
             <ion-row *ngIf="servicos?.length > 0; else noServices">
                 <ion-col col-12>
