@@ -34,7 +34,7 @@ export class MyApp {
 
         events.subscribe('user:FORNECEDOR', () => {
             this.pages = [
-                { title: 'Home', component: 'HomePage', icon: { android: 'md-home', ios: 'ios-home' } },
+                { title: 'Home', component: 'DashboardPage', icon: { android: 'md-home', ios: 'ios-home' } },
                 { title: 'Serviços Disponíveis', component: 'ListagemServicoPage', icon: { android: 'md-construct', ios: 'ios-construct' } },
                 { title: 'Meus Serviços', component: 'ListagemServicoAceitosPage', icon: { android: 'md-folder', ios: 'ios-folder' } },
                 { title: 'Perfil', component: 'PerfilPage', icon: { android: 'md-contact', ios: 'ios-contact' } }

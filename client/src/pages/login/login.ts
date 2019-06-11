@@ -81,8 +81,13 @@ export class LoginPage {
                 response => {
                     this.dadosUsuario = response['data'];
                     this.events.publish(`user:${this.dadosUsuario.tipo}`)
+                    if(this.dadosUsuario.tipo === 'CLIENTE') {
+                      this.navCtrl.setRoot('HomePage', this.dadosUsuario);
+                    } else {
+                      this.navCtrl.setRoot('DashboardPage', this.dadosUsuario);
+                    }
                     console.log(`user:${this.dadosUsuario.tipo} published`)
-                    this.navCtrl.setRoot('HomePage', this.dadosUsuario);
+
                 }
             )
         }, error => {

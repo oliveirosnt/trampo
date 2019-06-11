@@ -19,6 +19,7 @@ import { ServicoClienteService } from '../services/servico-cliente.service';
 import { ServicoFornecedorService } from '../services/servico-fornecedor.service';
 import { RedefinicaoSenhaService } from '../services/redefinicao-senha.service';
 import { AvaliacaoService } from '../services/avaliacao.service';
+import { Ng2GoogleChartsModule } from "ng2-google-charts";
 
 @NgModule({
     declarations: [
@@ -28,6 +29,7 @@ import { AvaliacaoService } from '../services/avaliacao.service';
         BrowserModule,
         IonicModule.forRoot(MyApp),
         HttpClientModule,
+        Ng2GoogleChartsModule
     ],
     bootstrap: [IonicApp],
     entryComponents: [

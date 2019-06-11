@@ -8,6 +8,8 @@ import { ServicoDTO } from '../../models/servico.dto';
 import { ServicoClienteService } from '../../services/servico-cliente.service';
 import { UsuarioService } from '../../services/usuario.service';
 
+declare var google;
+
 @IonicPage()
 @Component({
     selector: 'page-requisicao',
