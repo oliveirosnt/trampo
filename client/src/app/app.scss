@@ -14,3 +14,61 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+[header-background-image] {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  @include darkening-blend-mode;
+
+  img {
+    padding-top: 40px;
+    margin: 0 auto;
+    display: block;
+    position: relative;
+    z-index: 9;
+    max-width: 60px;
+  }
+
+  [item-title] {
+    color: theme-colors('textColors', 'accent-first') !important;
+    position: relative;
+    z-index: 9;
+  }
+
+  [item-title-header] {
+    color: theme-colors('textColors', 'accent-first') !important;
+    position: relative;
+    z-index: 9;
+    font-size: 40px;
+    font-family: Dessau-Light;
+  }
+}
+// Settings Main  Menu
+
+[main-menu] {
+  button {
+    padding-left: 30px;
+  }
+
+
+  .item-inner {
+    margin-left: 0 !important;
+  }
+
+  [icon-small] {
+    margin-top: 18px !important;
+  }
+}
+// Settings Submenu
+
+[submenu] {
+  ion-label {
+    padding-left: 30px !important;
+  }
+}
+
+.label-md[stacked] {
+  font-size: 17px;
+  color: #0090d0;
+}

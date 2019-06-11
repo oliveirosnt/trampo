@@ -14,7 +14,7 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content class="cadastro-cliente-content">
+<ion-content class="cadastro-cliente-content" white-background>
     <div padding>
         <form [formGroup]="clienteForm" (ngSubmit)="cadastrar()">
             <ion-avatar item-start>
@@ -26,7 +26,7 @@
                 <ion-row>
                     <ion-col col-12>
                         <p color="dark">Escolha seu avatar</p>
-                        <button type="button" class="inserir" ion-button color="pink" round small (click)="getPhoto()">
+                        <button type="button" class="inserir" ion-button color="blue" round small (click)="getPhoto()">
                             <ion-icon ios="ios-add" md="md-add"></ion-icon>Inserir
                         </button>
                     </ion-col>
@@ -88,7 +88,7 @@
                 <hr/>
                 <ion-row>
                     <ion-col col-12>
-                        <button type="submit" class="cadastrar" ion-button round full color="pink">
+                        <button type="submit" class="cadastrar" ion-button round full color="blue">
                             <ion-icon ios="ios-person" md="md-person"></ion-icon> Cadastrar
                         </button>
                     </ion-col>

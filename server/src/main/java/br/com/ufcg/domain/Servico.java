@@ -39,6 +39,10 @@ public class Servico {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	@Column(name = "DT_DATA", nullable = false)
 	private LocalDate data;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	@Column(name = "DT_DATA_CRIACAO")
+	private LocalDate dataCriacao;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "kk:mm")
 	@Column(name = "HR_HORARIO", nullable = false)
@@ -116,6 +120,14 @@ public class Servico {
 
 	public void setData(LocalDate data) {
 		this.data = data;
+	}
+	
+	public void setDataCriacao(LocalDate dataCriacao) {
+		this.dataCriacao = dataCriacao;
+	}
+	
+	public LocalDate getDataCriacao() {
+		return this.dataCriacao;
 	}
 
 	public LocalTime getHorario() {

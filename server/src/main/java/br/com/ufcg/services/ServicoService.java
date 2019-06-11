@@ -1,8 +1,5 @@
 package br.com.ufcg.services;
 
-import br.com.ufcg.domain.Especialidade;
-import br.com.ufcg.domain.Fornecedor;
-import br.com.ufcg.domain.Oferta;
 import br.com.ufcg.domain.*;
 import br.com.ufcg.dao.ServicoDAO;
 import br.com.ufcg.domain.enums.TipoStatus;
@@ -11,6 +8,7 @@ import br.com.ufcg.repositories.ServicoRepository;
 import br.com.ufcg.util.validadores.ServicoValidador;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +26,10 @@ public class ServicoService {
     	if(!(cliente instanceof Cliente)) {
     		throw new Exception("Apenas clientes podem criar serviços!");
     	}
-
+    	
+    	LocalDate dataAtual = LocalDate.now();
+    	
+    	servico.setDataCriacao(dataAtual);
 		servico.setValor(new BigDecimal(0));
     	servico.setCliente((Cliente) cliente);
     	servico.setStatus(TipoStatus.AGUARDANDO_OFERTAS);
@@ -131,10 +132,94 @@ public class ServicoService {
 		return todosServicos;
 	}
 	
-	public List<Servico> getServicosCliente(Cliente cliente) throws Exception {
-		return servicoRepository.findServicosCliente(cliente);
+	public List<Servico> getServicosCliente(Cliente cliente, String periodo) throws Exception {
+		List<Servico> todosServicos = servicoRepository.findServicosCliente(cliente);
+		List<Servico> query;
+		
+		if(periodo == null) {
+			query = todosServicos;
+		} else if(periodo.equalsIgnoreCase("a")) {
+			query = findServicosAnual(todosServicos);
+		} else if(periodo.equalsIgnoreCase("m")) {
+			query = findServicosMensal(todosServicos);
+		} else if(periodo.equalsIgnoreCase("s")) {
+			query = findServicosSemanal(todosServicos);
+		} else {
+			throw new Exception("Parâmetro inválido!");
+		}
+		
+		return query;
 	}
 	
+	public List<Servico> getServicosFornecedor(Fornecedor cliente, String periodo) throws Exception {
+		List<Servico> todosServicos = servicoRepository.findServicosFornecedor(cliente);
+		List<Servico> query;
+		
+		if(periodo == null) {
+			query = todosServicos;
+		} else if(periodo.equalsIgnoreCase("a")) {
+			query = findServicosAnual(todosServicos);
+		} else if(periodo.equalsIgnoreCase("m")) {
+			query = findServicosMensal(todosServicos);
+		} else if(periodo.equalsIgnoreCase("s")) {
+			query = findServicosSemanal(todosServicos);
+		} else {
+			throw new Exception("Parâmetro inválido!");
+		}
+		
+		return query;
+	}
+	
+	private List<Servico> findServicosAnual(List<Servico> servicos) {
+		List<Servico> anuais = new ArrayList<>();
+		LocalDate dataAtual = LocalDate.now();
+	
+		for(Servico servico: servicos) {
+			LocalDate dataCriacao = servico.getDataCriacao();
+			LocalDate dataUmAnoAvancada = dataCriacao.plusYears(1);
+			LocalDate dataUmAnoAtrasada = dataCriacao.minusYears(1);
+			
+			if(dataAtual.isBefore(dataUmAnoAvancada) && dataAtual.isAfter(dataUmAnoAtrasada)) {
+				anuais.add(servico);
+			}
+		}
+		return anuais;
+	}
+	
+	private List<Servico> findServicosMensal(List<Servico> servicos) {
+		List<Servico> mensais = new ArrayList<>();
+		LocalDate dataAtual = LocalDate.now();
+		
+		for(Servico servico: servicos) {
+			LocalDate dataCriacao = servico.getDataCriacao();
+			LocalDate dataUmMesAvancada = dataCriacao.plusMonths(1);
+			LocalDate dataUmMesAtrasada = dataCriacao.minusMonths(1);
+			
+			if(dataAtual.isBefore(dataUmMesAvancada) && dataAtual.isAfter(dataUmMesAtrasada)) {
+				mensais.add(servico);
+			}
+		}
+		
+		return mensais;
+	}
+	
+	private List<Servico> findServicosSemanal(List<Servico> servicos) {
+		List<Servico> semanais = new ArrayList<>();
+		LocalDate dataAtual = LocalDate.now();
+		
+		for(Servico servico: servicos) {
+			LocalDate dataCriacao = servico.getDataCriacao();
+			LocalDate dataUmaSemanaAvancada = dataCriacao.plusWeeks(1);
+			LocalDate dataUmaSemanaAtrasada = dataCriacao.minusWeeks(1);
+			
+			if(dataAtual.isBefore(dataUmaSemanaAvancada) && dataAtual.isAfter(dataUmaSemanaAtrasada)) {
+				semanais.add(servico);
+			}
+		}
+		
+		return semanais;
+	}
+
 	public List<ServicoDAO> setServicosToDAO(List<Servico> servicos) {
 		List<ServicoDAO> servicosDAO = new ArrayList<ServicoDAO>();
 		for(Servico servico: servicos) {

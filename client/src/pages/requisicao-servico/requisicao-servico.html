@@ -14,18 +14,8 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content class="requisicao-content">
-    <ion-avatar item-start>
-        <ion-card-content>
-            <ion-thumbnail item-start>
-                <ion-row>
-                    <ion-col col-12>
-                        <ion-icon ios="ios-construct" md="md-construct"></ion-icon>
-                    </ion-col>
-                </ion-row>
-            </ion-thumbnail>
-        </ion-card-content>
-    </ion-avatar>
+<ion-content class="requisicao-content" has-header white-background>
+
     <div padding>
         <form name="dadosServicoForm">
             <ion-grid>
@@ -95,7 +85,7 @@
                 <hr />
                 <ion-row>
                     <ion-col col-12>
-                        <button class="confirmar" ion-button round full color="pink" (click)="cadastrar(dados_servico)"
+                        <button class="confirmar" ion-button round full color="blue" (click)="cadastrar(dados_servico)"
                             [disabled]="!isEnabled()">
                             <ion-icon ios="ios-checkmark" md="md-checkmark"></ion-icon>Confirmar Requisição
                         </button>

@@ -47,4 +47,13 @@ page-login {
     .item-ios, .item-md {
       background: transparent;
     }
+
+    img {
+      max-width: 100px;
+      max-height: 100px;
+      display: block;
+      margin: 35px auto 20px;
+    }
+
 }
+
