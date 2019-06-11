@@ -13,35 +13,6 @@ import { StorageService } from '../../services/storage.service';
 import { ServicoClienteService } from '../../services/servico-cliente.service';
 
 
-
-function getWeeksInMonth(thisDay, month, year){
-   var weeks=[],
-       firstDate=new Date(year, month, 1),
-       lastDate=new Date(year, month+1, 0), 
-       numDays= lastDate.getDate();
-   
-   var start=1;
-   var end=7-firstDate.getDay();
-   while(start<=numDays){
-       weeks.push({start:start,end:end});
-       start = end + 1;
-       end = end + 7;
-       if(end>numDays)
-           end=numDays;    
-   }
-   var weekNumber = -1;
-   var day;
-   for (var i=0; i<weeks.length; i++) {
-     weekNumber = i+1;
-     if (weeks[i].start <= thisDay && thisDay <= weeks[i].end){
-         weekNumber+=1;
-         return weekNumber;
-     }
-   }
-    return weekNumber; // (== -1) -> ERROR
-} 
-
-
 @IonicPage()
 @Component({
   selector: 'page-dashboard',
@@ -51,44 +22,25 @@ export class DashboardPage {
 
 	user: DadosUsuarioDTO;
 	servicos: ServicoDTO[];
+
+  isSemanal: boolean;
+  isMensal: boolean;
+  isAnual: boolean;
+
 	pieChartData: any;
 
   	constructor(
   		public navCtrl: NavController,
-        public servicoFornecedorService: ServicoFornecedorService,
-        public usuarioService: UsuarioService,
-
-        public autenticacaoService: AutenticacaoService,
-        public storageService: StorageService,
-        public servicoClienteService: ServicoClienteService,
-        public alertCtrl: AlertController
-        ) {
-  	}
+      public servicoFornecedorService: ServicoFornecedorService,
+      public usuarioService: UsuarioService,
+      public autenticacaoService: AutenticacaoService,
+      public storageService: StorageService,
+      public servicoClienteService: ServicoClienteService,
+      public alertCtrl: AlertController
+    ) { }
 
     ionViewDidLoad() {
-        this.usuarioService.getMyUser().subscribe(
-            response => {
-                this.servicoFornecedorService.getHistorico().subscribe(
-                    response => {
-                        this.servicos = response.body['data'];
-                        let aguardandoRealizacao = 0;
-                        let concluido = 0;
-
-                        this.servicos.map((servico) => {
-                          if(servico.tipoStatus === 'ACEITO') {
-                            aguardandoRealizacao += 1;
-                          } else if(servico.tipoStatus === 'CONCLUIDO') {
-                            concluido += 1;
-                          }
-                        });
-
-
-                        const dataToChart = [['Estado', 'Percent'], ['Aguardando Realização', aguardandoRealizacao], ['Concluído', concluido]];
-                        this.useAngularLibrary(dataToChart);
-                    });
-            }
-        );
-
+      this.semanal();
     }
 
     useAngularLibrary(data) {
@@ -104,37 +56,69 @@ export class DashboardPage {
         }
       };
     }
+  
+  mostraServico(servico){
+              var date =  new Date().toISOString();
 
-    semanal(){
+
+          if(this.isSemanal) {
+              var diaAtual = Number(date.substr(8, 2));
+              var diaUltimaSemana = diaAtual - 7;
+              if(diaUltimaSemana<=0) {
+                diaUltimaSemana =1;
+              }
+              var diaServico = Number(servico.data.substr(8, 2));
+                if(diaServico >= diaUltimaSemana && diaServico <= diaAtual) {
+                    return true;
+                 }
+          } else if(this.isMensal) {
+              var mesAtual = date.substr(5, 2);
+              var mesServico = servico.data.substr(5, 2);
+                          if(mesServico == mesAtual) {
+                    return true;
+
+                          }
+          } else {
+              var anoAtual = date.substr(0, 4);
+              var anoServico = servico.data.substr(0, 4);
+                          if(anoServico == anoAtual) {
+                return true;
+                          } 
+          }
+
+
+    return false;
+  }
+    semanal() {
+      this.isSemanal=true;
+      this.isMensal=false;
+      this.isAnual=false;
       this.usuarioService.getMyUser().subscribe(
         response => {
                 this.servicoFornecedorService.getHistorico().subscribe(
                     response => {
                         this.servicos = response.body['data'];
+
+
                         let aguardandoRealizacao = 0;
                         let concluido = 0;
 
                         this.servicos.map((servico) => {
+
               
-              var date =  new Date();
-              var y = getWeeksInMonth(date.getDay(), date.getMonth(), date.getFullYear());
-              
-              //var mesAtual = data.substr(5, 2);
-              //var mesServico = servico.data.substr(5, 2);
+              var date =  new Date().toISOString();
+              var diaAtual = Number(date.substr(8, 2));
+              var diaUltimaSemana = diaAtual - 7;
+              if(diaUltimaSemana<=0) {
+                diaUltimaSemana =1;
+              }
+              var diaServico = Number(servico.data.substr(8, 2));
 
+                          if(servico.tipoStatus === 'ACEITO' && diaServico >= diaUltimaSemana && diaServico <= diaAtual) {
 
-                let alertMessage = this.alertCtrl.create({
-                    message: "Date AAAA: "+y,
-                    buttons: [{
-                        text: 'Ok'
-                    }]
-                });
-                alertMessage.present();
-
-
-                          if(servico.tipoStatus === 'ACEITO') {
                             aguardandoRealizacao += 1;
-                          } else if(servico.tipoStatus === 'CONCLUIDO') {
+                          } else if(servico.tipoStatus === 'CONCLUIDO' && diaServico >= diaUltimaSemana && diaServico <= diaAtual) {
+
                             concluido += 1;
                           }
                         });
@@ -145,11 +129,15 @@ export class DashboardPage {
                     });
             }
         );
+     
 
     }
 
 
     mensal() {
+      this.isSemanal=false;
+      this.isMensal=true;
+      this.isAnual=false;
       this.usuarioService.getMyUser().subscribe(
         response => {
                 this.servicoFornecedorService.getHistorico().subscribe(
@@ -159,19 +147,10 @@ export class DashboardPage {
                         let concluido = 0;
 
                         this.servicos.map((servico) => {
-              var data =  new Date().toISOString();
-              var mesAtual = data.substr(5, 2);
+              var date =  new Date().toISOString();
+              var mesAtual = date.substr(5, 2);
               var mesServico = servico.data.substr(5, 2);
 
-/*
-                let alertMessage = this.alertCtrl.create({
-                    message: "Date AAAA: "+res,
-                    buttons: [{
-                        text: 'Ok'
-                    }]
-                });
-                alertMessage.present();
-*/
 
                           if(servico.tipoStatus === 'ACEITO' && mesServico == mesAtual) {
                             aguardandoRealizacao += 1;
@@ -189,6 +168,9 @@ export class DashboardPage {
     }
 
     anual() {
+      this.isSemanal=false;
+      this.isMensal=false;
+      this.isAnual=true;
       this.usuarioService.getMyUser().subscribe(
         response => {
                 this.servicoFornecedorService.getHistorico().subscribe(
@@ -198,8 +180,8 @@ export class DashboardPage {
                         let concluido = 0;
 
                         this.servicos.map((servico) => {
-              var data =  new Date().toISOString();
-              var anoAtual = data.substr(0, 4);
+              var date =  new Date().toISOString();
+              var anoAtual = date.substr(0, 4);
               var anoServico = servico.data.substr(0, 4);
 
                           if(servico.tipoStatus === 'ACEITO' && anoServico == anoAtual) {
