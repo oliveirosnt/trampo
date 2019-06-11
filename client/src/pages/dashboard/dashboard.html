@@ -33,14 +33,18 @@
   		</ion-row>
 	</ion-grid>
     <ion-card-content style="align-content: center;">
-      <ion-row>
+      <ion-row *ngIf="chartIsNotNull; else noServices">
         <ion-col col-12>
-          <!-- LOCAL PARA POOR GRAFICO -->
           <google-chart [data]="pieChartData"></google-chart>
         </ion-col>
       </ion-row>
+      <ng-template #noServices>
+           <ion-col col-12>
+                    <span>Você não está atrelado a nenhum serviço neste periodo selecionado.</span>
+                </ion-col>
+      </ng-template>
     </ion-card-content>
-    <div padding>
+    <div padding *ngIf="chartIsNotNull;">
         <ion-grid>
             <ion-row *ngIf="servicos?.length > 0; else noServices">
                 <ion-col col-12>

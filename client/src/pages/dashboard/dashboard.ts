@@ -12,6 +12,32 @@ import { AutenticacaoService } from '../../services/autenticacao.service';
 import { StorageService } from '../../services/storage.service';
 import { ServicoClienteService } from '../../services/servico-cliente.service';
 
+function getWeeksInMonth(thisDay, month, year){
+   var weeks=[],
+       firstDate=new Date(year, month, 1),
+       lastDate=new Date(year, month+1, 0), 
+       numDays= lastDate.getDate();
+   
+   var start=1;
+   var end=7-firstDate.getDay();
+   while(start<=numDays){
+       weeks.push({start:start,end:end});
+       start = end + 1;
+       end = end + 7;
+       if(end>numDays)
+           end=numDays;    
+   }
+   var weekNumber = -1;
+   var day;
+   for (var i=0; i<weeks.length; i++) {
+     weekNumber = i+1;
+     if (weeks[i].start <= thisDay && thisDay <= weeks[i].end){
+         weekNumber+=1;
+         return weekNumber;
+     }
+   }
+    return weekNumber; // (== -1) -> ERROR
+} 
 
 @IonicPage()
 @Component({
@@ -26,6 +52,8 @@ export class DashboardPage {
   isSemanal: boolean;
   isMensal: boolean;
   isAnual: boolean;
+
+  chartIsNotNull: boolean;
 
 	pieChartData: any;
 
@@ -59,9 +87,15 @@ export class DashboardPage {
   
   mostraServico(servico){
               var date =  new Date().toISOString();
+              var date2 = new Date();
 
+              var anoAtual = date.substr(0, 4);
+              var mesAtual = date.substr(5, 2);
+              var diaAtual = Number(date.substr(8, 2));
+              var numeroSemanaAtual = getWeeksInMonth(date.substr(8, 2), mesAtual, anoAtual);
 
           if(this.isSemanal) {
+/*            
               var diaAtual = Number(date.substr(8, 2));
               var diaUltimaSemana = diaAtual - 7;
               if(diaUltimaSemana<=0) {
@@ -85,7 +119,27 @@ export class DashboardPage {
                 return true;
                           } 
           }
+*/
+              var diaServico = Number(servico.data.substr(8, 2));
+              var numeroSemanaServico = getWeeksInMonth(servico.data.substr(8, 2), servico.data.substr(5, 2), servico.data.substr(0, 4));
+              //var numeroSemanaServico = getWeeksInMonth('14', '06', '2019');
 
+                if(numeroSemanaAtual==numeroSemanaServico) {
+                    return true;
+                 }
+          } else if(this.isMensal) {
+
+              var mesServico = servico.data.substr(5, 2);
+                          if(mesServico == mesAtual) {
+                    return true;
+
+                          }
+          } else {
+              var anoServico = servico.data.substr(0, 4);
+                          if(anoServico == anoAtual) {
+                return true;
+                          } 
+          }
 
     return false;
   }
@@ -104,7 +158,7 @@ export class DashboardPage {
                         let concluido = 0;
 
                         this.servicos.map((servico) => {
-
+/*
               
               var date =  new Date().toISOString();
               var diaAtual = Number(date.substr(8, 2));
@@ -121,8 +175,33 @@ export class DashboardPage {
 
                             concluido += 1;
                           }
+
+*/
+              var date =  new Date().toISOString();
+              var diaAtual = date.substr(8, 2);
+              var anoAtual = date.substr(0, 4);
+              var mesAtual = date.substr(5, 2);
+              var diaServico = servico.data.substr(8, 2);
+              var mesServico = servico.data.substr(5, 2);
+              var anoServico = servico.data.substr(0, 4);
+
+              var numeroSemanaAtual = getWeeksInMonth(diaAtual, mesAtual, anoAtual);
+              var numeroSemanaServico = getWeeksInMonth(diaServico, servico.data.substr(5, 2), servico.data.substr(0, 4));
+              //var numeroSemanaServico = getWeeksInMonth('14', '06', '2019');
+
+
+                          if(servico.tipoStatus === 'ACEITO' && numeroSemanaAtual == numeroSemanaServico) {
+
+                            aguardandoRealizacao += 1;
+                          } else if(servico.tipoStatus === 'CONCLUIDO' && numeroSemanaAtual == numeroSemanaServico) {
+
+                            concluido += 1;
+                          }
+
                         });
 
+
+                        this.checkDataService(aguardandoRealizacao, concluido);
 
                         const dataToChart = [['Estado', 'Percent'], ['Aguardando Realização', aguardandoRealizacao], ['Concluído', concluido]];
                         this.useAngularLibrary(dataToChart);
@@ -133,7 +212,13 @@ export class DashboardPage {
 
     }
 
-
+checkDataService(aguardandoRealizacao, concluido){
+                          if(aguardandoRealizacao==0 && concluido==0) {
+                           this.chartIsNotNull = false;
+                        } else {
+                          this.chartIsNotNull = true;
+                        }
+}
     mensal() {
       this.isSemanal=false;
       this.isMensal=true;
@@ -159,6 +244,7 @@ export class DashboardPage {
                           }
                         });
 
+                        this.checkDataService(aguardandoRealizacao, concluido);
 
                         const dataToChart = [['Estado', 'Percent'], ['Aguardando Realização', aguardandoRealizacao], ['Concluído', concluido]];
                         this.useAngularLibrary(dataToChart);
@@ -191,6 +277,7 @@ export class DashboardPage {
                           }
                         });
 
+                        this.checkDataService(aguardandoRealizacao, concluido);
 
                         const dataToChart = [['Estado', 'Percent'], ['Aguardando Realização', aguardandoRealizacao], ['Concluído', concluido]];
                         this.useAngularLibrary(dataToChart);
