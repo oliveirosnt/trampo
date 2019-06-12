@@ -13,10 +13,10 @@ page-login {
         margin: 0.2em;
     }
     
-    ion-avatar {
-        display: flex;
-        align-items: center;
-        flex-direction: column;
+    h2.logo {
+        color: #0090d0;
+        font-family: Dessau-Light;
+        font-size: 40px;
     }
 
     div {
@@ -56,4 +56,3 @@ page-login {
     }
 
 }
-
