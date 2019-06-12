@@ -61,7 +61,7 @@
                     <ion-col col-12>
                         <ion-item>
                             <ion-label stacked>Endereço:</ion-label>
-                            <ion-input id="loc-input" type="text" name="endereco"></ion-input>
+                            <ion-input id="loc-input" type="text" name="endereco" [disabled]="true" [(ngModel)]="dados_servico.endereco.nome"></ion-input>
                         </ion-item>
                     </ion-col>
                 </ion-row>

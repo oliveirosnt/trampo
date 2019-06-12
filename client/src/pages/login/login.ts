@@ -82,7 +82,7 @@ export class LoginPage {
                     this.dadosUsuario = response['data'];
                     this.events.publish(`user:${this.dadosUsuario.tipo}`)
                     if(this.dadosUsuario.tipo === 'CLIENTE') {
-                      this.navCtrl.setRoot('HomePage', this.dadosUsuario);
+                      this.navCtrl.setRoot('HomeClientePage', this.dadosUsuario);
                     } else {
                       this.navCtrl.setRoot('DashboardPage', this.dadosUsuario);
                     }
