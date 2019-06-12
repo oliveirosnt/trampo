@@ -112,7 +112,7 @@ export class RequisicaoServicoPage {
 
     isEnabled() {
         return (this.dados_servico.data && this.dados_servico.horario && this.dados_servico.tipo
-            && this.dados_servico.endereco.nome && this.dados_servico.endereco.location)
+            && this.dados_servico.endereco.nome && this.dados_servico.endereco.location && this.dados_servico.endereco.pontoReferencia)
     }
 
     loadMap() {
