@@ -82,6 +82,9 @@ export class DashboardPage {
         'width': 400,
         'height': 300,
         'pieHole': 0.65,
+        pieSliceTextStyle: {
+          color: 'black',
+        },
         'title': 'Distribuição dos Serviços',
         'colors': ['#0090d0', '#222']
       }
