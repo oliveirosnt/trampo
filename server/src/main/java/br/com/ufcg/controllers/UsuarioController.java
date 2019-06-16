@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -144,7 +145,7 @@ public class UsuarioController {
 				usuarioService.atualizarSenha(usuario, form, CONFIRMAR_SENHA);
 			}
     		
-    		response = new Response("Usuario atualizado com sucesso!", HttpStatus.OK.value());
+    		response = new Response("Usuário atualizado com sucesso!", HttpStatus.OK.value());
 			return new ResponseEntity<>(response, HttpStatus.OK);
     		
     	} catch(Exception e) {
@@ -217,6 +218,7 @@ public class UsuarioController {
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}	
 	}
+	
 	
 	private class LoginResponse {
         String token;

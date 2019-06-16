@@ -303,7 +303,7 @@ public class UsuarioService {
 	            .compact();
 		
 		
-		emailService.recuperarSenha(usuario, token);
+		emailService.gerarEmailRecuperarSenha(usuario, token);
 		
 	}
 

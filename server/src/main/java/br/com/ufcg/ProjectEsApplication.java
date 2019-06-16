@@ -26,7 +26,6 @@ public class ProjectEsApplication {
 		ArrayList<String> urlPatterns = new ArrayList<>();
 		urlPatterns.add("/api/servicos/*");
 		urlPatterns.add("/api/usuarios/*");
-		urlPatterns.add("/recuperarSenha/token/*");
 		FilterRegistrationBean frb = new FilterRegistrationBean();
 		frb.setFilter(new TokenFilter());
 		frb.setUrlPatterns(urlPatterns);
