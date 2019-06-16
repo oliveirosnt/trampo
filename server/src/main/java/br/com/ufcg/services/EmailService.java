@@ -40,18 +40,14 @@ public class EmailService {
     */
     public void gerarEmailRecuperarSenha(Usuario usuario, String token) throws Exception {
     	
-    	String mensagem = ("Olá, " + usuario.getNomeCompleto() + "! " +
-        		"Uma recuperação de senha foi solicitada para sua conta no Trampo."  + System.lineSeparator() +
-        		"Link para gerar uma nova senha: " + System.lineSeparator() +
-        		"trampo://api/recuperar-senha/" + token  + System.lineSeparator() + 
-        		"A equipe Trampo agradece! Até mais!");
+    	String link = "http://link/api/recuperar-senha/" + token;
     	
     	MimeMessagePreparator messagePreparator = mimeMessage -> {
     		MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
     		messageHelper.setFrom("projeto.trampo2019@gmail.com");
     		messageHelper.setTo(usuario.getEmail().toLowerCase());
     		messageHelper.setSubject("Recuperar senha da sua conta Trampo!");
-    		String content = mailContentBuilder.build(mensagem);
+    		String content = mailContentBuilder.build(usuario.getNomeCompleto(), link);
             messageHelper.setText(content, HTML_FORMAT);
     		
     	};

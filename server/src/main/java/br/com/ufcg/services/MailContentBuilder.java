@@ -1,5 +1,8 @@
 package br.com.ufcg.services;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
@@ -15,10 +18,14 @@ public class MailContentBuilder {
         this.templateEngine = templateEngine;
     }
  
-    public String build(String message) {
+    public String build(String nomeUsuario, String link) {
+    	Map<String, Object> variables = new HashMap<>();
+    	variables.put("nomeUsuario", nomeUsuario);
+    	variables.put("link", link);
         Context context = new Context();
-        context.setVariable("message", message);
-        return templateEngine.process("Template", context);
+        context.setVariables(variables);;
+
+        return templateEngine.process("MailTemplate", context);
     }
     
 }

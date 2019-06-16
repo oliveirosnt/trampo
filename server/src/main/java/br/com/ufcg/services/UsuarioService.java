@@ -34,7 +34,7 @@ public class UsuarioService {
 	private static final Object STRING_ESPACAMENTO = " ";
 	private static final String SECRET = "ProjetoES";
 	private static final long HORA_MILISEGUNDOS = 3600000;
-	private static final long LIMITE_DOZE_HORAS = (HORA_MILISEGUNDOS * 12);
+	private static final long LIMITE_24_HORAS = (HORA_MILISEGUNDOS * 24);
 
 	@Autowired
 	UsuarioRepository usuarioRepository;
@@ -299,7 +299,7 @@ public class UsuarioService {
 		String token = Jwts.builder()
 	            .setSubject(new StringBuilder(usuario.getLogin().toLowerCase()).append(STRING_ESPACAMENTO).toString())
 	            .signWith(SignatureAlgorithm.HS512, SECRET)
-	            .setExpiration(new Date(System.currentTimeMillis() + LIMITE_DOZE_HORAS))
+	            .setExpiration(new Date(System.currentTimeMillis() + LIMITE_24_HORAS))
 	            .compact();
 		
 		
