@@ -1,5 +1,7 @@
 package br.com.ufcg.services;
 
+import javax.mail.internet.InternetAddress;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -44,7 +46,7 @@ public class EmailService {
     	
     	MimeMessagePreparator messagePreparator = mimeMessage -> {
     		MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-    		messageHelper.setFrom("projeto.trampo2019@gmail.com");
+    		messageHelper.setFrom(new InternetAddress("projeto.trampo2019@gmail.com", "Equipe Trampo"));
     		messageHelper.setTo(usuario.getEmail().toLowerCase());
     		messageHelper.setSubject("Recuperar senha da sua conta Trampo!");
     		String content = mailContentBuilder.build(usuario.getNomeCompleto(), link);
