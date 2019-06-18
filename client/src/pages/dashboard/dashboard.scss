@@ -27,72 +27,88 @@ page-dashboard {
     }
 
     ion-content.dashboard-content {
-        ion-avatar {
-            background-color: #e0e0e0;
-            display: table;
-            text-align: center;
-            width: 100%;
+        h2.title-text {
+            font-size: 18px;
+        }
 
-            ion-icon {
-                font-size: 25vh;
+        h2.logo {
+            color: #0090d0;
+            font-family: Dessau-Light;
+            font-size: 25px;
+        }
+
+        ion-card-title.title-text {
+            color: #0090d0;
+        }
+
+        ion-card-content.google-chart {
+            align-content: center;
+        }
+
+        ion-card-content.text {
+            text-align: justify;
+        }
+
+        img.logo {
+            width:70px; 
+            height:70px; 
+            margin: 0 auto;
+        }
+
+        button.servicos-disponiveis {
+            span.text {
+                font-weight: bold;
+            }
+
+            ion-icon.icon {
+                margin-left: 10px;
+            }    
+        }
+
+        .button-group {
+            .col {
+                &:first-child:not(:last-child) {
+                    padding-right: 0;
+                    .button {
+                        font-weight: bold;
+                        background-color: #0090d0;
+                        border-top-right-radius: 0;
+                        border-bottom-right-radius: 0;
+                    }
+                    .button:active, .button:focus{
+                        background-color: #222;
+                    }
+                }
+
+                &:not(:first-child):not(:last-child) {
+                    padding-right: 0;
+                    padding-left: 0;
+                    .button {
+                        font-weight: bold;
+                        background-color: #0090d0;
+                        border-radius: 0;
+                    }
+                    .button:active, .button:focus{
+                        background-color: #222;
+                    }
+                }
+
+                &:last-child:not(:first-child) {
+                    padding-left: 0;
+                    .button {
+                        font-weight: bold;
+                        background-color: #0090d0;
+                        border-top-left-radius: 0;
+                        border-bottom-left-radius: 0;
+                    }
+                    .button:active, .button:focus{
+                        background-color: #222;
+                    }
+                }
             }
         }
 
-        ion-label {
-            color: black !important;
-            margin: 0 8px 11px 0;
-        }
-    }
-
-    ion-card-content {
-        align-content: center;
-    }
-
-    input {
-        text-overflow: ellipsis;
-    }
-
-    .button-group {
-        .col {
-            &:first-child:not(:last-child) {
-                padding-right: 0;
-                .button {
-                    font-weight: bold;
-                    background-color: #0090d0;
-                    border-top-right-radius: 0;
-                    border-bottom-right-radius: 0;
-                }
-                .button:active, .button:focus{
-                    background-color: #222;
-                }
-            }
-
-            &:not(:first-child):not(:last-child) {
-                padding-right: 0;
-                padding-left: 0;
-                .button {
-                    font-weight: bold;
-                    background-color: #0090d0;
-                    border-radius: 0;
-                }
-                .button:active, .button:focus{
-                    background-color: #222;
-                }
-            }
-        
-            &:last-child:not(:first-child) {
-                padding-left: 0;
-                .button {
-                    font-weight: bold;
-                    background-color: #0090d0;
-                    border-top-left-radius: 0;
-                    border-bottom-left-radius: 0;
-                }
-                .button:active, .button:focus{
-                    background-color: #222;
-                }
-            }
-        }
     }
 
 }
+
