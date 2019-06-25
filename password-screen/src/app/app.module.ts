@@ -3,10 +3,13 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { PasswordScreenComponent } from './password-screen/password-screen.component';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PasswordScreenComponent
   ],
   imports: [
     BrowserModule,
