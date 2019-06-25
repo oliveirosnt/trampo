@@ -1,0 +1,12 @@
+img {
+    max-width: 10%;
+}
+
+.container {
+    font-family: Dessau-Light;
+}
+
+button {
+    width: 10em;
+    border-radius: 25px;
+}
