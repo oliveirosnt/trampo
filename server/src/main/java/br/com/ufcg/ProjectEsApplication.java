@@ -56,6 +56,7 @@ public class ProjectEsApplication {
 		return frb;
 	}
 	
+	
 	@Bean
 	public FilterRegistrationBean corsFilter() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

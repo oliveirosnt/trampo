@@ -1,15 +1,15 @@
-
-
 <ion-content class="login-content">
+
   <p>
     <a (click)="cadastroFornecedor()"><u>Deseja trabalhar conosco?</u></a>
   </p>
 
   <div padding>
     <ion-list>
+
       <form name="loginForm">
         <img src="assets/imgs/logo-login.png">
-        <h2 item-title-header text-center style="color: #0090d0; font-family: Dessau-Light; font-size: 40px;">trampo</h2>
+        <h2 class="logo" item-title-header text-center>trampo</h2>
         
         <ion-item>
           <ion-label floating>Usuário</ion-label>
@@ -17,7 +17,7 @@
                   [class.invalid]="username.errors && username.dirty"></ion-input>
         </ion-item>
         <ion-item class="error-message" *ngIf="username.errors?.required && username.dirty">
-        Informe o seu usuário
+          Informe o seu usuário
         </ion-item>
         <ion-item>
           <ion-label floating>Senha</ion-label>

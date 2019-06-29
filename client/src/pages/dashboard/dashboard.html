@@ -34,7 +34,7 @@
       </ion-row>
     </ion-grid>
 
-    <ion-card-content style="align-content: center;">
+    <ion-card-content class="google-chart">
       <ion-row>
         <ion-col col-12>
           <google-chart [data]="pieChartData"></google-chart>
@@ -46,7 +46,7 @@
       <ion-grid>
         <ion-row>
           <ion-col col-12>
-            <h2>Meus Serviços</h2>
+            <h2 class="title-text" >Meus Serviços</h2>
           </ion-col>
           <ion-col col-12>
             <ion-list *ngFor="let servico of servicos">
@@ -58,20 +58,19 @@
     </div>
   </div>
 
-
   <div padding *ngIf="servicos?.length == 0">
     <ion-grid>
       <ion-row>
         <ion-col col-12>
           <ion-card>
             <ion-card-header>
-              <img src="assets/imgs/logo-login.png" style="width:70px; height:70px; margin: 0 auto;">
-              <h2 item-title-header text-center style="color: #0090d0; font-family: Dessau-Light; font-size: 25px;">trampo</h2>
+              <img class="logo" src="assets/imgs/logo-login.png">
+              <h2 class="logo" item-title-header text-center>trampo</h2>
               <hr/>
-              <ion-card-title text-center style="color: #0090d0">Bem-Vindo</ion-card-title>
+              <ion-card-title class="title-text" text-center style="">Bem-Vindo</ion-card-title>
             </ion-card-header>
 
-            <ion-card-content style="text-align: justify;">
+            <ion-card-content class="text">
               <p>&nbsp; Olá <strong>{{nomeUsuario}}</strong>, nós da equipe <strong style="color: #0090d0;">trampo</strong> estamos muito felizes por tê-lo(a) trabalhando aqui conosco.
 
               Que tal começar de fato trabalhando na sua área?</p>
@@ -79,11 +78,11 @@
             </ion-card-content>
           </ion-card>
           <hr/>
-          <button default-button full ion-button (click)="openServicosDisponiveis()">
-            <span style="font-weight: bold">
+          <button class="servicos-disponiveis" default-button full ion-button (click)="openServicosDisponiveis()">
+            <span class="text">
               Serviços Disponíveis
             </span>
-             <ion-icon ios="ios-log-in" md="md-log-in" style="margin-left: 10px;"></ion-icon>
+            <ion-icon class="icon" ios="ios-log-in" md="md-log-in"></ion-icon>
           </button>
         </ion-col>
       </ion-row>
