@@ -95,7 +95,12 @@ export class AvaliacaoPage {
                     }]
                 });
                 alertMessage.present();
-                this.navCtrl.setRoot("HomePage");
+                const usuario = this.storageService.getLocalUser()["user"];
+                if(usuario["tipo"] == 'CLIENTE') {
+                  this.navCtrl.setRoot("HomeClientePage");
+                } else {
+                  this.navCtrl.setRoot("DashboardPage");
+                }
             }, error => {
                 let alertMessage = this.alertCtrl.create({
                     message: error.error['message'],

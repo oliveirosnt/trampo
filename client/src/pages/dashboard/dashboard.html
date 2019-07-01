@@ -19,7 +19,7 @@
 
 <ion-content class="dashboard-content"  white-background>
 
-  <div *ngIf="servicos?.length > 0">
+  <div *ngIf="temServicos">
     <ion-grid class="button-group">
       <ion-row>
         <ion-col>
@@ -59,7 +59,7 @@
   </div>
 
 
-  <div padding *ngIf="servicos?.length == 0">
+  <div padding *ngIf="!temServicos">
     <ion-grid>
       <ion-row>
         <ion-col col-12>

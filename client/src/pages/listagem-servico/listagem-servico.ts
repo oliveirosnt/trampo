@@ -49,7 +49,7 @@ export class ListagemServicoPage {
     this.usuarioService.getMyUser().subscribe(
       response => {
         if (response['data']['tipo'] == 'CLIENTE'){
-          this.servicoClienteService.getServicos().subscribe(
+          this.servicoClienteService.getHistorico().subscribe(
             response => {
               this.servicos = response.body['data'];
             });

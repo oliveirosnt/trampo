@@ -22,6 +22,7 @@ export class DashboardPage {
   nomeUsuario: string;
 
   pieChartData: any;
+  temServicos: boolean;
 
   constructor(
     public navCtrl: NavController,
@@ -37,14 +38,13 @@ export class DashboardPage {
       (response) => {
         this.nomeUsuario = response['data']['nomeCompleto'];
       });
-    this.carregaServicosBaseadoData('semanal');
+    this.carregaServicosBaseadoData(null);
   }
 
   carregaServicosBaseadoData(periodoServico) {
 
     this.servicoFornecedorService.getHistorico(periodoServico).subscribe(
       response => {
-
         const data = response.body['data'];
         if(data) {
           this.servicos = response.body['data'];
@@ -59,10 +59,11 @@ export class DashboardPage {
             }
 
           });
-
+          this.temServicos = true;
           const dataToChart = [['Estado', 'Percent'], ['Aguardando Realização', aguardandoRealizacao], ['Concluído', concluido]];
           this.useAngularLibrary(dataToChart);
         } else {
+          this.temServicos = false;
           this.servicos = [];
         }
 

@@ -43,11 +43,11 @@ export class ListagemServicoAceitosPage {
     }
 
     ionBackPage() {
-        this.navCtrl.setRoot('HomePage');
+        this.navCtrl.setRoot('DashboardPage');
     }
 
     openDetalhes(servico: ServicoDTO) {
-        this.navCtrl.push('DetalheServicoPage', servico)
+      this.navCtrl.push('DetalheServicoPage', {servico: servico, ofertas: servico.ofertasRecebidas});
     }
 
 }

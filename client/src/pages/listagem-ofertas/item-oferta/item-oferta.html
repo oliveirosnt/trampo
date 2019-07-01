@@ -8,7 +8,7 @@
       </ion-card-title>
       <ion-row>
         <ion-col col-12 class="profile-avatar">
-          <img src="{{oferta.fornecedor.fotoPerfil === '' ? imgPerfil : oferta.fornecedor.fotoPerfil}}">
+          <img src="{{oferta.fornecedor.fotoPerfil.trim() === '' ? 'assets/imgs/default-avatar.png': 'data:image/jpeg;base64,' + oferta.fornecedor.fotoPerfil}}">
         </ion-col>
       </ion-row>
       <ion-row>
