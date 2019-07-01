@@ -216,17 +216,6 @@ $list-ios-activated-background-color: theme-colors('mainColors', 'accent');
 
 $item-body-background-color: theme-colors('mainColors', 'accent') !default;
 
-// Black&White Avatar and Image
-ion-avatar, ion-thumbnail {
-  -webkit-filter: grayscale(100%);
-    filter: grayscale(100%);
-}
-
-
-[images-filter] {
-  -webkit-filter: grayscale(100%);
-    filter: grayscale(100%);
-}
 
 // Divider Settings
 $item-divider-small: 1px solid theme-colors('mainColors', 'secondary');

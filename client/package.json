@@ -35,6 +35,7 @@
     "brmasker-ionic-3": "^1.6.3",
     "com-badrit-base64": "0.2.0",
     "cordova-android": "7.0.0",
+    "cordova-android-support-gradle-release": "^3.0.1",
     "cordova-browser": "6.0.0",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-googlemaps": "^2.6.2",
@@ -78,7 +79,10 @@
         "PLAY_SERVICES_VERSION": "15.0.1",
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
       },
-      "cordova-plugin-geolocation": {}
+      "cordova-plugin-geolocation": {},
+      "cordova-android-support-gradle-release": {
+        "ANDROID_SUPPORT_VERSION": "27.+"
+      }
     },
     "platforms": [
       "android",
