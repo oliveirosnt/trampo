@@ -42,7 +42,7 @@ public class EmailService {
     */
     public void gerarEmailRecuperarSenha(Usuario usuario, String token) throws Exception {
     	
-    	String link = "http://link/api/recuperar-senha/" + token;
+    	String link = "https://trampo-recovery.herokuapp.com/recuperar-senha/" + token;
     	
     	MimeMessagePreparator messagePreparator = mimeMessage -> {
     		MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
