@@ -10,3 +10,7 @@ button {
     width: 10em;
     border-radius: 25px;
 }
+
+#toast-container > div {
+  opacity:1;
+}
