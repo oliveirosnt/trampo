@@ -17,7 +17,7 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content [hidden]="!hasLocation">
     <div #map id="map" [style.height.%]="heightMap"></div>
     <ion-grid>
         <ion-row>
@@ -26,7 +26,7 @@
                     <label class="item item-input">
                         <ion-icon name="search"></ion-icon>
                         <ion-input type="text" (ionChange)="changeLocation()" [(ngModel)]="autocomplete.input"
-                            placeholder="Qual localização do serviço?"></ion-input>
+                            placeholder="Qual a localização do serviço?"></ion-input>
                     </label>
                 </div>
             </ion-col>
@@ -49,4 +49,36 @@
             </ion-col>
         </ion-row>
     </ion-grid>
+</ion-content>
+<ion-content [hidden]="hasLocation">
+  <ion-grid>
+    <ion-row justify-content-center align-items-center>
+      <div id="infowindow-content">
+        <img src="" width="16" height="16" id="place-icon">
+        <span id="place-name"  class="title"></span><br>
+        <span id="place-address"></span>
+      </div>
+      <div #map id="map_canvas" style="width: 100%; height: 40rem; border: 1px solid black;"></div>
+    </ion-row>
+    <hr />
+    <ion-row>
+      <ion-col col-12>
+        <div class="list list-inset">
+          <label class="item item-input">
+            <ion-icon name="search"></ion-icon>
+            <ion-input id="loc-input" type="text"
+                       placeholder="Qual a localização do serviço?"></ion-input>
+          </label>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12>
+        <button class="confirmar" ion-button round full color="blue"
+                [disabled]="invalidPosition()" (click)="nextServiceRequest()">
+          Requisitar Serviço <ion-icon ios="ios-arrow-forward" md="md-arrow-forward" style="margin-left: 10px;"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

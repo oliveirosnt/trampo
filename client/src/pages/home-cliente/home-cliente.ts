@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Environment } from '@ionic-native/google-maps';
 
+declare var google;
 @IonicPage()
 @Component({
     selector: 'page-home-cliente',
@@ -11,6 +12,7 @@ import { Environment } from '@ionic-native/google-maps';
 export class HomeClientePage {
 
     heightMap = 75;
+    hasLocation: boolean = true;
 
     startPosition: any;
     map: any;
@@ -21,10 +23,13 @@ export class HomeClientePage {
     autocompleteItems = [];
     geocoder = new google.maps.Geocoder;
     markers = [];
+    position: any;
+    autocompleteWithoutLocation: any = { input: '' };
 
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
-        private geolocation: Geolocation) {
+        private geolocation: Geolocation,
+                public alertCtrl: AlertController) {
     }
 
     ionViewDidLoad() {
@@ -68,6 +73,8 @@ export class HomeClientePage {
 
             }).catch((error) => {
                 console.log('Erro ao recuperar sua posição', error);
+                this.hasLocation = false;
+                this.loadMap();
             });
     }
 
@@ -121,7 +128,142 @@ export class HomeClientePage {
         this.markers = [];
     }
 
+  loadMap() {
+
+    // This code is necessary for browser
+    Environment.setEnv({
+      'API_KEY_FOR_BROWSER_RELEASE': 'AIzaSyBTyczdC5fDO-MkSilkJynkL8IXrN6HDIk',
+      'API_KEY_FOR_BROWSER_DEBUG': 'AIzaSyBTyczdC5fDO-MkSilkJynkL8IXrN6HDIk'
+    });
+    this.position = new google.maps.LatLng(-7.229075, -35.880834);
+    this.map = new google.maps.Map(document.getElementById('map_canvas'), {
+      center: {lat: -7.229075, lng: -35.880834},
+      zoom: 12,
+      disableDefaultUI: false,
+      streetViewControl: false,
+      mapTypeControl: false
+    });
+
+    var input = document.getElementById('loc-input').getElementsByTagName('input')[0];
+
+    this.autocompleteWithoutLocation =  new google.maps.places.Autocomplete(
+      input, {
+        types: ['address'],
+        fields:  ['address_components', 'geometry', 'icon', 'name'],
+      });
+
+
+    this.autocompleteWithoutLocation.bindTo('bounds', this.map);
+
+    var infowindow = new google.maps.InfoWindow();
+    var infowindowContent = document.getElementById('infowindow-content');
+    infowindow.setContent(infowindowContent);
+    var marker = new google.maps.Marker();
+    marker.setMap(this.map);
+    marker.setTitle('Local do Serviço');
+    let geocoder = new google.maps.Geocoder;
+
+    marker.addListener('click', function(event) {
+      this.map.setZoom(17);
+      this.map.setCenter(marker.getPosition());
+      this.position = new google.maps.LatLng(event.latLng.lat(), event.latLng.lng());
+    });
+
+    marker.addListener('dragend', (event) => {
+      marker.setPosition(event.latLng);
+      marker.setVisible(true);
+      marker.setDraggable(true);
+      geocoder.geocode({'location': event.latLng}, (results, status) => {
+        let inputs = [];
+        inputs.push(document.querySelector('#loc-input > input'));
+        inputs[0].value = results[0].formatted_address;
+        this.position = new google.maps.LatLng(event.latLng.lat(), event.latLng.lng());
+      });
+      this.map.setZoom(17);
+      this.map.setCenter(marker.getPosition());
+    });
+
+
+    this.map.addListener('click', (event) => {
+      marker.setPosition(event.latLng);
+      marker.setVisible(true);
+      marker.setDraggable(true);
+      geocoder.geocode({'location': event.latLng}, (results, status) => {
+        let inputs = [];
+        inputs.push(document.querySelector('#loc-input > input'));
+        inputs[0].value = results[0].formatted_address;
+        this.position = new google.maps.LatLng(event.latLng.lat(), event.latLng.lng());
+      });
+      this.map.setZoom(17);
+      this.map.setCenter(marker.getPosition());
+    });
+
+    this.autocompleteWithoutLocation.addListener('place_changed', () => {
+      infowindow.close();
+      marker.setVisible(false);
+      console.log('chamou esse');
+      var place = this.autocompleteWithoutLocation.getPlace();
+      if (!place.geometry) {
+        let alertMessage = this.alertCtrl.create({
+          title: "Endereço Inválido",
+          message: "Digite um Endereço válido",
+          buttons: [{
+            text: 'Ok'
+          }]
+        });
+        alertMessage.present();
+        return;
+      }
+      marker.setPosition(place.geometry.location);
+      marker.setVisible(true);
+      marker.setDraggable(true);
+
+      this.map.setZoom(17);
+      this.map.setCenter(marker.getPosition());
+
+      var address = '';
+      if (place.address_components) {
+        address = [
+          (place.address_components[0] && place.address_components[0].short_name || ''),
+          (place.address_components[1] && place.address_components[1].short_name || ''),
+          (place.address_components[2] && place.address_components[2].short_name || '')
+        ].join(' ');
+      }
+
+      infowindowContent.children['place-icon'].src = place.icon;
+      infowindowContent.children['place-name'].textContent = place.name;
+      infowindowContent.children['place-address'].textContent = address;
+      infowindow.open(this.map, marker);
+
+      this.position = new google.maps.LatLng(place.geometry.location.lat(), place.geometry.location.lng());
+    });
+  }
+
     nextServiceRequest() {
-        this.navCtrl.push('RequisicaoServicoPage', { placeId: this.autocomplete.placeId });
+        if(this.hasLocation) {
+          console.log(this.autocomplete.placeId);
+          this.navCtrl.push('RequisicaoServicoPage', { placeId: this.autocomplete.placeId });
+        } else {
+          this.geocoder.geocode({ 'location': this.position }, (results) => {
+            if (results[0]) {
+              console.log(results[0].place_id);
+              this.navCtrl.push('RequisicaoServicoPage', { placeId: results[0].place_id });
+            } else {
+              let alertMessage = this.alertCtrl.create({
+                title: "Endereço Inválido",
+                message: "Digite um Endereço válido",
+                buttons: [{
+                  text: 'Ok'
+                }]
+              });
+              alertMessage.present();
+            }
+
+          });
+        }
+    }
+
+    invalidPosition() {
+      return false;
     }
 }
