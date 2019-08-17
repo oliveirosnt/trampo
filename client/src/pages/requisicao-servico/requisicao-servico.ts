@@ -128,7 +128,7 @@ export class RequisicaoServicoPage {
         });
 
         this.map = new google.maps.Map(document.getElementById('map_canvas'), {
-            zoom: 14,
+            zoom: 17,
             disableDefaultUI: false,
             streetViewControl: false,
             mapTypeControl: false

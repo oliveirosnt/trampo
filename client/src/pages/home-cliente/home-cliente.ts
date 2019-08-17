@@ -54,7 +54,7 @@ export class HomeClientePage {
                 });
 
                 const mapOptions = {
-                    zoom: 14,
+                    zoom: 17,
                     center: position,
                     zoomControl: true,
                     mapTypeControl: false,
@@ -136,7 +136,7 @@ export class HomeClientePage {
       'API_KEY_FOR_BROWSER_DEBUG': 'AIzaSyBTyczdC5fDO-MkSilkJynkL8IXrN6HDIk'
     });
     this.position = new google.maps.LatLng(-7.229075, -35.880834);
-    this.map = new google.maps.Map(document.getElementById('map_canvas'), {
+    this.map = new google.maps.Map(document.getElementById('map_canvas_client'), {
       center: {lat: -7.229075, lng: -35.880834},
       zoom: 12,
       disableDefaultUI: false,
@@ -241,12 +241,10 @@ export class HomeClientePage {
 
     nextServiceRequest() {
         if(this.hasLocation) {
-          console.log(this.autocomplete.placeId);
           this.navCtrl.push('RequisicaoServicoPage', { placeId: this.autocomplete.placeId });
         } else {
           this.geocoder.geocode({ 'location': this.position }, (results) => {
             if (results[0]) {
-              console.log(results[0].place_id);
               this.navCtrl.push('RequisicaoServicoPage', { placeId: results[0].place_id });
             } else {
               let alertMessage = this.alertCtrl.create({
@@ -263,7 +261,7 @@ export class HomeClientePage {
         }
     }
 
-    invalidPosition() {
-      return false;
+    validPosition() {
+      return this.position !== undefined && this.position.lat() !== -7.229075 && this.position.lng() !== -35.880834;
     }
 }
