@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Environment } from '@ionic-native/google-maps';
+import {Observable} from "rxjs";
+import {LoadingService} from "../../services/loading-service";
 
 declare var google;
 @IonicPage()
@@ -12,7 +14,9 @@ declare var google;
 export class HomeClientePage {
 
     heightMap = 75;
-    hasLocation: boolean = true;
+    hasLocation: boolean = undefined;
+
+    spinnerItem = { icon: 'tail-spin'};
 
     startPosition: any;
     map: any;
@@ -25,15 +29,20 @@ export class HomeClientePage {
     markers = [];
     position: any;
     autocompleteWithoutLocation: any = { input: '' };
+    loaded: boolean = false;
 
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
         private geolocation: Geolocation,
-                public alertCtrl: AlertController) {
+                public alertCtrl: AlertController, private loadingService: LoadingService) {
     }
 
     ionViewDidLoad() {
-        this.initializeMap();
+      this.load('page-home-cliente').subscribe(snapshot => {
+        this.spinnerItem = snapshot;
+      });
+
+      this.initializeMap();
     }
 
     initializeMap() {
@@ -42,8 +51,11 @@ export class HomeClientePage {
             'API_KEY_FOR_BROWSER_DEBUG': 'AIzaSyBTyczdC5fDO-MkSilkJynkL8IXrN6HDIk'
         });
 
-        this.geolocation.getCurrentPosition()
+        this.geolocation.getCurrentPosition({ timeout:15000, enableHighAccuracy: true })
             .then((resp) => {
+                this.loaded = true;
+                this.hasLocation = true;
+
                 const position = new google.maps.LatLng(resp.coords.latitude, resp.coords.longitude);
 
                 this.geocoder.geocode({ 'location': position }, (results, status) => {
@@ -72,8 +84,8 @@ export class HomeClientePage {
                 this.markers.push(marker);
 
             }).catch((error) => {
-                console.log('Erro ao recuperar sua posição', error);
                 this.hasLocation = false;
+                this.loaded = true;
                 this.loadMap();
             });
     }
@@ -264,4 +276,14 @@ export class HomeClientePage {
     validPosition() {
       return this.position !== undefined && this.position.lat() !== -7.229075 && this.position.lng() !== -35.880834;
     }
+
+  load(item: any): Observable<any> {
+    var that = this;
+    that.loadingService.show();
+    return new Observable(observer => {
+      that.loadingService.hide();
+      observer.next({"icon": "tail-spin"});
+      observer.complete();
+    });
+  };
 }

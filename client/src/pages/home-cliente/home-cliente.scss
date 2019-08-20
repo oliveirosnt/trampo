@@ -71,4 +71,14 @@ page-home-cliente {
         }
     }
 
+    .spinner-view {
+      background-color: theme-colors('mainColors', 'accent');
+
+      img {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto;
+      }
+    }
+
 }

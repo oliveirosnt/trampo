@@ -21,6 +21,7 @@ import { RedefinicaoSenhaService } from '../services/redefinicao-senha.service';
 import { AvaliacaoService } from '../services/avaliacao.service';
 import { Ng2GoogleChartsModule } from "ng2-google-charts";
 import { GoogleMaps } from "@ionic-native/google-maps";
+import {LoadingService} from "../services/loading-service";
 
 @NgModule({
     declarations: [
@@ -54,7 +55,8 @@ import { GoogleMaps } from "@ionic-native/google-maps";
         ServicoFornecedorService,
         RedefinicaoSenhaService,
         AvaliacaoService,
-        GoogleMaps
+        GoogleMaps,
+        LoadingService
     ]
 })
 export class AppModule { }
