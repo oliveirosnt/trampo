@@ -3,6 +3,7 @@ package br.com.ufcg.services;
 import br.com.ufcg.domain.*;
 import br.com.ufcg.dao.ServicoDAO;
 import br.com.ufcg.domain.enums.TipoStatus;
+import br.com.ufcg.dto.ExtratoDTO;
 import br.com.ufcg.dto.ServicoDTO;
 import br.com.ufcg.repositories.ServicoRepository;
 import br.com.ufcg.util.validadores.ServicoValidador;
@@ -433,5 +434,123 @@ public class ServicoService {
 
 	public List<Servico> getServicosAceitosDoFornecedor(Fornecedor fornecedor) throws Exception {
 		return servicoRepository.findServicoFornecedorStatus(fornecedor, TipoStatus.ACEITO);
+	}
+	
+	public ExtratoDTO getExtratoFornecedor(Usuario usuario, String periodo) throws Exception {
+		if(usuario instanceof Fornecedor) {
+			ExtratoDTO extrato = new ExtratoDTO();
+			if(periodo != null) {
+				if(periodo.equalsIgnoreCase("s")) {
+					extrato = getExtratoSemanalFornecedor(usuario);
+				} else if(periodo.equalsIgnoreCase("m")) {
+					extrato = getExtratoMensalFornecedor(usuario);
+				} else {
+					extrato = getExtratoAnualFornecedor(usuario);
+				}
+			} else {
+				extrato = getExtratoMensalFornecedor(usuario);
+			}
+
+ 			return extrato;
+		}
+
+ 		throw new Exception("Apenas usuários do tipo fornecedor têm acesso ao extrato.");
+	}
+
+ 	private ExtratoDTO getExtratoSemanalFornecedor(Usuario usuario) {
+		List<Servico> servicosFornecedor = servicoRepository.findServicosFornecedor((Fornecedor) usuario);
+		return findServicosSemanalConcluidos(servicosFornecedor);
+	}
+
+ 	private ExtratoDTO getExtratoAnualFornecedor(Usuario usuario) {
+		List<Servico> servicosFornecedor = servicoRepository.findServicosFornecedor((Fornecedor) usuario);
+		return findServicosAnualConcluidos(servicosFornecedor);
+	}
+
+ 	private ExtratoDTO getExtratoMensalFornecedor(Usuario usuario) {
+		List<Servico> servicosFornecedor = servicoRepository.findServicosFornecedor((Fornecedor) usuario);
+		return findServicosMensalConcluidos(servicosFornecedor);
+	}
+
+
+ 	private ExtratoDTO findServicosAnualConcluidos(List<Servico> servicos) {
+		List<Servico> anuais = new ArrayList<>();
+		LocalDate dataAtual = LocalDate.now();
+		ExtratoDTO extrato = new ExtratoDTO();
+		BigDecimal total_recebido = BigDecimal.valueOf(0.0);
+		int num_servicos = 0;
+
+ 		for(Servico servico: servicos) {
+			LocalDate dataCriacao = servico.getDataCriacao();
+			LocalDate dataUmAnoAvancada = dataCriacao.plusYears(1);
+			LocalDate dataUmAnoAtrasada = dataCriacao.minusYears(1);
+
+ 			if(dataAtual.isBefore(dataUmAnoAvancada) && dataAtual.isAfter(dataUmAnoAtrasada) && servico.getStatus().equals(TipoStatus.CONCLUIDO)) {
+				anuais.add(servico);
+				num_servicos++;
+				total_recebido = total_recebido.add(servico.getValor());
+			}
+		}
+
+ 		List<ServicoDAO> servicosOrdenados = this.ordenaServicosPorData(anuais);
+ 		extrato.setServicos(servicosOrdenados);
+ 		extrato.setTotal_recebido(total_recebido);
+ 		extrato.setNum_servicos(num_servicos);
+
+ 		return extrato;
+	}
+
+ 	private ExtratoDTO findServicosMensalConcluidos(List<Servico> servicos) {
+		List<Servico> mensais = new ArrayList<>();
+		LocalDate dataAtual = LocalDate.now();
+		ExtratoDTO extrato = new ExtratoDTO();
+		BigDecimal total_recebido = BigDecimal.valueOf(0.0);
+		int num_servicos = 0;
+
+ 		for(Servico servico: servicos) {
+			LocalDate dataCriacao = servico.getDataCriacao();
+			LocalDate dataUmMesAvancada = dataCriacao.plusMonths(1);
+			LocalDate dataUmMesAtrasada = dataCriacao.minusMonths(1);
+
+ 			if(dataAtual.isBefore(dataUmMesAvancada) && dataAtual.isAfter(dataUmMesAtrasada) && servico.getStatus().equals(TipoStatus.CONCLUIDO)) {
+				mensais.add(servico);
+				num_servicos++;
+				total_recebido = total_recebido.add(servico.getValor());
+			}
+		}
+
+ 		List<ServicoDAO> servicosOrdenados = this.ordenaServicosPorData(mensais);
+ 		extrato.setServicos(servicosOrdenados);
+ 		extrato.setTotal_recebido(total_recebido);
+ 		extrato.setNum_servicos(num_servicos);
+
+ 		return extrato;
+	}
+
+ 	private ExtratoDTO findServicosSemanalConcluidos (List<Servico> servicos) {
+		ExtratoDTO extrato = new ExtratoDTO();
+		List<Servico> semanais = new ArrayList<>();
+		LocalDate dataAtual = LocalDate.now();
+		BigDecimal total_recebido = BigDecimal.valueOf(0.0);
+		int num_servicos = 0;
+
+ 		for(Servico servico: servicos) {
+			LocalDate dataCriacao = servico.getDataCriacao();
+			LocalDate dataUmaSemanaAvancada = dataCriacao.plusWeeks(1);
+			LocalDate dataUmaSemanaAtrasada = dataCriacao.minusWeeks(1);
+
+ 			if(dataAtual.isBefore(dataUmaSemanaAvancada) && dataAtual.isAfter(dataUmaSemanaAtrasada) && servico.getStatus().equals(TipoStatus.CONCLUIDO)) {
+				semanais.add(servico);
+				num_servicos++;
+				total_recebido = total_recebido.add(servico.getValor());
+			}
+		}
+
+ 		List<ServicoDAO> servicosOrdenados = this.ordenaServicosPorData(semanais);
+ 		extrato.setServicos(servicosOrdenados);
+ 		extrato.setTotal_recebido(total_recebido);
+ 		extrato.setNum_servicos(num_servicos);
+
+ 		return extrato;
 	}
 }

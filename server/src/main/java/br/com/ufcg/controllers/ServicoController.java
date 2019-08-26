@@ -3,6 +3,7 @@ package br.com.ufcg.controllers;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.QueryParam;
 
 import br.com.ufcg.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import br.com.ufcg.dao.ServicoDAO;
 import br.com.ufcg.domain.Cliente;
 import br.com.ufcg.domain.Fornecedor;
 import br.com.ufcg.domain.Servico;
+import br.com.ufcg.dto.ExtratoDTO;
 import br.com.ufcg.dto.ServicoDTO;
 import br.com.ufcg.services.ServicoService;
 import br.com.ufcg.services.UsuarioService;
@@ -304,4 +306,23 @@ public class ServicoController {
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	@RequestMapping(value = "/api/servicos/extrato", produces = "application/json", method = RequestMethod.GET)
+    public ResponseEntity<Response> getExtratoFornecedor(@QueryParam("periodo") String periodo, HttpServletRequest request) {
+		Response response;
+
+ 		try {
+			Fornecedor fornecedor = (Fornecedor) request.getAttribute("user");
+    		Usuario usuario = usuarioService.getByLogin(fornecedor.getLogin());
+    		ExtratoDTO extrato = servicoService.getExtratoFornecedor(usuario, periodo);
+			response = new Response("Extrato do usuário.", HttpStatus.OK.value(), extrato);
+			return new ResponseEntity<>(response, HttpStatus.OK);
+
+ 		} catch(Exception e) {
+			response = new Response(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}	
+
+
+ 	}
 }
