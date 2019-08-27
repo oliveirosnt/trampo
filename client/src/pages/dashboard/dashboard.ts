@@ -27,8 +27,11 @@ export class DashboardPage {
   temServicos: boolean;
 
   loaded: boolean = false;
-
+  totalRecebido: any;
+  numServicos: any;
   graficoCarregado: boolean = false;
+  periodoEscolhido: string = ' ';
+  exibeGraficoExtrato: boolean = false;
 
   spinnerItem = { icon: 'tail-spin'};
 
@@ -65,6 +68,7 @@ export class DashboardPage {
 
   carregaServicosBaseadoData(periodoServico) {
     this.graficoCarregado = false;
+    this.periodoEscolhido = periodoServico;
     this.servicoFornecedorService.getHistorico(periodoServico).subscribe(
       response => {
         const data = response.body['data'];
@@ -88,9 +92,20 @@ export class DashboardPage {
           this.servicos = [];
         }
 
-        this.temServicos = true;
-        this.loaded = true;
-        this.graficoCarregado = true;
+        this.servicoFornecedorService.getExtratoPeriodo(periodoServico).subscribe(response => {
+          const data = response.body['data'];
+
+          const { total_recebido, servicos, num_servicos } = data;
+
+          this.totalRecebido = total_recebido;
+          this.numServicos = num_servicos;
+
+          this.exibeGraficoExtrato = num_servicos > 0;
+
+          this.temServicos = true;
+          this.loaded = true;
+          this.graficoCarregado = true;
+        });
       });
 
   };
@@ -129,4 +144,24 @@ export class DashboardPage {
       observer.complete();
     });
   };
+
+  formataDinheiro() {
+    const dinheiro = this.totalRecebido.toString().split('.');
+    if(dinheiro[1] === undefined) {
+      dinheiro[1] = '00';
+    }
+    return dinheiro[0] + ',' + dinheiro[1];
+  }
+
+  getDias() {
+    if(this.periodoEscolhido[0] === 's'){
+      return '7'
+    } else if (this.periodoEscolhido[0] == 'm') {
+      return '30'
+    } else if (this.periodoEscolhido[0] === 'a') {
+      return '365'
+    } else {
+      return 'indeterminados'
+    }
+  }
 }

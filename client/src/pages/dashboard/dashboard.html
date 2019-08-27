@@ -44,6 +44,15 @@
       </ion-row>
     </ion-grid>
     <div [hidden]="!graficoCarregado">
+      <ion-grid [hidden]="!exibeGraficoExtrato">
+        <ion-row no-padding>
+          <ion-col>
+            <p>
+              Você concluiu <strong>{{this.numServicos}}</strong> serviço{{this.numServicos > 1 ? '(s)':''}} nos últimos <strong>{{getDias()}}</strong> dias, faturando um total de <strong>R$ {{formataDinheiro()}}</strong>
+            </p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
       <ion-card-content style="align-content: center;" *ngIf="servicos.length > 0">
         <ion-row>
           <ion-col col-12>
