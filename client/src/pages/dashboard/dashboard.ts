@@ -8,6 +8,8 @@ import { ServicoFornecedorService } from '../../services/servico-fornecedor.serv
 
 import { ServicoDTO } from '../../models/servico.dto';
 import { DadosUsuarioDTO } from '../../models/dados-usuario.dto';
+import {LoadingService} from "../../services/loading-service";
+import {Observable} from "rxjs";
 
 @IonicPage()
 @Component({
@@ -24,25 +26,45 @@ export class DashboardPage {
   pieChartData: any;
   temServicos: boolean;
 
+  loaded: boolean = false;
+
+  graficoCarregado: boolean = false;
+
+  spinnerItem = { icon: 'tail-spin'};
+
   constructor(
     public navCtrl: NavController,
     public servicoFornecedorService: ServicoFornecedorService,
     public usuarioService: UsuarioService,
     public autenticacaoService: AutenticacaoService,
-    public storageService: StorageService
+    public storageService: StorageService,
+    private loadingService: LoadingService
   ) {
   }
 
   ionViewDidLoad() {
+    this.load('page-dashboard').subscribe(snapshot => {
+      this.spinnerItem = snapshot;
+    });
+
     this.usuarioService.getMyUser().subscribe(
       (response) => {
         this.nomeUsuario = response['data']['nomeCompleto'];
       });
-    this.carregaServicosBaseadoData(null);
+
+    this.servicoFornecedorService.getHistorico().subscribe( response => {
+      const data = response.body['data'];
+      if(!data) {
+        this.temServicos = false;
+        this.loaded = true;
+      } else {
+        this.carregaServicosBaseadoData('semanal');
+      }
+    });
   }
 
   carregaServicosBaseadoData(periodoServico) {
-
+    this.graficoCarregado = false;
     this.servicoFornecedorService.getHistorico(periodoServico).subscribe(
       response => {
         const data = response.body['data'];
@@ -59,14 +81,16 @@ export class DashboardPage {
             }
 
           });
-          this.temServicos = true;
+
           const dataToChart = [['Estado', 'Percent'], ['Aguardando Realização', aguardandoRealizacao], ['Concluído', concluido]];
           this.useAngularLibrary(dataToChart);
         } else {
-          this.temServicos = false;
           this.servicos = [];
         }
 
+        this.temServicos = true;
+        this.loaded = true;
+        this.graficoCarregado = true;
       });
 
   };
@@ -95,4 +119,14 @@ export class DashboardPage {
   openServicosDisponiveis() {
     this.navCtrl.setRoot('ListagemServicoPage');
   }
+
+  load(item: any): Observable<any> {
+    var that = this;
+    that.loadingService.show();
+    return new Observable(observer => {
+      that.loadingService.hide();
+      observer.next({"icon": "tail-spin"});
+      observer.complete();
+    });
+  };
 }

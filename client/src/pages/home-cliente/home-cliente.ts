@@ -51,7 +51,7 @@ export class HomeClientePage {
             'API_KEY_FOR_BROWSER_DEBUG': 'AIzaSyBTyczdC5fDO-MkSilkJynkL8IXrN6HDIk'
         });
 
-        this.geolocation.getCurrentPosition({ timeout:15000, enableHighAccuracy: true })
+        this.geolocation.getCurrentPosition({ timeout: 5000, enableHighAccuracy: true })
             .then((resp) => {
                 this.loaded = true;
                 this.hasLocation = true;

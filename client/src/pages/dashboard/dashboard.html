@@ -17,13 +17,15 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content class="dashboard-content"  white-background>
-
+<ion-content class="spinner-view" [hidden]="loaded" style="margin-top: auto; margin-bottom: auto;" white-background="">
+  <spinner [data]="spinnerItem"></spinner>
+</ion-content>
+<ion-content class="dashboard-content"  white-background [hidden]="!loaded">
   <div *ngIf="temServicos">
     <ion-grid class="button-group">
       <ion-row>
         <ion-col>
-          <button ion-button block (click)="carregaServicosBaseadoData('semanal')">Semanal</button>
+          <button ion-button block (click)="carregaServicosBaseadoData('semanal')" [attr.autofocus]="temServicos ? 'autofocus':''">Semanal</button>
         </ion-col>
         <ion-col>
           <button ion-button block (click)="carregaServicosBaseadoData('mensal')">Mensal</button>
@@ -34,27 +36,45 @@
       </ion-row>
     </ion-grid>
 
-    <ion-card-content style="align-content: center;">
+    <ion-grid [hidden]="graficoCarregado" style="margin-top: auto; margin-bottom: auto;">
       <ion-row>
-        <ion-col col-12>
-          <google-chart [data]="pieChartData"></google-chart>
+        <ion-col col-12 class="spinner-view">
+          <spinner [data]="spinnerItem" class="spinner-dashboard"></spinner>
         </ion-col>
       </ion-row>
-    </ion-card-content>
-
-    <div padding>
-      <ion-grid>
+    </ion-grid>
+    <div [hidden]="!graficoCarregado">
+      <ion-card-content style="align-content: center;" *ngIf="servicos.length > 0">
         <ion-row>
           <ion-col col-12>
-            <h2>Meus Serviços</h2>
-          </ion-col>
-          <ion-col col-12>
-            <ion-list *ngFor="let servico of servicos">
-              <item-list-dashboard [servico]="servico" (click)="openDetalhes(servico)"></item-list-dashboard>
-            </ion-list>
+            <google-chart [data]="pieChartData"></google-chart>
           </ion-col>
         </ion-row>
-      </ion-grid>
+      </ion-card-content>
+
+      <div padding *ngIf="servicos.length > 0">
+        <ion-grid>
+          <ion-row>
+            <ion-col col-12>
+              <h2>Meus Serviços</h2>
+            </ion-col>
+            <ion-col col-12>
+              <ion-list *ngFor="let servico of servicos">
+                <item-list-dashboard [servico]="servico" (click)="openDetalhes(servico)"></item-list-dashboard>
+              </ion-list>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+
+      <div *ngIf="servicos.length == 0" style="align-content: center;">
+        <ion-row>
+          <ion-col col-12>
+            <ion-icon ios="ios-sad" md="md-sad" style="color: #0090d0; font-size: 56px; padding-left:120px;"></ion-icon>
+            <p style="font-size:18px; padding-left: 30px;">Você não possui serviços no período solicitado.<p>
+          </ion-col>
+        </ion-row>
+      </div>
     </div>
   </div>
 
@@ -89,5 +109,4 @@
       </ion-row>
     </ion-grid>
   </div>
-
 </ion-content>

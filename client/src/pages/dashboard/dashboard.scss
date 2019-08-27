@@ -1,6 +1,22 @@
 page-dashboard {
     font-family: Dessau-Light;
 
+    .spinner-view {
+      background-color: theme-colors('mainColors', 'accent');
+
+      img {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto;
+      }
+    }
+
+    .spinner-dashboard {
+
+      ion-grid {
+        padding-top: 120px !important;
+      }
+    }
     ion-header.dashboard-header {
         color:  white;
         font-weight: bold;

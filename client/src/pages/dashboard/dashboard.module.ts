@@ -3,6 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { DashboardPage } from './dashboard';
 import { ItemListDashboardModule } from '../../components/item-list-dashboard/item-list-dashboard.module';
 import {Ng2GoogleChartsModule} from "ng2-google-charts";
+import {SpinnerModule} from "../../components/spinner/spinner.module";
 
 @NgModule({
   declarations: [
@@ -11,7 +12,8 @@ import {Ng2GoogleChartsModule} from "ng2-google-charts";
   imports: [
     IonicPageModule.forChild(DashboardPage),
     ItemListDashboardModule,
-    Ng2GoogleChartsModule
+    Ng2GoogleChartsModule,
+    SpinnerModule
   ],
 })
 export class DashboardPageModule {}
