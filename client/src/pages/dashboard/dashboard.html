@@ -18,8 +18,12 @@
 </ion-header>
 
 <ion-content class="dashboard-content"  white-background>
+  <!-- AQUI FUNCIONA-->
+
 
   <div *ngIf="temServicos">
+    <!-- AQUI NÃO!! -->
+    <div id="line-chart"></div>  
     <ion-grid class="button-group">
       <ion-row>
         <ion-col>
@@ -40,6 +44,7 @@
           <google-chart [data]="pieChartData"></google-chart>
         </ion-col>
       </ion-row>
+
     </ion-card-content>
 
     <div padding>

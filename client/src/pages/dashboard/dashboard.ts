@@ -95,4 +95,65 @@ export class DashboardPage {
   openServicosDisponiveis() {
     this.navCtrl.setRoot('ListagemServicoPage');
   }
+
+  googleChartLibrary;
+  ngOnInit() {
+    this.useVanillaJSLibrary();
+  }
+
+  useVanillaJSLibrary() {
+    this.googleChartLibrary = (<any>window).google;
+    // Load the Visualization API and the corechart package.
+    this.googleChartLibrary.charts.load('current', { 'packages': ['corechart'] });
+
+    // Set a callback to run when the Google Visualization API is loaded.
+    this.googleChartLibrary.charts.setOnLoadCallback(this.drawChart.bind(this));
+  }
+
+  drawChart () {
+    // Create the data table.
+    var data = new this.googleChartLibrary.visualization.DataTable();
+    data.addColumn('date', '');
+    data.addColumn('number', '');
+
+    data.addRows([ [new Date(2019, 0), 0], [new Date(2019, 1), 10], [new Date(2019, 2), 7], [new Date(2019, 3), 9], [new Date(2019, 4), 4], 
+    [new Date(2019, 5), 0], [new Date(2019, 6), 10], [new Date(2019, 7), 7], [new Date(2019, 8), 9], [new Date(2019, 9), 4],]
+    );
+
+    var options = {
+      hAxis: {
+        textPosition: 'none',
+        gridlines: {
+          count: 10,
+        }
+      },
+      vAxis: {
+        gridlines: {
+          color: 'transparent',
+        },
+        textPosition: 'none',
+        baselineColor: '#fff',
+        gridlineColor: '#fff',
+      },
+      title: 'Serviços Realizados',
+      series: {
+        0: { color : "#00FF00" }
+      },
+      width: 400,
+      height: 300,
+      legend: 'none',
+      axes: {
+        x: {
+          0: { side: 'top'}
+        }
+      },
+      smoothLine: true
+};
+
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new this.googleChartLibrary.visualization
+      .LineChart(document.getElementsByClassName(""));
+
+    chart.draw(data, options);
+  }
 }
