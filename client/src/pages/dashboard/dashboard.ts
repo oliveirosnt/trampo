@@ -24,6 +24,7 @@ export class DashboardPage {
   nomeUsuario: string;
 
   pieChartData: any;
+  lineChartData: any;
   temServicos: boolean;
 
   loaded: boolean = false;
@@ -101,6 +102,30 @@ export class DashboardPage {
           this.numServicos = num_servicos;
 
           this.exibeGraficoExtrato = num_servicos > 0;
+          if(this.exibeGraficoExtrato) {
+
+            let dateNow = new Date();
+            dateNow.setHours(0, 0, 0, 0);
+            const previousDate = this.getPreviousDate(periodoServico);
+            let dates = this.getDates(previousDate, dateNow);
+
+            servicos.map((servico) => {
+
+              const atualDate = new Date(servico.data);
+              atualDate.setHours(0, 0, 0, 0);
+
+              for (let i = 0; i < dates.length; i ++) {
+                const arrDate = dates[i];
+                const currentDate = arrDate[0];
+                if(atualDate.getTime() === currentDate.getTime()) {
+                  dates[i][1] = servico.ofertaFinal.valor;
+                }
+              }
+
+            });
+
+            this.useAngularLibraryLineChart(dates);
+          }
 
           this.temServicos = true;
           this.loaded = true;
@@ -128,6 +153,45 @@ export class DashboardPage {
         'title': 'Distribuição dos Serviços',
         'colors': ['#0090d0', '#222']
       }
+    };
+  }
+
+  useAngularLibraryLineChart(data?) {
+    const options = {
+      hAxis: {
+        textPosition: 'none',
+        gridlines: {
+          count: 10,
+        }
+      },
+      vAxis: {
+        gridlines: {
+          color: 'transparent',
+        },
+        textPosition: 'none',
+        baselineColor: '#fff',
+        gridlineColor: '#fff',
+      },
+      title: 'Faturamento ao longo do tempo',
+      series: {
+        0: { color : "#0090d0" }
+      },
+      width: 400,
+      height: 300,
+      legend: 'none',
+      axes: {
+        x: {
+          0: { side: 'top'}
+        }
+      },
+      smoothLine: true
+    };
+
+    this.lineChartData = {
+      chartType: 'LineChart',
+      dataTable: [['Tempo', 'Faturamento (R$)'], ...data],
+      options: options,
+
     };
   }
 
@@ -163,5 +227,31 @@ export class DashboardPage {
     } else {
       return 'indeterminados'
     }
+  }
+
+  getDates(startDate: Date, stopDate: Date) {
+    const dateArray = [];
+    let currentDate = startDate;
+    while (currentDate <= stopDate) {
+      dateArray.push([new Date(currentDate.getTime()), 0]);
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    return dateArray;
+  }
+
+  getPreviousDate(periodo) {
+    let resp = 1;
+    const date = new Date();
+    date.setHours(0, 0, 0, 0);
+    if(periodo[0] == 's') {
+      resp = 7;
+    } else if (periodo[0] == 'm') {
+      resp = 30;
+    } else if (periodo[0] == 'a') {
+      resp =  365;
+    }
+
+    date.setDate(date.getDate() - resp)
+    return date;
   }
 }

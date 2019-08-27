@@ -22,6 +22,7 @@
 </ion-content>
 <ion-content class="dashboard-content"  white-background [hidden]="!loaded">
   <div *ngIf="temServicos">
+    <!-- AQUI NÃO!! -->
     <ion-grid class="button-group">
       <ion-row>
         <ion-col>
@@ -44,10 +45,18 @@
       </ion-row>
     </ion-grid>
     <div [hidden]="!graficoCarregado">
+      <ion-card-content [hidden]="!exibeGraficoExtrato" style="height:280px;">
+        <ion-row>
+          <ion-col style="margin-left:-30px !important;">
+            <google-chart [data]="lineChartData"></google-chart>
+            <div id="teste" class="line-chart"></div>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
       <ion-grid [hidden]="!exibeGraficoExtrato">
         <ion-row no-padding>
           <ion-col>
-            <p>
+            <p style="font-size: 18px;  text-align: justify;  text-justify: inter-word;">
               Você concluiu <strong>{{this.numServicos}}</strong> serviço{{this.numServicos > 1 ? '(s)':''}} nos últimos <strong>{{getDias()}}</strong> dias, faturando um total de <strong>R$ {{formataDinheiro()}}</strong>
             </p>
           </ion-col>
