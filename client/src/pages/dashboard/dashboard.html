@@ -26,13 +26,13 @@
     <ion-grid class="button-group">
       <ion-row>
         <ion-col>
-          <button ion-button block (click)="carregaServicosBaseadoData('semanal')" [attr.autofocus]="temServicos ? 'autofocus':''">Semanal</button>
+          <button ion-button block (click)="carregaServicosBaseadoData('semanal')" autofocus id="btn-semanal">Semanal</button>
         </ion-col>
         <ion-col>
-          <button ion-button block (click)="carregaServicosBaseadoData('mensal')">Mensal</button>
+          <button ion-button block (click)="carregaServicosBaseadoData('mensal')" id="btn-mensal">Mensal</button>
         </ion-col>
         <ion-col>
-          <button ion-button block (click)="carregaServicosBaseadoData('anual')">Anual</button>
+          <button ion-button block (click)="carregaServicosBaseadoData('anual')" id="btn-anual">Anual</button>
         </ion-col>
       </ion-row>
     </ion-grid>

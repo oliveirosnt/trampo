@@ -22,15 +22,13 @@
                     <ion-thumbnail item-start>
                         <ion-row>
                             <ion-col col-12 class="profile-avatar">
-                              <img src="{{imgPreview}}">
+                              <img src="{{image.preview}}">
                             </ion-col>
                         </ion-row>
                       <ion-row>
                         <ion-col col-12>
                           <p color="dark">Modifique seu avatar</p>
-                          <button type="button" class="inserir" ion-button color="blue" round small (click)="getPhoto()">
-                            <ion-icon ios="ios-add" md="md-add"></ion-icon>Inserir
-                          </button>
+                          <page-image [image]="image"></page-image>
                         </ion-col>
                       </ion-row>
                     </ion-thumbnail>
@@ -80,7 +78,7 @@
                 </ion-row>
                 <ion-row>
                     <ion-col col-12>
-                        <button class="salvar" ion-button round full color="blue" (click)="salvar(dadosAtualizados)">
+                        <button class="salvar" ion-button round full color="blue" (click)="salvar()">
                             <ion-icon ios="ios-heart" md="md-heart"></ion-icon>Salvar
                         </button>
                     </ion-col>

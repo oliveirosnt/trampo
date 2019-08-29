@@ -1,7 +1,8 @@
 {
   "name": "project-es",
   "integrations": {
-    "cordova": {}
+    "cordova": {},
+    "capacitor": {}
   },
   "type": "ionic-angular"
 }

@@ -61,9 +61,11 @@ export class DashboardPage {
       if(!data) {
         this.temServicos = false;
         this.loaded = true;
+        document.getElementById("btn-semanal").focus();
       } else {
         this.carregaServicosBaseadoData('semanal');
       }
+
     });
   }
 
@@ -118,7 +120,7 @@ export class DashboardPage {
                 const arrDate = dates[i];
                 const currentDate = arrDate[0];
                 if(atualDate.getTime() === currentDate.getTime()) {
-                  dates[i][1] = servico.ofertaFinal.valor;
+                  dates[i][1] += servico.ofertaFinal.valor;
                 }
               }
 
@@ -127,8 +129,8 @@ export class DashboardPage {
             this.useAngularLibraryLineChart(dates);
           }
 
-          this.temServicos = true;
           this.loaded = true;
+          this.temServicos = true;
           this.graficoCarregado = true;
         });
       });

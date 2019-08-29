@@ -4,8 +4,7 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 //import { LocationStrategy, PathLocationStrategy } from '@angular/common'; //Ativar essa função na SPRINT 4
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { ImagePicker } from '@ionic-native/image-picker/ngx';
-import { Base64 } from '@ionic-native/base64/ngx';
+
 
 import { MyApp } from './app.component';
 import { CadastroUsuarioService } from '../services/cadastro-usuario.service';
@@ -22,6 +21,14 @@ import { AvaliacaoService } from '../services/avaliacao.service';
 import { Ng2GoogleChartsModule } from "ng2-google-charts";
 import { GoogleMaps } from "@ionic-native/google-maps";
 import {LoadingService} from "../services/loading-service";
+import { ImagesProvider } from '../providers/images/images';
+
+import { Camera } from '@ionic-native/camera/ngx';
+import { File } from '@ionic-native/file/ngx';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { FilePath } from '@ionic-native/file-path/ngx';
+import {FileService} from "../services/file.service";
+
 
 @NgModule({
     declarations: [
@@ -42,8 +49,7 @@ import {LoadingService} from "../services/loading-service";
         SplashScreen,
         { provide: ErrorHandler, useClass: IonicErrorHandler },
         // {provide: LocationStrategy, useClass: PathLocationStrategy},  //Ativar essa função na SPRINT 4
-        Base64,
-        ImagePicker,
+
         CadastroUsuarioService,
         AutenticacaoService,
         StorageService,
@@ -56,7 +62,13 @@ import {LoadingService} from "../services/loading-service";
         RedefinicaoSenhaService,
         AvaliacaoService,
         GoogleMaps,
-        LoadingService
+        LoadingService,
+        ImagesProvider,
+        Camera,
+        File,
+        WebView,
+        FilePath,
+        FileService
     ]
 })
 export class AppModule { }

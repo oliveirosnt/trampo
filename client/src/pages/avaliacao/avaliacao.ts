@@ -75,12 +75,12 @@ export class AvaliacaoPage {
         const fornecedor = { ...this.servico["fornecedor"] };
         this.userDisplayed = fornecedor;
         this.userDisplayed["tipo"] = 'Fornecedor';
-        this.imgPerfil = fornecedor["fotoPerfil"].trim() === '' ? 'assets/imgs/default-avatar.png': 'data:image/jpeg;base64,' + fornecedor["fotoPerfil"]
+        this.imgPerfil = fornecedor["fotoPerfil"].trim() === '' ? 'assets/imgs/default-avatar.png': fornecedor["fotoPerfil"]
       } else {
         const cliente = { ...this.servico["cliente"] };
         this.userDisplayed = cliente;
         this.userDisplayed["tipo"] = 'Cliente';
-        this.imgPerfil = cliente["fotoPerfil"].trim() === '' ? 'assets/imgs/default-avatar.png': 'data:image/jpeg;base64,' + cliente["fotoPerfil"]
+        this.imgPerfil = cliente["fotoPerfil"].trim() === '' ? 'assets/imgs/default-avatar.png': cliente["fotoPerfil"]
       }
   }
 
