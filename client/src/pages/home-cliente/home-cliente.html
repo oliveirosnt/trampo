@@ -1,0 +1,89 @@
+<ion-header class="home-cliente-header">
+    <ion-navbar>
+        <ion-grid>
+            <ion-row>
+                <ion-col col-12>
+                    <div class="title-header">
+                        <button ion-button menuToggle>
+                            <ion-icon name="menu"></ion-icon>
+                        </button>
+                        <div class="title-text">
+                            <span>Home</span>
+                        </div>
+                    </div>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="spinner-view" [hidden]="loaded" style="margin-top: auto; margin-bottom: auto;">
+  <spinner [data]="spinnerItem"></spinner>
+</ion-content>
+<ion-content [hidden]="!loaded">
+  <ion-content [hidden]="!hasLocation">
+      <div #map id="map" [style.height.%]="heightMap"></div>
+      <ion-grid>
+          <ion-row>
+              <ion-col col-12>
+                  <div class="list list-inset">
+                      <label class="item item-input">
+                          <ion-icon name="search"></ion-icon>
+                          <ion-input type="text" (ionChange)="changeLocation()" [(ngModel)]="autocomplete.input"
+                              placeholder="Qual a localização do serviço?"></ion-input>
+                      </label>
+                  </div>
+              </ion-col>
+          </ion-row>
+          <ion-row [hidden]="autocompleteItems.length == 0">
+              <ion-col>
+                  <ion-list>
+                      <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
+                          {{ item.description }}
+                      </ion-item>
+                  </ion-list>
+              </ion-col>
+          </ion-row>
+          <ion-row>
+              <ion-col>
+                  <button class="confirmar" ion-button round full color="blue"
+                      [disabled]="autocomplete.input == 0" (click)="nextServiceRequest()">
+                      Requisitar Serviço <ion-icon ios="ios-arrow-forward" md="md-arrow-forward" style="margin-left: 10px;"></ion-icon>
+                  </button>
+              </ion-col>
+          </ion-row>
+      </ion-grid>
+  </ion-content>
+  <ion-content [hidden]="hasLocation">
+    <ion-grid>
+      <ion-row justify-content-center align-items-center>
+        <!--div id="infowindow-content">
+          <img src="" width="16" height="16" id="place-icon">
+          <span id="place-name"  class="title"></span><br>
+          <span id="place-address"></span>
+        </div-->
+        <div #map id="map_canvas_client" style="width: 100%; height: 40rem; border: 1px solid black;"></div>
+      </ion-row>
+      <hr />
+      <ion-row>
+        <ion-col col-12>
+          <div class="list list-inset">
+            <label class="item item-input">
+              <ion-icon name="search"></ion-icon>
+              <ion-input id="loc-input" type="text"
+                         placeholder="Qual a localização do serviço?"></ion-input>
+            </label>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-12>
+          <button class="confirmar" ion-button round full color="blue"
+                  [disabled]="!validPosition()" (click)="nextServiceRequest()">
+            Requisitar Serviço <ion-icon ios="ios-arrow-forward" md="md-arrow-forward" style="margin-left: 10px;"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-content>
+</ion-content>

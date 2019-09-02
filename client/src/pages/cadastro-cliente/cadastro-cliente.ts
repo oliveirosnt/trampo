@@ -1,10 +1,15 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, AlertController } from 'ionic-angular';
+import {Component} from '@angular/core';
+import {
+  IonicPage,
+  NavController,
+  AlertController
+} from 'ionic-angular';
 import { FormBuilder, Validators, FormControl, FormGroup } from '@angular/forms';
-import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { CadastroUsuarioService } from '../../services/cadastro-usuario.service';
-import { DadosUsuarioDTO } from '../../models/dados-usuario.dto';
-import { Cliente } from '../../models/cliente.model';
+
+import {ImageModel} from "../../models/image.model";
+import {FileService} from "../../services/file.service";
+import {Cliente} from "../../models/cliente.model";
 
 @IonicPage()
 @Component({
@@ -13,28 +18,26 @@ import { Cliente } from '../../models/cliente.model';
 })
 export class CadastroClientePage {
 
-  imgPreview = 'assets/imgs/default-avatar.png';
-
   clienteForm: FormGroup;
 
-  dados_cliente: DadosUsuarioDTO = {
-    id: null,
-    tipo: "",
-    fotoPerfil: "",
-    nomeCompleto: "",
-    login: "",
-    email: "",
-    senha: "",
-    conf_senha: "",
-    avaliacao: null
+
+  image: ImageModel = {
+    hasPhoto: false,
+    preview: 'assets/imgs/default-avatar.png',
+    currentFiles: null,
+    type: 'singleFile',
+    style: 'button',
+    identifications: []
   };
+
 
   constructor(
     public navCtrl: NavController,
     public alertCtrl: AlertController,
     public cadastro: CadastroUsuarioService,
     private formBuilder: FormBuilder,
-    private imagePicker: ImagePicker) {
+    private fileService: FileService
+    ) {
 
       this.clienteForm = this.formBuilder.group({
         nomeCompleto: new FormControl('', Validators.compose([
@@ -54,23 +57,41 @@ export class CadastroClientePage {
   }
 
   cadastrar() {
-    console.log(this.clienteForm.value);
-
     const clienteToAdd = Cliente.parseFromCliente(this.clienteForm.value);
 
-    this.cadastro.cadastrar_cliente(clienteToAdd).subscribe(response => {
-      console.log(response.headers.get('Authorization'));
-      let alertMessage = this.alertCtrl.create({
-        title: "Cadastro efetuado com sucesso",
-        message: "Bem vindo!",
-        buttons: [{
-          text: 'Ok'
-        }]
-      });
-      alertMessage.present();
-      this.navCtrl.setRoot('LoginPage');
+    if (this.image.hasPhoto) {
+      this.fileService.generateIdentifications(this.image);
+      clienteToAdd.fotoPerfil = this.image.identifications[0];
+    }
+
+    this.cadastro.cadastrar_cliente(clienteToAdd).subscribe( () => {
+
+      if(this.image.hasPhoto) {
+        this.fileService.startUpload(this.image, () => {
+          let alertMessage = this.alertCtrl.create({
+            title: "Cadastro efetuado com sucesso",
+            message: "Bem vindo!",
+            buttons: [{
+              text: 'Ok'
+            }]
+          });
+          alertMessage.present();
+          this.navCtrl.setRoot('LoginPage');
+        });
+      } else {
+        let alertMessage = this.alertCtrl.create({
+          title: "Cadastro efetuado com sucesso",
+          message: "Bem vindo!",
+          buttons: [{
+            text: 'Ok'
+          }]
+        });
+        alertMessage.present();
+        this.navCtrl.setRoot('LoginPage');
+      }
+
     }, error => {
-      console.log(error)
+
       let alertMessage = this.alertCtrl.create({
         title: "Problema no cadastro",
         message: error.error.message,
@@ -80,24 +101,8 @@ export class CadastroClientePage {
       });
       alertMessage.present();
     });
+
   }
 
-  getPhoto() {
-    let options = {
-      maximumImagesCount: 1,
-      outputType: 1
-    };
-
-    this.imagePicker.getPictures(options).then((results) => {
-       for (let i = 0; i < results.length; i++) {
-         if(results[i].trim() !== '') {
-           this.imgPreview = 'data:image/jpeg;base64,' + results[i];
-           this.dados_cliente.fotoPerfil = results[i];
-         }
-
-       }
-     }, (err) => { }
-    );
-  }
 
 }

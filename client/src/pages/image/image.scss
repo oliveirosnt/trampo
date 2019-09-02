@@ -1,0 +1,51 @@
+page-image {
+  font-family: Dessau-Light;
+
+  button.inserir {
+    font-weight: bold;
+  }
+
+  button.confirmar {
+    font-weight: bold;
+
+    ion-icon {
+      margin-right: 10px;
+    }
+  }
+
+  [background-size] {
+    height: 150px;
+    @include black-white-mode;
+  }
+  [item-title], [item-subtitle] {
+    position: relative;
+    z-index: 5;
+  }
+  ion-item-options {
+    border-bottom: 1px solid theme-colors('mainColors', 'secondary') !important;
+  }
+  ion-header.anexos-header {
+    color:  white;
+    font-weight: bold;
+
+    .title-header {
+      display: table;
+      font-size: 1.5em;
+      font-weight: bold;
+      width: 100%;
+
+      button {
+        float: left;
+      }
+
+      .title-text {
+        align-items: center;
+        height: 32px;
+      }
+    }
+
+    .toolbar-md {
+      height: 56px;
+    }
+  }
+}

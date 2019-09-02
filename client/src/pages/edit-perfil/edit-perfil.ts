@@ -6,7 +6,9 @@ import { StorageService } from '../../services/storage.service';
 import { EspecialidadesService } from '../../services/especialidades.service';
 import { DadosAtualizadosDTO } from '../../models/dados-atualizados.dto';
 import { ImagePicker } from '@ionic-native/image-picker/ngx';
-
+import { v1 as uuid } from 'uuid';
+import {ImageModel} from "../../models/image.model";
+import {FileService} from "../../services/file.service";
 
 @IonicPage()
 @Component({
@@ -17,7 +19,14 @@ export class EditPerfilPage {
 
   especialidades : string[] = [];
 
-  imgPreview = 'assets/imgs/default-avatar.png';
+  image: ImageModel = {
+    hasPhoto: false,
+    preview: 'assets/imgs/default-avatar.png',
+    currentFiles: null,
+    type: 'singleFile',
+    style: 'button',
+    identifications: []
+  };
 
   dadosUsuario : DadosUsuarioDTO = {
     id: null,
@@ -45,7 +54,7 @@ export class EditPerfilPage {
     public storageService: StorageService,
     public especialidadesService: EspecialidadesService,
     public alertCtrl: AlertController,
-    private imagePicker: ImagePicker) {
+    private fileService: FileService) {
   }
 
   ionViewDidLoad() {
@@ -61,24 +70,44 @@ export class EditPerfilPage {
         this.dadosAtualizados.novoNomeCompleto = this.dadosUsuario.nomeCompleto;
         this.dadosAtualizados.novoLogin = this.dadosUsuario.login;
         this.dadosAtualizados.novoEmail = this.dadosUsuario.email;
-        this.imgPreview = this.dadosUsuario.fotoPerfil.trim() === '' ? 'assets/imgs/default-avatar.png': 'data:image/jpeg;base64,' + this.dadosUsuario.fotoPerfil
+        this.image.preview = this.dadosUsuario.fotoPerfil.trim() === '' ? 'assets/imgs/default-avatar.png': this.dadosUsuario.fotoPerfil;
 
       }, error => {
         console.log(error);
       });
   }
 
-  salvar(dadosAtualizados : DadosAtualizadosDTO) {
-    this.usuarioService.atualizaDados(dadosAtualizados).subscribe(
+  salvar() {
+
+    if(this.image.hasPhoto) {
+      this.fileService.generateIdentifications(this.image);
+      this.dadosAtualizados.novaFotoPerfil = this.image.identifications[0];
+    }
+
+    this.usuarioService.atualizaDados(this.dadosAtualizados).subscribe(
       response => {
-        let alertMessage = this.alertCtrl.create({
-          message: response.body['message'],
-          buttons: [{
-            text: 'Ok'
-          }]
-        });
-        alertMessage.present();
-        this.navCtrl.setRoot('HomePage');
+        if(this.image.hasPhoto) {
+          this.fileService.startUpload(this.image, () => {
+            let alertMessage = this.alertCtrl.create({
+              message: response.body['message'],
+              buttons: [{
+                text: 'Ok'
+              }]
+            });
+            alertMessage.present();
+            this.navCtrl.setRoot('HomePage');
+          });
+        } else {
+          let alertMessage = this.alertCtrl.create({
+            message: response.body['message'],
+            buttons: [{
+              text: 'Ok'
+            }]
+          });
+          alertMessage.present();
+          this.navCtrl.setRoot('HomePage');
+        }
+
       }, error => {
         let alertMessage = this.alertCtrl.create({
           message: error.error['message'],
@@ -101,24 +130,6 @@ export class EditPerfilPage {
   atualizarSenha(){
     let senhaModal = this.modalCtrl.create('AtualizaSenhaPage');
     senhaModal.present();
-  }
-
-  getPhoto() {
-    let options = {
-      maximumImagesCount: 1,
-      outputType: 1
-    };
-
-    this.imagePicker.getPictures(options).then((results) => {
-        for (let i = 0; i < results.length; i++) {
-          if(results[i].trim() !== '') {
-            this.imgPreview = 'data:image/jpeg;base64,' + results[i];
-            this.dadosAtualizados.novaFotoPerfil = results[i];
-          }
-
-        }
-      }, (err) => { }
-    );
   }
 
 
