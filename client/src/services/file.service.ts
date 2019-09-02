@@ -19,7 +19,7 @@ export class FileService {
   }
 
 
-  startUpload(image: ImageModel) {
+  startUpload(image: ImageModel, callback) {
     const imagesEntry = image.currentFiles;
 
     let promises = [];
@@ -46,12 +46,12 @@ export class FileService {
     Promise.all(promises).then(() => {
       formData.append("filenames", JSON.stringify(image.identifications));
       this.uploadImages(formData).subscribe((response) => {
-        console.log(response.body['message']);
+        callback(response.body['message']);
       }, err => {
-        console.log(err.error.message);
+        callback(err.error.message);
       })
     }, (err) => {
-      console.log("Erro ao salvar arquivos " + err);
+      callback("Erro ao salvar arquivos " + err);
     })
   }
 

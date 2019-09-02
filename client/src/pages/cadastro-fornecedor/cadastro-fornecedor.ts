@@ -86,17 +86,29 @@ export class CadastroFornecedorPage {
     this.cadastro.cadastrar_fornecedor(this.dados_fornecedor)
     .subscribe(() => {
       if(this.image.hasPhoto) {
-        this.fileService.startUpload(this.image);
+        this.fileService.startUpload(this.image, () => {
+          let alertMessage = this.alertCtrl.create({
+            title: "Cadastro efetuado com sucesso",
+            message: "Bem vindo!",
+            buttons: [{
+              text: 'Ok'
+            }]
+          });
+          alertMessage.present();
+          this.navCtrl.setRoot('LoginPage');
+        });
+      } else {
+        let alertMessage = this.alertCtrl.create({
+          title: "Cadastro efetuado com sucesso",
+          message: "Bem vindo!",
+          buttons: [{
+            text: 'Ok'
+          }]
+        });
+        alertMessage.present();
+        this.navCtrl.setRoot('LoginPage');
       }
-      let alertMessage = this.alertCtrl.create({
-        title: "Cadastro efetuado com sucesso",
-        message: "Bem vindo!",
-        buttons: [{
-          text: 'Ok'
-        }]
-      });
-      alertMessage.present();
-      this.navCtrl.setRoot('LoginPage');
+
     },
     error => {
       let alertMessage = this.alertCtrl.create({

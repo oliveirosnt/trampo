@@ -213,7 +213,6 @@ export class HomeClientePage {
     this.autocompleteWithoutLocation.addListener('place_changed', () => {
       infowindow.close();
       marker.setVisible(false);
-      console.log('chamou esse');
       var place = this.autocompleteWithoutLocation.getPlace();
       if (!place.geometry) {
         let alertMessage = this.alertCtrl.create({

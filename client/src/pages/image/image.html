@@ -1,4 +1,63 @@
 <button type="button" class="inserir" ion-button color="blue" round small (click)="presentActionSheet()" *ngIf="image.style === 'button'">
   <ion-icon ios="ios-add" md="md-add"></ion-icon>Inserir
 </button>
-
+<ion-header class="anexos-header" *ngIf="image.style === 'list-servico'">
+  <ion-navbar>
+    <ion-grid>
+      <ion-row>
+        <ion-col col-12>
+          <div class="title-header">
+            <div class="title-text">
+              <span>Anexos</span>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-navbar>
+</ion-header>
+<ion-content *ngIf="image.style === 'list-servico'" white-background>
+  <ion-grid no-padding *ngIf="image.currentFiles.length > 0">
+    <ion-row>
+      <ion-col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12>
+        <ion-list>
+          <ion-item-sliding *ngFor="let currentFile of image.currentFiles; let i = index" #slidingItem>
+            <ion-item no-padding no-lines no-margina background-size (click)="openImage(currentFile, $event)" [ngStyle]="{'background-image': 'url(' + getImagePreview(currentFile) + ')'}">
+              <h2 item-title text-center>Anexo {{i + 1}}</h2>
+            </ion-item>
+            <ion-item-options>
+              <button (click)="delete(i)" transparent>
+                <ion-icon icon-medium ios="ios-trash" md="md-trash"></ion-icon>
+              </button>
+              <button (click)="undo(slidingItem)" transparent>
+                <ion-icon icon-medium ios="ios-undo" md="md-undo"></ion-icon>
+              </button>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12>
+        <button class="confirmar" ion-button round full color="blue" (click)="returnBack()">
+          <ion-icon ios="ios-checkmark" md="md-checkmark"></ion-icon>Salvar Anexos
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid *ngIf="image.currentFiles.length === 0" style="margin-top: 100px; align-content: center;">
+    <ion-row>
+      <ion-col col-12>
+        <ion-icon ios="ios-sad" md="md-sad" style="color: #0090d0; font-size: 56px; padding-left:120px;"></ion-icon>
+        <p style="font-size:18px; padding-left: 30px;">Você ainda não possui nenhum anexo, adicione um novo anexo ou clique em voltar.<p>
+        <p style="font-size:18px; padding-left: 30px;">Lembre-se: Você poderá adicionar até no máximo 03 anexos.<p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<!-- Fab Button -->
+<ion-fab #fab bottom right *ngIf="image.style === 'list-servico'">
+  <button button-ion-fab ion-fab (click)="presentActionSheet()" [disabled]="image.currentFiles.length === 3">
+    <ion-icon md="md-camera"></ion-icon>
+  </button>
+</ion-fab>

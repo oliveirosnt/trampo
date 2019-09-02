@@ -18,9 +18,11 @@ export class UploadModalPage {
 
   imageData: any;
   desc: string;
+  save: boolean;
 
   constructor(public navCtrl: NavController, private navParams: NavParams, private viewCtrl: ViewController) {
     this.imageData = this.navParams.get('data');
+    this.save = this.navParams.get('save');
   }
 
   saveImage() {

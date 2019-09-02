@@ -1,5 +1,13 @@
-import {Component, Input} from '@angular/core';
-import {ActionSheetController, IonicPage, ModalController, NavController, NavParams, Platform} from 'ionic-angular';
+import {Component, Input, ViewChild} from '@angular/core';
+import {
+  ActionSheetController, Content, FabButton,
+  IonicPage,
+  ItemSliding,
+  ModalController,
+  NavController,
+  NavParams,
+  Platform
+} from 'ionic-angular';
 import {ImagesProvider} from "../../providers/images/images";
 import {Camera} from "@ionic-native/camera/ngx";
 import {File} from "@ionic-native/file/ngx";
@@ -23,6 +31,14 @@ export class ImagePage {
 
   @Input('image') image: ImageModel;
 
+  data: any;
+  events: any;
+
+  @ViewChild(Content)
+  content: Content;
+  @ViewChild(FabButton)
+  fabButton: FabButton;
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private imagesProvider: ImagesProvider,
@@ -32,8 +48,20 @@ export class ImagePage {
               private file: File,
               private webview: WebView,
               private filePath: FilePath,
-              private plt: Platform) {  }
+              private plt: Platform) {
+    if(this.navParams.get('image')) {
+      this.image = this.navParams.get('image');
+    }
+  }
 
+  ionBackPage() {
+    this.returnBack();
+  }
+
+  returnBack() {
+    this.navCtrl.getPrevious()['image'] = this.image;
+    this.navCtrl.pop();
+  }
 
   presentActionSheet() {
     let actionSheet = this.actionSheetCtrl.create({
@@ -74,13 +102,15 @@ export class ImagePage {
     // Get the data of an image
     this.camera.getPicture(options).then((imagePath) => {
       const myPhoto = this.webview.convertFileSrc(imagePath);
-      let modal = this.modalCtrl.create('UploadModalPage', {data: myPhoto});
+      let modal = this.modalCtrl.create('UploadModalPage', {data: myPhoto, save: true});
       modal.present();
       modal.onDidDismiss(data => {
         if (data && data.confirm) {
           this.image.hasPhoto = true;
           this.image.preview = myPhoto;
-          this.image.currentFiles = [];
+          if(this.image.currentFiles === null) {
+            this.image.currentFiles = [];
+          }
           this.image.currentFiles.push(imagePath);
 
         }
@@ -91,4 +121,38 @@ export class ImagePage {
 
   }
 
+  getImagePreview(imagePath) {
+    return this.webview.convertFileSrc(imagePath);
+  }
+
+  undo = (slidingItem: ItemSliding) => {
+    slidingItem.close();
+  }
+
+  delete = (index: any): void => {
+    //let index = this.image.currentFiles.indexOf(item);
+    if (index > -1) {
+      this.image.currentFiles.splice(index, 1);
+      if(this.image.currentFiles.length === 0) {
+        this.image.hasPhoto = false;
+      }
+    }
+  }
+
+  ngAfterViewInit() {
+    if(this.image.style === 'list-servico') {
+      this.content.ionScroll.subscribe((d) => {
+        this.fabButton.setElementClass("fab-button-out", d.directionY == "down");
+      });
+    }
+  }
+
+  openImage(file, e?) {
+    if (e) {
+      e.stopPropagation();
+    }
+    const myPhoto = this.getImagePreview(file);
+    let modal = this.modalCtrl.create('UploadModalPage', {data: myPhoto, save: false});
+    modal.present();
+  }
 }

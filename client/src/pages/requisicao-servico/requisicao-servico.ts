@@ -7,6 +7,7 @@ import { EspecialidadesService } from '../../services/especialidades.service';
 import { ServicoDTO } from '../../models/servico.dto';
 import { ServicoClienteService } from '../../services/servico-cliente.service';
 import { UsuarioService } from '../../services/usuario.service';
+import {ImageModel} from "../../models/image.model";
 
 declare var google;
 
@@ -24,6 +25,14 @@ export class RequisicaoServicoPage {
     map: any;
     geocoder = new google.maps.Geocoder;
     placeId: string;
+    image: ImageModel = {
+      hasPhoto: false,
+      preview: '',
+      currentFiles: [],
+      type: 'singleFile',
+      style: 'list-servico',
+      identifications: []
+    };
 
     dados_servico: ServicoDTO = {
         id: null,
@@ -149,4 +158,12 @@ export class RequisicaoServicoPage {
 
         });
     }
+
+  chamaPageImage() {
+    this.navCtrl.push("ImagePage", {image: this.image});
+  }
+
+  pingImage() {
+      console.log(this.image);
+  }
 }

@@ -6,17 +6,17 @@
 -->
 <ion-header>
   <ion-navbar>
-    <ion-buttons>
+    <ion-title>Visualizador de imagens</ion-title>
+    <ion-buttons end>
       <button ion-button icon-only (click)="dismiss()"><ion-icon name="close"></ion-icon></button>
     </ion-buttons>
-    <ion-title>Visualizador de imagens</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding white-background>
   <img [src]="imageData" style="width: 100%">
 
-  <button ion-button full icon-left color="blue" (click)="saveImage()">
+  <button ion-button full icon-left color="blue" (click)="saveImage()" *ngIf="save">
     <ion-icon name="checkmark"></ion-icon>
     Usar esta foto
   </button>

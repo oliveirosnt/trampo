@@ -87,16 +87,27 @@ export class EditPerfilPage {
     this.usuarioService.atualizaDados(this.dadosAtualizados).subscribe(
       response => {
         if(this.image.hasPhoto) {
-          this.fileService.startUpload(this.image);
+          this.fileService.startUpload(this.image, () => {
+            let alertMessage = this.alertCtrl.create({
+              message: response.body['message'],
+              buttons: [{
+                text: 'Ok'
+              }]
+            });
+            alertMessage.present();
+            this.navCtrl.setRoot('HomePage');
+          });
+        } else {
+          let alertMessage = this.alertCtrl.create({
+            message: response.body['message'],
+            buttons: [{
+              text: 'Ok'
+            }]
+          });
+          alertMessage.present();
+          this.navCtrl.setRoot('HomePage');
         }
-        let alertMessage = this.alertCtrl.create({
-          message: response.body['message'],
-          buttons: [{
-            text: 'Ok'
-          }]
-        });
-        alertMessage.present();
-        this.navCtrl.setRoot('HomePage');
+
       }, error => {
         let alertMessage = this.alertCtrl.create({
           message: error.error['message'],
