@@ -5,8 +5,6 @@ import { UsuarioService } from '../../services/usuario.service';
 import { StorageService } from '../../services/storage.service';
 import { EspecialidadesService } from '../../services/especialidades.service';
 import { DadosAtualizadosDTO } from '../../models/dados-atualizados.dto';
-import { ImagePicker } from '@ionic-native/image-picker/ngx';
-import { v1 as uuid } from 'uuid';
 import {ImageModel} from "../../models/image.model";
 import {FileService} from "../../services/file.service";
 

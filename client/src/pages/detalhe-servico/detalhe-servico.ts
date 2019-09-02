@@ -75,7 +75,8 @@ export class DetalheServicoPage {
               avaliacao: null
             },
         },
-        ofertasRecebidas: []
+        ofertasRecebidas: [],
+        anexos: []
     };
 
     map: any;
@@ -256,6 +257,10 @@ export class DetalheServicoPage {
 
     adicionarOferta() {
         this.navCtrl.push('CadastroOfertaPage', { servico: this.servico });
+    }
+
+    visualizarAnexos() {
+      this.navCtrl.push('ItemDetailsFullScreenGalleryPage', {screens: this.servico.anexos })
     }
 
 }

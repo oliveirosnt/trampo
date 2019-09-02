@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
-import {ImagesProvider} from "../../providers/images/images";
 
 /**
  * Generated class for the UploadModalPage page.

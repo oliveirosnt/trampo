@@ -82,7 +82,6 @@
           </ion-row>
           <ion-row justify-content-center align-items-center>
             <div id="infowindow-content">
-              <img src="" width="16" height="16" id="place-icon">
               <span id="place-name"  class="title"></span><br>
               <span id="place-address"></span>
             </div>
@@ -135,6 +134,16 @@
               <ion-item>
                 <ion-label stacked>Nome do Cliente</ion-label>
                 <ion-label>{{ servico.cliente.nomeCompleto }}</ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="servico.anexos.length > 0">
+            <ion-col col-12>
+              <ion-item>
+                <span class="label label-md" style="color: #0090d0; font-size: 17px; display: block;">Visualize as fotos sobre o problema:</span>
+                <button type="button" class="visualizar" ion-button color="blue" round full (click)="visualizarAnexos()">
+                  <ion-icon ios="ios-eye" md="md-eye"></ion-icon>Visualizar Anexos
+                </button>
               </ion-item>
             </ion-col>
           </ion-row>

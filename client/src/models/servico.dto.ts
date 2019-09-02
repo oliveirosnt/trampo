@@ -21,5 +21,6 @@ export interface ServicoDTO {
     isAvaliadoCliente: boolean,
     isAvaliadoFornecedor: boolean,
     ofertasRecebidas?: OfertaDTO[],
-    ofertaFinal?: OfertaDTO
+    ofertaFinal?: OfertaDTO,
+    anexos?: string[]
 }

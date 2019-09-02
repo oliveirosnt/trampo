@@ -1,7 +1,0 @@
-{
-  "appId": "io.ionic.starter",
-  "appName": "project-es",
-  "bundledWebRuntime": false,
-  "npmClient": "npm",
-  "webDir": "www"
-}

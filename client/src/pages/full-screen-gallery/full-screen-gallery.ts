@@ -14,8 +14,7 @@ import {IonicPage, NavController, NavParams, Slides} from 'ionic-angular';
   templateUrl: 'full-screen-gallery.html',
 })
 export class FullScreenGalleryPage {
-  @Input() data: any;
-  @Input() events: any;
+  @Input() screens: any;
   @ViewChild('slider') slider: Slides;
   public isLocked: boolean = false;
   sliderOptions: any;
@@ -26,25 +25,13 @@ export class FullScreenGalleryPage {
     };
   }
 
-  onEvent = (event: string, item, e): void => {
-    if (e) {
-      e.stopPropagation();
-    }
-    if (this.events[event]) {
-      this.events[event](item);
-    }
-  }
 
-  onDoubleClick = (e, slides: Slides):void => {
-    this.isLocked = !this.isLocked;
-    slides.lockSwipes(this.isLocked);
-  }
   ionViewDidLoad() {
     this.sliderOptions = {
       pager:true,
       loop: true,
       zoom:true,
-      initialSlide:this.data.index
+      initialSlide:0
     };
     debugger;
   }

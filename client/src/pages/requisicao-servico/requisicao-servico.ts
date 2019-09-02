@@ -8,6 +8,7 @@ import { ServicoDTO } from '../../models/servico.dto';
 import { ServicoClienteService } from '../../services/servico-cliente.service';
 import { UsuarioService } from '../../services/usuario.service';
 import {ImageModel} from "../../models/image.model";
+import {FileService} from "../../services/file.service";
 
 declare var google;
 
@@ -46,7 +47,8 @@ export class RequisicaoServicoPage {
             pontoReferencia: ""
         },
         isAvaliadoCliente: null,
-        isAvaliadoFornecedor: null
+        isAvaliadoFornecedor: null,
+        anexos: []
     }
 
     constructor(public navCtrl: NavController,
@@ -56,7 +58,8 @@ export class RequisicaoServicoPage {
         public especialidadesService: EspecialidadesService,
         public cadastroServService: ServicoClienteService,
         public alertCtrl: AlertController,
-        public usuarioService: UsuarioService) {
+        public usuarioService: UsuarioService,
+                private fileService: FileService) {
         this.getEspecialidades();
         this.minData = new Date().toISOString();
         this.maxData = (new Date().getFullYear()) + 2; // O "2" representa anos posteriores
@@ -102,27 +105,46 @@ export class RequisicaoServicoPage {
     }
 
     cadastrar(servico: ServicoDTO) {
-        this.cadastroServService.cadastraServicoCliente(servico).subscribe(
-            response => {
+      if(this.image.hasPhoto) {
+        this.fileService.generateIdentifications(this.image);
+        servico.anexos = this.image.identifications;
+      }
+      this.cadastroServService.cadastraServicoCliente(servico).subscribe(
+          response => {
+            if(this.image.hasPhoto) {
+              this.fileService.startUpload(this.image, () => {
                 let alertMessage = this.alertCtrl.create({
-                    message: response.body['message'],
-                    buttons: [{
-                        text: 'Ok'
-                    }]
+                  message: response.body['message'],
+                  buttons: [{
+                    text: 'Ok'
+                  }]
                 });
                 alertMessage.present();
                 this.navCtrl.setRoot('HomeClientePage');
-            },
-            error => {
-                let alertMessage = this.alertCtrl.create({
-                    message: error.error['message'],
-                    buttons: [{
-                        text: 'Ok'
-                    }]
-                });
-                alertMessage.present();
+              })
+
+            } else {
+              let alertMessage = this.alertCtrl.create({
+                message: response.body['message'],
+                buttons: [{
+                  text: 'Ok'
+                }]
+              });
+              alertMessage.present();
+              this.navCtrl.setRoot('HomeClientePage');
             }
-        );
+
+          },
+          error => {
+              let alertMessage = this.alertCtrl.create({
+                  message: error.error['message'],
+                  buttons: [{
+                      text: 'Ok'
+                  }]
+              });
+              alertMessage.present();
+          }
+      );
     }
 
     isEnabled() {
