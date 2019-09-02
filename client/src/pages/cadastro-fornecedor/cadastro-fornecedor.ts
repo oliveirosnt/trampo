@@ -3,7 +3,8 @@ import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angu
 import { CadastroUsuarioService } from '../../services/cadastro-usuario.service';
 import { EspecialidadesService } from '../../services/especialidades.service';
 import { DadosUsuarioDTO } from '../../models/dados-usuario.dto';
-import { ImagePicker } from '@ionic-native/image-picker/ngx';
+import {ImageModel} from "../../models/image.model";
+import {FileService} from "../../services/file.service";
 
 @IonicPage()
 @Component({
@@ -14,7 +15,14 @@ export class CadastroFornecedorPage {
 
   especialidades : string[] = [];
 
-  imgPreview: string = 'assets/imgs/default-avatar2.png';
+  image: ImageModel = {
+    hasPhoto: false,
+    preview: 'assets/imgs/default-avatar2.png',
+    currentFiles: null,
+    type: 'singleFile',
+    style: 'button',
+    identifications: []
+  };
   
   dados_fornecedor : DadosUsuarioDTO = {
     id: null,
@@ -34,7 +42,7 @@ export class CadastroFornecedorPage {
     public alertCtrl: AlertController,
     public cadastro: CadastroUsuarioService,
     public especialidadesService: EspecialidadesService,
-    private imagePicker: ImagePicker) {
+    private fileService: FileService) {
       this.getEspecialidades();
 
   }
@@ -69,18 +77,38 @@ export class CadastroFornecedorPage {
       alertMessage.present();
       return;
     }
+
+    if(this.image.hasPhoto) {
+      this.fileService.generateIdentifications(this.image);
+      this.dados_fornecedor.fotoPerfil = this.image.identifications[0];
+    }
+
     this.cadastro.cadastrar_fornecedor(this.dados_fornecedor)
-    .subscribe(response => {
-      console.log(response.headers.get('Cadastro'));
-      let alertMessage = this.alertCtrl.create({
-        title: "Cadastro efetuado com sucesso",
-        message: "Bem vindo!",
-        buttons: [{
-          text: 'Ok'
-        }]
-      });
-      alertMessage.present();
-      this.navCtrl.setRoot('LoginPage');
+    .subscribe(() => {
+      if(this.image.hasPhoto) {
+        this.fileService.startUpload(this.image, () => {
+          let alertMessage = this.alertCtrl.create({
+            title: "Cadastro efetuado com sucesso",
+            message: "Bem vindo!",
+            buttons: [{
+              text: 'Ok'
+            }]
+          });
+          alertMessage.present();
+          this.navCtrl.setRoot('LoginPage');
+        });
+      } else {
+        let alertMessage = this.alertCtrl.create({
+          title: "Cadastro efetuado com sucesso",
+          message: "Bem vindo!",
+          buttons: [{
+            text: 'Ok'
+          }]
+        });
+        alertMessage.present();
+        this.navCtrl.setRoot('LoginPage');
+      }
+
     },
     error => {
       let alertMessage = this.alertCtrl.create({
@@ -100,24 +128,6 @@ export class CadastroFornecedorPage {
         this.especialidades.push(response.body[key]['nome']);    
       }
     });      
-  }
-
-  getPhoto() {
-    let options = {
-      maximumImagesCount: 1,
-      outputType: 1
-    };
-
-    this.imagePicker.getPictures(options).then((results) => {
-        for (let i = 0; i < results.length; i++) {
-          if(results[i].trim() !== '') {
-            this.imgPreview = 'data:image/jpeg;base64,' + results[i];
-            this.dados_fornecedor.fotoPerfil = results[i];
-          }
-
-        }
-      }, (err) => { }
-    );
   }
 
 }

@@ -17,6 +17,13 @@ export class ItemOfertaPage {
 
   imgPerfil: string = 'assets/imgs/default-avatar.png';
 
+
+  ionViewDidLoad() {
+    if(this.oferta.fornecedor.fotoPerfil !== undefined && this.oferta.fornecedor.fotoPerfil !== '' ) {
+      this.imgPerfil = this.oferta.fornecedor.fotoPerfil;
+    }
+  }
+
   constructor(
     public servicoService:ServicoClienteService,
     public alertCtrl: AlertController,

@@ -42,6 +42,14 @@ export class ServicoFornecedorService {
 
     }
 
+    getExtratoPeriodo(periodo:string) {
+      return this.http.get(`${API_CONFIG.baseUrl}/api/servicos/extrato?periodo=${periodo[0]}`,
+        {
+          observe: 'response',
+          responseType: 'json'
+        });
+    }
+
     getServicosAceitos() {
         return this.http.get(`${API_CONFIG.baseUrl}/api/servicos/fornecedor/aceitos`,
             {

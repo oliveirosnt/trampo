@@ -26,7 +26,7 @@ export class MyApp {
 
         events.subscribe('user:CLIENTE', () => {
             this.pages = [
-                { title: 'Home', component: 'HomePage', icon: { android: 'md-home', ios: 'ios-home' } },
+                { title: 'Home', component: 'HomeClientePage', icon: { android: 'md-home', ios: 'ios-home' } },
                 { title: 'Listagem de Serviço', component: 'ListagemServicoPage', icon: { android: 'md-list', ios: 'ios-list' } },
                 { title: 'Perfil', component: 'PerfilPage', icon: { android: 'md-contact', ios: 'ios-contact' } }
             ];

@@ -37,7 +37,7 @@ export class PerfilPage {
         this.usuarioService.getMyUser().subscribe(
             response => {
                 this.dadosUsuario = response['data'];
-                this.imgPerfil = this.dadosUsuario.fotoPerfil.trim() === '' ? 'assets/imgs/default-avatar.png': 'data:image/jpeg;base64,' + this.dadosUsuario.fotoPerfil
+                this.imgPerfil = this.dadosUsuario.fotoPerfil.trim() === '' ? 'assets/imgs/default-avatar.png': this.dadosUsuario.fotoPerfil;
             }, error => {
                 console.log(error);
             });
