@@ -176,8 +176,6 @@ export class DetalheServicoPage {
             });
     }
 
-
-
     cancelaServicoCliente(servico: ServicoDTO) {
         this.servicoClienteService.cancelaServico(servico).subscribe(
             response => {
@@ -201,6 +199,31 @@ export class DetalheServicoPage {
             }
         )
     }
+
+    cancelaServicoFornecedor(servico: ServicoDTO) {
+        this.servicoFornecedorService.cancelaServico(servico).subscribe(
+            response => {
+                let alertMessage = this.alertCtrl.create({
+                    message: response.body['message'],
+                    buttons: [{
+                        text: 'Ok'
+                    }]
+                });
+                alertMessage.present();
+                this.navCtrl.setRoot("HomePage");
+            }, error => {
+                let alertMessage = this.alertCtrl.create({
+                    message: error.error['message'],
+                    buttons: [{
+                        text: 'Ok'
+                    }]
+                });
+                alertMessage.present();
+                this.navCtrl.setRoot("HomePage");
+            }
+        )
+    }
+
 
     avaliarServico() {
         this.navCtrl.push('AvaliacaoPage', { servico: this.servico });

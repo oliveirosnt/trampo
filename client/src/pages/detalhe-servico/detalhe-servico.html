@@ -147,29 +147,37 @@
               </ion-item>
             </ion-col>
           </ion-row>
-            <ion-row *ngIf="servico.tipoStatus == 'AGUARDANDO_OFERTAS' && (user && user.tipo == 'CLIENTE') && servico.ofertasRecebidas.length > 0">
-                <ion-col col-12>
-                    <button class="visualizar" ion-button round full color="blue" (click)="visualizarOfertas(servico)">
-                        <ion-icon ios="ios-eye" md="md-eye"></ion-icon>Visualizar Ofertas
-                    </button>
-                </ion-col>
-            </ion-row>
-            <ion-row *ngIf="servico.tipoStatus == 'ACEITO' && (user && user.tipo == 'FORNECEDOR')">
-                <ion-col col-12>
-                    <button class="finalizar" ion-button round full color="dark" (click)="concluirServico(servico)">
-                        <ion-icon ios="ios-checkmark-circle-outline" md="md-checkmark-circle-outline"></ion-icon>Concluir
-                    </button>
-                </ion-col>
-            </ion-row>
-            <ion-row *ngIf="servico.tipoStatus == 'AGUARDANDO_OFERTAS' && (user && user.tipo == 'CLIENTE')">
+          <ion-row *ngIf="servico.tipoStatus == 'AGUARDANDO_OFERTAS' && (user && user.tipo == 'CLIENTE') && servico.ofertasRecebidas.length > 0">
               <ion-col col-12>
-                <button class="cancelar" ion-button round full color="dark" (click)="cancelaServicoCliente(servico)">
-                  <ion-icon ios="ios-close-circle" md="md-close-circle"></ion-icon>Cancelar
-                  Serviço
-                </button>
+                  <button class="visualizar" ion-button round full color="blue" (click)="visualizarOfertas(servico)">
+                      <ion-icon ios="ios-eye" md="md-eye"></ion-icon>Visualizar Ofertas
+                  </button>
               </ion-col>
-            </ion-row>
-        </ion-grid>
+          </ion-row>
+          <ion-row *ngIf="servico.tipoStatus == 'ACEITO' && (user && user.tipo == 'FORNECEDOR')">
+            <ion-col col-12>
+              <button class="cancelar" ion-button round full color="danger" (click)="cancelaServicoFornecedor(servico)">
+                <ion-icon ios="ios-close-circle" md="md-close-circle"></ion-icon>Cancelar
+                  Serviço
+              </button>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="servico.tipoStatus == 'ACEITO' && (user && user.tipo == 'FORNECEDOR')">
+              <ion-col col-12>
+                  <button class="finalizar" ion-button round full color="dark" (click)="concluirServico(servico)">
+                      <ion-icon ios="ios-checkmark-circle-outline" md="md-checkmark-circle-outline"></ion-icon>Concluir
+                  </button>
+              </ion-col>
+          </ion-row>
+          <ion-row *ngIf="servico.tipoStatus == 'AGUARDANDO_OFERTAS' && (user && user.tipo == 'CLIENTE')">
+            <ion-col col-12>
+              <button class="cancelar" ion-button round full color="dark" (click)="cancelaServicoCliente(servico)">
+                <ion-icon ios="ios-close-circle" md="md-close-circle"></ion-icon>Cancelar
+                  Serviço
+              </button>
+            </ion-col>
+          </ion-row>
+      </ion-grid>
     </div>
 
     <ion-fab right bottom *ngIf="tipoUsuario == 'FORNECEDOR' && servico.tipoStatus == 'AGUARDANDO_OFERTAS'">
