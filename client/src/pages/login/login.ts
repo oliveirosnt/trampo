@@ -5,6 +5,7 @@ import { AutenticacaoService } from '../../services/autenticacao.service';
 import { StorageService } from '../../services/storage.service';
 import { UsuarioService } from '../../services/usuario.service';
 import { DadosUsuarioDTO } from '../../models/dados-usuario.dto';
+import {Push, PushObject, PushOptions} from "@ionic-native/push/ngx";
 
 @IonicPage()
 @Component({
@@ -26,7 +27,7 @@ export class LoginPage {
         public autenticacao: AutenticacaoService,
         public storage: StorageService,
         public usuario: UsuarioService,
-        public events: Events) {
+        public events: Events,  private push: Push) {
 
     }
 
@@ -79,6 +80,7 @@ export class LoginPage {
             loading.present();
             this.usuario.getMyUser().subscribe(
                 response => {
+
                     this.dadosUsuario = response['data'];
                     this.events.publish(`user:${this.dadosUsuario.tipo}`)
                     if(this.dadosUsuario.tipo === 'CLIENTE') {
@@ -87,6 +89,7 @@ export class LoginPage {
                       this.navCtrl.setRoot('DashboardPage', this.dadosUsuario);
                     }
                     console.log(`user:${this.dadosUsuario.tipo} published`)
+                    this.pushSetup();
 
                 }
             )
@@ -101,4 +104,29 @@ export class LoginPage {
                 alertMessage.present();
             });
     }
+
+  pushSetup() {
+    const options: PushOptions = {
+      android: {
+        senderID: '698730155654',
+        forceShow: true,
+        iconColor:'#0090d0'
+      },
+      ios: {
+        alert: 'true',
+        badge: true,
+        sound: 'false'
+      }
+    }
+
+    const pushObject: PushObject = this.push.init(options);
+
+
+    pushObject.on('notification').subscribe((notification: any) => console.log('Received a notification', (notification)));
+
+    pushObject.on('registration').subscribe((registration: any) => console.log('Device registered', registration));
+
+    pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
+
+  }
 }
