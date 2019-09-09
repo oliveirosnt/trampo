@@ -3,7 +3,6 @@ package br.com.ufcg.services;
 import br.com.ufcg.domain.*;
 import br.com.ufcg.dao.ServicoDAO;
 import br.com.ufcg.domain.enums.TipoStatus;
-import br.com.ufcg.dto.ServicoDTO;
 import br.com.ufcg.repositories.ServicoRepository;
 import br.com.ufcg.util.validadores.ServicoValidador;
 
@@ -21,6 +20,9 @@ public class ServicoService {
     
 	@Autowired
     ServicoRepository servicoRepository;
+	
+	@Autowired
+	NotificationService notificationService;
 
     public Servico criarServico(Usuario cliente, Servico servico) throws Exception {
     	if(!(cliente instanceof Cliente)) {
@@ -43,6 +45,7 @@ public class ServicoService {
         }
 		
 		Servico servicoCriado = servicoRepository.save(servico);
+		notificationService.sendNotificationToTopic(servico.getTipo(), "novo_servico");
 		return servicoCriado;
     }
 
@@ -54,6 +57,8 @@ public class ServicoService {
         servico.adicionaOferta(oferta);
 
         Servico servicoAtualizado = servicoRepository.save(servico);
+    
+        notificationService.sendNotificationNewOffer(oferta, servico.getCliente());
         return servicoAtualizado;
     }
 
@@ -314,6 +319,7 @@ public class ServicoService {
 		
 		Servico servicoAtualizado = servico;
 		servicoAtualizado.setStatus(TipoStatus.CANCELADO);
+		notificationService.sendDirectNotification("cancelamento_cliente", servico.getFornecedor(), servicoAtualizado);
 		servicoAtualizado.setFornecedor(null);
 		return servicoRepository.saveAndFlush(servicoAtualizado);
 		
