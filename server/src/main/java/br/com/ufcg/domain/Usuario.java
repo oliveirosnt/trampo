@@ -57,6 +57,9 @@ public abstract class Usuario implements Serializable {
 
 	@Column(name = "TX_SENHA", nullable = false)
 	private String senha;
+	
+	@Column(name = "FCM_TOKEN", nullable = true)
+	private String fcmToken;
 
 	@Column(name = "CD_TIPO", nullable = false, updatable = false)
 	@Enumerated
@@ -144,6 +147,14 @@ public abstract class Usuario implements Serializable {
 
 	public TipoUsuario getTipo() {
 		return tipo;
+	}
+	
+	public void setFcmToken(String fcmToken) {
+		this.fcmToken = fcmToken;
+	}
+	
+	public String getFcmToken() {
+		return this.fcmToken;
 	}
 	
 	protected double getAvaliacaoMedia() {

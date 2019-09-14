@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import br.com.ufcg.domain.Usuario;
+import br.com.ufcg.domain.vo.TokenForm;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
@@ -18,4 +19,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
 	@Query("SELECT u FROM Usuario u WHERE u.email=:email")
 	Usuario findByEmail(@Param("email") String email);
+
+	
 }
