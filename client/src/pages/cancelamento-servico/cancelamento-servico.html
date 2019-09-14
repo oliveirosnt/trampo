@@ -1,0 +1,51 @@
+<!--
+  Generated template for the CancelamentoServicoPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Cancelamento de Serviço</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="dismiss()"><ion-icon name="close"></ion-icon></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding white-background>
+  <ion-grid>
+    <ion-row>
+      <ion-list radio-group [(ngModel)]="justificativa">
+        <!-- Header Title Top -->
+        <ion-list-header header-section no-margin>
+          <h1 header-title>{{descricaoHorarioServico}}</h1>
+          <hr/>
+          <h2 header-title> Justificativa:</h2>
+        </ion-list-header>
+        <!--Content -->
+        <ion-item no-lines *ngFor="let item of data.items; let i= index">
+          <ion-radio item-start [value]="item.id"></ion-radio>
+          <!--Content Title-->
+          <ion-label item-title>{{item.title}}</ion-label>
+          <!--Content Subtitle-->
+          <!--ion-label item-end text-right item-subtitle>{{item.subtitle}}</ion-label-->
+        </ion-item>
+      </ion-list>
+    </ion-row>
+    <ion-row>
+      <ion-item *ngIf="justificativa === 6">
+        <ion-label stacked>Motivo:</ion-label>
+        <ion-textarea rows="3" cols="20" placeholder="Especifique o motivo do cancelamento" [(ngModel)]="motivo"></ion-textarea>
+      </ion-item>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12>
+        <button class="cancelar" ion-button round full color="danger" (click)="cancelaServicoFornecedor()" [disabled]="disponivelCancelar()">
+          <ion-icon ios="ios-close-circle" md="md-close-circle"></ion-icon>Cancelar Serviço
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

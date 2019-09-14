@@ -104,10 +104,12 @@ export class RequisicaoServicoPage {
         });
     }
 
-    cadastrar(servico: ServicoDTO) {
+    cadastrar(servico) {
       if(this.image.hasPhoto) {
         this.fileService.generateIdentifications(this.image);
         servico.anexos = this.image.identifications;
+      } else {
+        servico.anexos = [];
       }
       this.cadastroServService.cadastraServicoCliente(servico).subscribe(
           response => {
