@@ -28,6 +28,7 @@ import { File } from '@ionic-native/file/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import {FileService} from "../services/file.service";
+import {Push} from "@ionic-native/push/ngx";
 
 
 @NgModule({
@@ -68,7 +69,8 @@ import {FileService} from "../services/file.service";
         File,
         WebView,
         FilePath,
-        FileService
+        FileService,
+        Push
     ]
 })
 export class AppModule { }

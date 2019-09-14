@@ -186,7 +186,7 @@ export class DetalheServicoPage {
                     }]
                 });
                 alertMessage.present();
-                this.navCtrl.setRoot("HomePage");
+                this.navCtrl.setRoot("HomeClientePage");
             }, error => {
                 let alertMessage = this.alertCtrl.create({
                     message: error.error['message'],
@@ -195,33 +195,26 @@ export class DetalheServicoPage {
                     }]
                 });
                 alertMessage.present();
-                this.navCtrl.setRoot("HomePage");
+                this.navCtrl.setRoot("HomeClientePage");
             }
         )
     }
 
     cancelaServicoFornecedor(servico: ServicoDTO) {
-        this.servicoFornecedorService.cancelaServico(servico).subscribe(
-            response => {
-                let alertMessage = this.alertCtrl.create({
-                    message: response.body['message'],
-                    buttons: [{
-                        text: 'Ok'
-                    }]
-                });
-                alertMessage.present();
-                this.navCtrl.setRoot("HomePage");
-            }, error => {
-                let alertMessage = this.alertCtrl.create({
-                    message: error.error['message'],
-                    buttons: [{
-                        text: 'Ok'
-                    }]
-                });
-                alertMessage.present();
-                this.navCtrl.setRoot("HomePage");
-            }
-        )
+      let modal = this.modalCtrl.create('CancelamentoServicoPage', {servico: servico});
+      modal.present();
+      modal.onDidDismiss(data => {
+        if (data && data.message) {
+          let alertMessage = this.alertCtrl.create({
+            message: data.message,
+            buttons: [{
+              text: 'Ok'
+            }]
+          });
+          alertMessage.present();
+          this.navCtrl.setRoot("DashboardPage");
+        }
+      });
     }
 
 

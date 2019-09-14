@@ -61,7 +61,6 @@ export class DashboardPage {
       if(!data) {
         this.temServicos = false;
         this.loaded = true;
-        document.getElementById("btn-semanal").focus();
       } else {
         this.carregaServicosBaseadoData('semanal');
       }
