@@ -204,11 +204,13 @@ public class UsuarioController {
 		}	
 	}
 	
-	@RequestMapping(value = "/api/usuarios/att_token", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.PATCH)
-	public ResponseEntity<Response> atualizarFcmToken(@RequestParam("fcmToken") String fcmToken, HttpServletRequest request) {
+	@RequestMapping(value = "/api/usuarios/ajustes", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.PATCH)
+	public ResponseEntity<Response> atualizarPropriedadesUsuario(@RequestBody Cliente usuario, HttpServletRequest request) {
 		Response response;
 		
 		try {
+			System.out.println(usuario.getFcmToken());
+			String fcmToken = usuario.getFcmToken();
 			
 			Usuario user = (Usuario) request.getAttribute("user");
 			usuarioService.atualizarFcmToken(user, fcmToken);

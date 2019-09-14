@@ -263,6 +263,8 @@ public class ServicoService {
 		servico.setValor(oferta.getValor());
 		Servico servicoAtualizado = setServicoParaFornecedor(servico, fornecedor);
 
+		this.notificationService.sendNotificationOfferAccepted(servico, fornecedor, servico.getTipo());
+
 		return servicoAtualizado;
 
 	}
@@ -319,7 +321,7 @@ public class ServicoService {
 		
 		Servico servicoAtualizado = servico;
 		servicoAtualizado.setStatus(TipoStatus.CANCELADO);
-		notificationService.sendDirectNotification("cancelamento_cliente", servico.getFornecedor(), servicoAtualizado);
+		notificationService.sendDirectNotification(servico.getOfertasRecebidas(), servicoAtualizado);
 		servicoAtualizado.setFornecedor(null);
 		return servicoRepository.saveAndFlush(servicoAtualizado);
 		
@@ -335,6 +337,7 @@ public class ServicoService {
 		}
 		Servico servicoAtualizado = servico;
 		servicoAtualizado.setStatus(TipoStatus.CONCLUIDO);
+		this.notificationService.sendNotificationDoneService(servico, servico.getCliente());
 		return servicoRepository.saveAndFlush(servicoAtualizado);
 		
 	}
@@ -409,7 +412,8 @@ public class ServicoService {
 		Servico servicoCancelado = removeOfertaEmServico(servico, fornecedor);
 		servicoCancelado.setStatus(TipoStatus.AGUARDANDO_OFERTAS);
 		servicoCancelado.setFornecedor(null);
-		
+
+		this.notificationService.sendCancelNotificationToClient(servico, fornecedor);
 		return servicoRepository.saveAndFlush(servicoCancelado);
 	}
 
@@ -421,9 +425,7 @@ public class ServicoService {
 			Oferta oferta = iterator.next();
 
 			if(oferta.getFornecedor().getId().equals(fornecedor.getId())) {
-				List<Oferta> listaAtualizada = servico.getOfertasRecebidas();
-				listaAtualizada.remove(oferta);
-				servico.setOfertasRecebidas(listaAtualizada);
+				iterator.remove();
 				achou = true;
 			}
 		}

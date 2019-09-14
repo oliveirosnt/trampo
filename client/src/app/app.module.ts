@@ -30,7 +30,6 @@ import { FilePath } from '@ionic-native/file-path/ngx';
 import {FileService} from "../services/file.service";
 import {Push} from "@ionic-native/push/ngx";
 
-
 @NgModule({
     declarations: [
         MyApp

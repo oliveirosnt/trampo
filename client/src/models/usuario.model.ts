@@ -7,9 +7,10 @@ export class Usuario {
     public senha: string;
     public tipo: string;
     public avaliacao: number;
+    public fcmToken: string;
 
     constructor(id?: number, nomeCompleto?: string, login?: string, fotoPerfil?: string,
-        email?: string, senha?: string, tipo?: string, avaliacao?: number) {
+        email?: string, senha?: string, tipo?: string, avaliacao?: number, fcmToken?:string) {
             this.id = id;
             this.nomeCompleto = nomeCompleto;
             this.login = login;
@@ -18,5 +19,6 @@ export class Usuario {
             this.senha = senha;
             this.tipo = tipo;
             this.avaliacao = avaliacao;
+            this.fcmToken = fcmToken;
     }
 }

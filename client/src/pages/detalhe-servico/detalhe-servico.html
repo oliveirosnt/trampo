@@ -137,7 +137,7 @@
               </ion-item>
             </ion-col>
           </ion-row>
-          <ion-row *ngIf="servico.anexos.length > 0">
+          <ion-row *ngIf="servico.anexos !== undefined && servico.anexos.length > 0">
             <ion-col col-12>
               <ion-item>
                 <span class="label label-md" style="color: #0090d0; font-size: 17px; display: block;">Visualize as fotos sobre o problema:</span>
