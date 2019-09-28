@@ -27,7 +27,7 @@ export class LoginPage {
         public autenticacao: AutenticacaoService,
         public storage: StorageService,
         public usuario: UsuarioService,
-        public events: Events,  private push: Push) {
+        public events: Events,  private push: Push, private usuarioService: UsuarioService) {
 
     }
 
@@ -85,11 +85,13 @@ export class LoginPage {
                     this.events.publish(`user:${this.dadosUsuario.tipo}`)
                     if(this.dadosUsuario.tipo === 'CLIENTE') {
                       this.navCtrl.setRoot('HomeClientePage', this.dadosUsuario);
+                      this.pushSetup(this.dadosUsuario.tipo);
                     } else {
                       this.navCtrl.setRoot('DashboardPage', this.dadosUsuario);
+                      this.pushSetup(this.dadosUsuario.tipo, this.dadosUsuario.listaEspecialidades);
                     }
                     console.log(`user:${this.dadosUsuario.tipo} published`)
-                    this.pushSetup();
+
 
                 }
             )
@@ -105,12 +107,22 @@ export class LoginPage {
             });
     }
 
-  pushSetup() {
+  pushSetup(tipoUsuario, especialidades?) {
+
+    let meusTopicos = [];
+    if(tipoUsuario === 'FORNECEDOR') {
+      especialidades.map((especialidade) => {
+        const topicoAtual = especialidade['nome'].toLowerCase();
+        meusTopicos.push(topicoAtual);
+
+      })
+    }
     const options: PushOptions = {
       android: {
         senderID: '698730155654',
         forceShow: true,
-        iconColor:'#0090d0'
+        icon:'notification',
+        topics: meusTopicos
       },
       ios: {
         alert: 'true',
@@ -124,7 +136,13 @@ export class LoginPage {
 
     pushObject.on('notification').subscribe((notification: any) => console.log('Received a notification', (notification)));
 
-    pushObject.on('registration').subscribe((registration: any) => console.log('Device registered', registration));
+    pushObject.on('registration').subscribe((registration: any) => {
+      const { registrationId } = registration;
+
+      this.usuarioService.atualizaFcmToken(registrationId).subscribe(() => console.log('Token FCM atualizado no usuário'), (err) => console.log(err));
+
+      console.log('Device registered', registration)
+    });
 
     pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
 

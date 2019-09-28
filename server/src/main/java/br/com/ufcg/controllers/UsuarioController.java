@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,6 +28,7 @@ import br.com.ufcg.domain.Usuario;
 import br.com.ufcg.domain.vo.AlterarDadosForm;
 import br.com.ufcg.domain.vo.LoginForm;
 import br.com.ufcg.domain.vo.NovaSenhaForm;
+import br.com.ufcg.domain.vo.TokenForm;
 import br.com.ufcg.mappers.RecuperarSenhaMapper;
 import br.com.ufcg.services.UsuarioService;
 import io.jsonwebtoken.Jwts;
@@ -200,6 +202,25 @@ public class UsuarioController {
 			response = new Response(e.getMessage(), HttpStatus.BAD_REQUEST.value());
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}	
+	}
+	
+	@RequestMapping(value = "/api/usuarios/ajustes", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.PATCH)
+	public ResponseEntity<Response> atualizarPropriedadesUsuario(@RequestBody Cliente usuario, HttpServletRequest request) {
+		Response response;
+		
+		try {
+			System.out.println(usuario.getFcmToken());
+			String fcmToken = usuario.getFcmToken();
+			
+			Usuario user = (Usuario) request.getAttribute("user");
+			usuarioService.atualizarFcmToken(user, fcmToken);
+			response = new Response("Token atualizado com sucesso!", HttpStatus.OK.value(), fcmToken);
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch(Exception e) {
+			response = new Response(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}	
+		
 	}
 	
 	@RequestMapping(value = "/recuperarSenha", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)

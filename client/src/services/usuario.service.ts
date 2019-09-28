@@ -40,4 +40,15 @@ export class UsuarioService {
         });
     }
 
+    atualizaFcmToken(fcmToken: any) {
+      const fcmObject = { fcmToken: fcmToken };
+      return this.http.patch(
+        `${API_CONFIG.baseUrl}/api/usuarios/ajustes`,
+        fcmObject,
+        {
+          observe: 'response',
+          responseType: 'json'
+        });
+    }
+
 }

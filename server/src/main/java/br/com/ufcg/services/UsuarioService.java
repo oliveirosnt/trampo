@@ -83,6 +83,7 @@ public class UsuarioService {
 				usuario = criarFornecedor(usuario, ((Fornecedor) usuario).getListaEspecialidades());
 			}
 			usuario.setLogin(usuario.getLogin().toLowerCase());
+			usuario.setFcmToken("");
 			return usuarioRepository.save(usuario);
 		}
 
@@ -305,6 +306,12 @@ public class UsuarioService {
 		
 		emailService.gerarEmailRecuperarSenha(usuario, token);
 		
+	}
+
+	public void atualizarFcmToken(Usuario user, String token) throws Exception {
+		Usuario usuario = getByLogin(user.getLogin());
+		usuario.setFcmToken(token);
+		usuarioRepository.saveAndFlush(usuario);
 	}
 
 

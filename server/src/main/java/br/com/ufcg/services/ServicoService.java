@@ -3,7 +3,6 @@ package br.com.ufcg.services;
 import br.com.ufcg.domain.*;
 import br.com.ufcg.dao.ServicoDAO;
 import br.com.ufcg.domain.enums.TipoStatus;
-import br.com.ufcg.dto.ServicoDTO;
 import br.com.ufcg.repositories.ServicoRepository;
 import br.com.ufcg.util.validadores.ServicoValidador;
 
@@ -21,6 +20,9 @@ public class ServicoService {
     
 	@Autowired
     ServicoRepository servicoRepository;
+	
+	@Autowired
+	NotificationService notificationService;
 
     public Servico criarServico(Usuario cliente, Servico servico) throws Exception {
     	if(!(cliente instanceof Cliente)) {
@@ -43,6 +45,7 @@ public class ServicoService {
         }
 		
 		Servico servicoCriado = servicoRepository.save(servico);
+		notificationService.sendNotificationToTopic(servico.getTipo(), "novo_servico");
 		return servicoCriado;
     }
 
@@ -54,6 +57,8 @@ public class ServicoService {
         servico.adicionaOferta(oferta);
 
         Servico servicoAtualizado = servicoRepository.save(servico);
+    
+        notificationService.sendNotificationNewOffer(oferta, servico.getCliente());
         return servicoAtualizado;
     }
 
@@ -258,6 +263,8 @@ public class ServicoService {
 		servico.setValor(oferta.getValor());
 		Servico servicoAtualizado = setServicoParaFornecedor(servico, fornecedor);
 
+		this.notificationService.sendNotificationOfferAccepted(servico, fornecedor, servico.getTipo());
+
 		return servicoAtualizado;
 
 	}
@@ -314,6 +321,7 @@ public class ServicoService {
 		
 		Servico servicoAtualizado = servico;
 		servicoAtualizado.setStatus(TipoStatus.CANCELADO);
+		notificationService.sendDirectNotification(servico.getOfertasRecebidas(), servicoAtualizado);
 		servicoAtualizado.setFornecedor(null);
 		return servicoRepository.saveAndFlush(servicoAtualizado);
 		
@@ -329,6 +337,7 @@ public class ServicoService {
 		}
 		Servico servicoAtualizado = servico;
 		servicoAtualizado.setStatus(TipoStatus.CONCLUIDO);
+		this.notificationService.sendNotificationDoneService(servico, servico.getCliente());
 		return servicoRepository.saveAndFlush(servicoAtualizado);
 		
 	}
@@ -403,7 +412,8 @@ public class ServicoService {
 		Servico servicoCancelado = removeOfertaEmServico(servico, fornecedor);
 		servicoCancelado.setStatus(TipoStatus.AGUARDANDO_OFERTAS);
 		servicoCancelado.setFornecedor(null);
-		
+
+		this.notificationService.sendCancelNotificationToClient(servico, fornecedor);
 		return servicoRepository.saveAndFlush(servicoCancelado);
 	}
 
@@ -415,9 +425,7 @@ public class ServicoService {
 			Oferta oferta = iterator.next();
 
 			if(oferta.getFornecedor().getId().equals(fornecedor.getId())) {
-				List<Oferta> listaAtualizada = servico.getOfertasRecebidas();
-				listaAtualizada.remove(oferta);
-				servico.setOfertasRecebidas(listaAtualizada);
+				iterator.remove();
 				achou = true;
 			}
 		}

@@ -101,16 +101,14 @@ public class Oferta {
         if (this == o) return true;
         if (!(o instanceof Oferta)) return false;
         Oferta oferta = (Oferta) o;
-        return Objects.equals(getId(), oferta.getId()) &&
-                Objects.equals(getServico(), oferta.getServico()) &&
-                Objects.equals(getDescricao(), oferta.getDescricao()) &&
-                Objects.equals(getValor(), oferta.getValor()) &&
-                Objects.equals(getEstimativaConclusao(), oferta.getEstimativaConclusao());
+        return Objects.equals(this.getId(), oferta.getId()) &&
+                Objects.equals(this.getServico().getId(), oferta.getServico().getId()) &&
+                Objects.equals(this.fornecedor.getId(), oferta.getFornecedor().getId());
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(getId(), getServico(), getDescricao(), getValor(), getEstimativaConclusao());
+        return Objects.hash(this.getId(), this.getServico().getId(), this.getFornecedor().getId());
     }
 }
